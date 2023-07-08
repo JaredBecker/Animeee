@@ -1,13 +1,28 @@
-import { NgModule } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
+
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
+import { CardComponent } from './components/card/card.component';
+import { SliderComponent } from './components/slider/slider.component';
+import { NavbarComponent } from './components/navbar/navbar.component';
+
 @NgModule({
-    declarations: [],
+    declarations: [
+        CardComponent,
+        SliderComponent,
+        NavbarComponent
+    ],
     imports: [
-        NgbModule
+        CommonModule,
+        NgbModule,
     ],
     exports: [
-        NgbModule
-    ]
+        NgbModule,
+        CardComponent,
+        SliderComponent,
+        NavbarComponent,
+    ],
+    schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class SharedModule { }
