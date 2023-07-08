@@ -1,0 +1,60 @@
+#intro_section {
+    background-image: linear-gradient(rgba(52, 24, 69, 1), rgba(52, 24, 69, 0.3)), url('/assets/images/intro_bg.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 1rem;
+
+    padding: {
+        top: 1rem;
+        left: 1rem;
+        right: 1rem;
+    };
+
+    .intro_img {
+        max-width: 250px;
+    }
+
+    .content {
+        padding: 1rem;
+        background-color: rgba(#fff, 0.8);
+        border-radius: 1rem;
+    }
+}
+
+// This needs some work. Look at a later stage (Pfft like that will happen (⊙_⊙;) )
+.gradient_border {
+    --borderWidth: 10px;
+    background: #1D1F20;
+    position: relative;
+    border-radius: var(--borderWidth);
+}
+
+.gradient_border:after {
+    content: '';
+    position: absolute;
+    top: calc(-1 * var(--borderWidth));
+    left: calc(-1 * var(--borderWidth));
+    height: calc(100% + var(--borderWidth) * 2);
+    width: calc(100% + var(--borderWidth) * 2);
+    background: linear-gradient(60deg, #f79533, #f37055, #ef4e7b, #a166ab, #5073b8, #1098ad, #07b39b, #6fba82);
+    border-radius: calc(2 * var(--borderWidth));
+    z-index: -1;
+    animation: animated_gradient 3s ease alternate infinite;
+    background-size: 300% 300%;
+}
+
+
+@keyframes animated_gradient {
+    0% {
+        background-position: 0% 50%;
+    }
+
+    50% {
+        background-position: 100% 50%;
+    }
+
+    100% {
+        background-position: 0% 50%;
+    }
+}

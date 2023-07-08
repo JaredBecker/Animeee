@@ -1,0 +1,10 @@
+.custom_card {
+    box-shadow: var(--box-shadow);
+    border-radius: 1rem;
+    background-color: #fff;
+}
+
+.sticky_card {
+    position: sticky;
+    top: calc(75px + 3rem); // 75px = navbar height & 3rem = py-5
+}

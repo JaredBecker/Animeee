@@ -1,0 +1,23 @@
+<ng-container *ngIf="!animes;else slider">
+    <h5>Loading...</h5>
+</ng-container>
+<ng-template #slider>
+    <section class="slider_section">
+        <h3 class="oswald fw-bold text_gradient slider_title">{{ title }}</h3>
+        <swiper-container
+            initial-slide="0"
+            slides-per-view="5"
+            autoplay="true"
+            delay="2500"
+        >
+            <swiper-slide class="me-3" *ngFor="let anime of animes">
+                <div class="anime_card">
+                    <img src="/assets/images/demo.png" alt="UPDATE THIS">
+                </div>
+            </swiper-slide>
+        </swiper-container>
+        <div class="d-flex justify-content-end">
+            <a href="#">View More</a>
+        </div>
+    </section>
+</ng-template>

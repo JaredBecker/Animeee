@@ -1,0 +1,15 @@
+.slider_section {
+    padding-top: 3rem;
+
+    .slider_title {
+        text-transform: uppercase;
+        @include font-size(1.5rem);
+    }
+}
+.anime_card {
+    img {
+        max-width: 100%;
+        margin-right: 0.5rem;
+        border-radius: 0.5rem;
+    }
+}

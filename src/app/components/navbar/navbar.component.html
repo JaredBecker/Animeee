@@ -1,23 +1,24 @@
 <nav class="navbar">
-    <div class="container-fluid">
-        <a href="#" class="navbar-brand">
+    <div class="container">
+        <a href="#" class="navbar-brand d-flex align-items-center me-0">
             <img src="/assets/images/logo.png" alt="Animeee Logo">
-            <span>Animeee</span>
+            <span class="oswald ms-2 text-primary d-none d-sm-inline-block">ANIMEEE</span>
         </a>
-        <div class="input-group w-auto">
+        <div class="input-group w-auto flex-nowrap navbar_search">
             <input
                 type="search"
-                class="form-control"
+                class="form-control form-control-sm"
                 placeholder="Search"
                 aria-label="Search"
                 aria-describedby="search_btn"
             />
             <button
-                class="btn btn-outline-primary"
+                class="btn btn-primary btn-sm text-white"
                 type="button"
                 id="search_btn"
-            >Button</button>
+            >
+                <i class="fa-solid fa-magnifying-glass"></i>
+            </button>
         </div>
     </div>
 </nav>
-

@@ -1,0 +1,21 @@
+.category_list {
+    padding: 0;
+    margin: 0;
+    list-style-type: none;
+    display: flex;
+    flex-wrap: wrap;
+
+    &_item {
+        width: 50%;
+    }
+
+    &_link {
+        color: $secondary;
+        text-decoration: none;
+        font-size: 0.8rem;
+
+        &:hover {
+            color: $primary;
+        }
+    }
+}

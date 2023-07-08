@@ -1,4 +1,32 @@
 /* You can add global styles to this file, and also import other style files */
 
+$primary: #ec2367;
+$secondary: #341845;
+
 /* Importing Bootstrap SCSS file. */
 @import 'bootstrap/scss/bootstrap';
+@import './scss/';
+
+:root {
+    --box-shadow: 0 0 10px -5px rgba(0,0,0,0.5);
+}
+
+main {
+    padding-top: 75px;
+}
+
+.oswald {
+    font-family: 'Oswald', sans-serif;
+}
+
+.monty {
+    font-family: 'Montserrat', sans-serif;
+}
+
+.text_gradient {
+    font-weight: 700;
+    background: radial-gradient(circle, rgba(52,24,69,1) 15%, rgba(236,35,103,1) 85%);
+    background-clip: border-box;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}

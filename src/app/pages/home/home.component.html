@@ -1,5 +1,22 @@
 <app-navbar></app-navbar>
 
-<div class="container">
-    <h1>Welcome to Animeee</h1>
-</div>
+<main class="custom_bg">
+    <div class="container py-5 monty">
+        <div class="row">
+            <div class="col-12 col-lg-8">
+                <app-intro></app-intro>
+                <app-slider title="Trending This Week" [animes]="animes"></app-slider>
+                <app-slider title="Top Airing Anime" [animes]="animes"></app-slider>
+                <app-slider title="Top Upcoming Anime" [animes]="animes"></app-slider>
+                <app-slider title="Highest Rated Anime" [animes]="animes"></app-slider>
+                <app-slider title="Most Popular Anime" [animes]="animes"></app-slider>
+            </div>
+            <div class="col-12 col-lg-4">
+                <app-card>
+                    <h3>Categories</h3>
+                    <app-category-list [categories]="categories" />
+                </app-card>
+            </div>
+        </div>
+    </div>
+</main>
