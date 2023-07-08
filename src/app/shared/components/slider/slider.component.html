@@ -1,6 +1,12 @@
-<ng-container *ngIf="!animes;else slider">
-    <h5>Loading...</h5>
+<ng-container *ngIf="is_loading;else slider">
+    <div class="text-center pt-5" [style]="{'height': '150px'}">
+        <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Loading...</span>
+          </div>
+          <h5>Loading...</h5>
+    </div>
 </ng-container>
+
 <ng-template #slider>
     <section class="slider_section">
         <h3 class="oswald fw-bold text_gradient slider_title">{{ title }}</h3>
@@ -12,12 +18,15 @@
         >
             <swiper-slide class="me-3" *ngFor="let anime of animes">
                 <div class="anime_card">
-                    <img src="/assets/images/demo.png" alt="UPDATE THIS">
+                    <img [src]="anime.attributes.posterImage.medium" [alt]="anime.attributes.titles.en ? anime.attributes.titles.en : anime.attributes.titles.en_jp">
                 </div>
             </swiper-slide>
         </swiper-container>
         <div class="d-flex justify-content-end">
-            <a href="#">View More</a>
+            <a href="#" class="view_more">
+                View More
+                <i class="fa-solid fa-arrow-right ms-2"></i>
+            </a>
         </div>
     </section>
 </ng-template>

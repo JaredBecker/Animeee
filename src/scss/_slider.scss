@@ -5,11 +5,20 @@
         text-transform: uppercase;
         @include font-size(1.5rem);
     }
-}
-.anime_card {
-    img {
-        max-width: 100%;
-        margin-right: 0.5rem;
-        border-radius: 0.5rem;
+
+    .anime_card {
+        img {
+            max-width: 100%;
+            margin-right: 0.5rem;
+            border-radius: 0.5rem;
+        }
+    }
+
+    .view_more {
+        text-decoration: none;
+        font-weight: bold;
+        font-size: 0.75rem;
+        display: block;
+        margin-top: 0.5rem;
     }
 }

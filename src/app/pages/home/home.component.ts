@@ -1,23 +1,17 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+
+import { Observable } from 'rxjs';
+
+import { AnimeService } from 'src/app/shared/services/anime.service';
+
+import { AnimeResponse } from 'src/app/shared/models/anime-response.interface';
 
 @Component({
-  selector: 'app-home',
-  templateUrl: './home.component.html',
-  styleUrls: ['./home.component.scss']
+    selector: 'app-home',
+    templateUrl: './home.component.html',
+    styleUrls: ['./home.component.scss']
 })
-export class HomeComponent {
-    public animes: string[] = [
-        'Something',
-        'Something',
-        'Something',
-        'Something',
-        'Something',
-        'Something',
-        'Something',
-        'Something',
-        'Something',
-        'Something',
-    ]
+export class HomeComponent implements OnInit {
 
     public categories: string[] = [
         'Some Category',
@@ -68,4 +62,42 @@ export class HomeComponent {
         'Some Category',
         'Some Category',
     ]
+
+    private $trending_anime?: Observable<AnimeResponse>;
+    private $top_airing_anime?: Observable<AnimeResponse>;
+    private $highest_rating_anime?: Observable<AnimeResponse>;
+    private $most_popular_anime?: Observable<AnimeResponse>;
+    private $top_upcoming_anime?: Observable<AnimeResponse>;
+
+    public get trending() {
+        return this.$trending_anime;
+    }
+
+    public get topAiring() {
+        return this.$top_airing_anime;
+    }
+
+    public get highestRating() {
+        return this.$highest_rating_anime;
+    }
+
+    public get mostPopular() {
+        return this.$most_popular_anime;
+    }
+
+    public get topUpcoming() {
+        return this.$top_upcoming_anime;
+    }
+
+    constructor(
+        private animeService: AnimeService
+    ) { }
+
+    ngOnInit(): void {
+        this.$trending_anime = this.animeService.getTrendingAnime();
+        this.$top_airing_anime = this.animeService.getTopAiringAnime();
+        this.$highest_rating_anime = this.animeService.getHighestRatedAnime();
+        this.$most_popular_anime = this.animeService.getMostPopularAnime();
+        this.$top_upcoming_anime = this.animeService.getTopUpcomingAnime();
+    }
 }

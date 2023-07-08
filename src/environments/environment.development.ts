@@ -1,3 +1,1 @@
-export const environment = {
-    testing: 'THIS IS FROM DEVELOPMENT'
-};
+export const environment = { };

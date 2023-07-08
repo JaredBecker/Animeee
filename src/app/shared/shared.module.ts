@@ -11,7 +11,7 @@ import { NavbarComponent } from './components/navbar/navbar.component';
     declarations: [
         CardComponent,
         SliderComponent,
-        NavbarComponent
+        NavbarComponent,
     ],
     imports: [
         CommonModule,

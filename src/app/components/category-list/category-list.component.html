@@ -1,7 +1,18 @@
-<ul class="category_list">
-    <li class="category_list_item" *ngFor="let category of categories">
-        <a class="category_list_link" href="#">
-            {{ category }}
-        </a>
-    </li>
-</ul>
+<ng-container *ngIf="is_loading;else menu">
+    <div class="text-center pt-5" [style]="{'height': '150px'}">
+        <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Loading...</span>
+          </div>
+          <h5>Loading...</h5>
+    </div>
+</ng-container>
+
+<ng-template #menu>
+    <ul class="category_list">
+        <li class="category_list_item" *ngFor="let category of categories">
+            <a class="category_list_link" [href]="category.links.self" target="_blank">
+                {{ category.attributes.title }}
+            </a>
+        </li>
+    </ul>
+</ng-template>

@@ -5,16 +5,16 @@
         <div class="row">
             <div class="col-12 col-lg-8">
                 <app-intro></app-intro>
-                <app-slider title="Trending This Week" [animes]="animes"></app-slider>
-                <app-slider title="Top Airing Anime" [animes]="animes"></app-slider>
-                <app-slider title="Top Upcoming Anime" [animes]="animes"></app-slider>
-                <app-slider title="Highest Rated Anime" [animes]="animes"></app-slider>
-                <app-slider title="Most Popular Anime" [animes]="animes"></app-slider>
+                <app-slider title="Trending This Week" [$anime_stream]="trending"></app-slider>
+                <app-slider title="Top Airing Anime" [$anime_stream]="topAiring"></app-slider>
+                <app-slider title="Top Upcoming Anime" [$anime_stream]="topUpcoming"></app-slider>
+                <app-slider title="Highest Rated Anime" [$anime_stream]="highestRating"></app-slider>
+                <app-slider title="Most Popular Anime" [$anime_stream]="mostPopular"></app-slider>
             </div>
             <div class="col-12 col-lg-4">
                 <app-card [is_sticky]="true">
-                    <h3>Categories</h3>
-                    <app-category-list [categories]="categories" />
+                    <h3 class="oswald fw-bold text-secondary text-uppercase">Categories</h3>
+                    <app-category-list></app-category-list>
                 </app-card>
             </div>
         </div>
