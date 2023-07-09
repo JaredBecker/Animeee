@@ -1,8 +1,67 @@
 .cover_img {
     width: 100%;
-    height: 350px;
+    height: 400px;
     background-color: rgba(#000, 0.3);
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    position: relative;
+    z-index: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 1rem;
+
+    &_overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(to bottom, rgba(52, 24, 69, 0.7), rgba(52, 24, 69, 0.3));
+        z-index: 2;
+    }
 }
+
+.sticky_side_block {
+    position: sticky;
+    top: calc(75px + 1rem);
+}
+
+.anime_poster {
+    margin-bottom: 0.75rem;
+
+    img {
+        border-radius: 0.5rem;
+        box-shadow: var(--box-shadow);
+    }
+}
+
+.anime_details {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+
+    li {
+        display: flex;
+        flex-wrap: wrap;
+        margin-bottom: 0.5rem;
+        font-size: 0.8rem;
+    }
+
+    &_title {
+        width: 100px;
+        max-width: 35%;
+    }
+
+    &_value {
+        max-width: 65%;
+        display: inline-flex;
+        align-items: center;
+    }
+}
+
 .block {
     height: 500px;
     width: 100%;

@@ -8,21 +8,38 @@
     </ng-container>
 
     <ng-template #view>
-        <section class="cover_img">
-
+        <section class="cover_img" [ngStyle]="{backgroundImage: 'url(' + getCoverImage() + ')'}">
+            <div class="cover_img_overlay"></div>
         </section>
         <div class="container monty">
-
             <div class="row">
-
                 <div class="col-12 col-lg-3">
-                    <div class="block"></div>
+                    <div class="sticky_side_block">
+                        <div class="anime_poster">
+                            <img class="img-fluid" [src]="anime.attributes.posterImage.large" [alt]="anime.attributes.titles.en_jp">
+                        </div>
+                        <div class="d-flex flex-column gap-2">
+                            <button type="button" (click)="onClick()" class="btn btn-primary text-white">Completed</button>
+                            <button type="button" (click)="onClick()" class="btn btn-secondary text-white">Want to watch</button>
+                            <button type="button" (click)="onClick()" class="btn btn-info text-white">Started watching</button>
+                        </div>
+                    </div>
                 </div>
                 <div class="col-12 col-lg-6">
-                    <app-tab-menu />
+                    <app-tab-menu [anime]="anime" />
                 </div>
                 <div class="col-12 col-lg-3">
-                    <div class="block"></div>
+                    <div class="sticky_side_block">
+                        <app-card>
+                            <h4 class="oswald fw-bold mb-3">Anime Details</h4>
+                            <ul class="anime_details">
+                                <li *ngFor="let detail of anime_details">
+                                    <strong class="anime_details_title monty">{{ detail.title }}:</strong>
+                                    <span class="anime_details_value">{{ detail.value }}</span>
+                                </li>
+                            </ul>
+                        </app-card>
+                    </div>
                 </div>
             </div>
         </div>
