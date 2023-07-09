@@ -1,1 +1,30 @@
-<p>anime-details works!</p>
+<app-navbar></app-navbar>
+
+<main class="">
+    <ng-container *ngIf="is_loading;else view">
+        <div class="vh-100 w-100 d-flex justify-content-center align-items-center">
+            <app-loader />
+        </div>
+    </ng-container>
+
+    <ng-template #view>
+        <section class="cover_img">
+
+        </section>
+        <div class="container monty">
+
+            <div class="row">
+
+                <div class="col-12 col-lg-3">
+                    <div class="block"></div>
+                </div>
+                <div class="col-12 col-lg-6">
+                    <app-tab-menu />
+                </div>
+                <div class="col-12 col-lg-3">
+                    <div class="block"></div>
+                </div>
+            </div>
+        </div>
+    </ng-template>
+</main>

@@ -16,6 +16,10 @@ export class AnimeService {
 
     constructor(private http: HttpClient) { }
 
+    public get base_api() {
+        return this.api;
+    }
+
     /**
      * Gets the top 10 trending anime
      *
@@ -102,7 +106,7 @@ export class AnimeService {
      * @returns Anime stream
      */
     public getAnime(anime_name: string) {
-        const url = `${this.api}/anime/${anime_name}`;
+        const url = `${this.api}/anime?filter[slug]=${anime_name}`;
         const error = 'No anime with the provided name could be found.';
         const $stream = this.checkAnimeStream(anime_name, url, error);
 

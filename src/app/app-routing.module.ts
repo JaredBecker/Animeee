@@ -3,18 +3,13 @@ import { RouterModule, Routes } from '@angular/router';
 
 import { HomeComponent } from './pages/home/home.component';
 import { AnimeDetailsComponent } from './pages/anime-details/anime-details.component';
+import { NotFoundComponent } from './pages/not-found/not-found.component';
 
 const routes: Routes = [
     { path: '', component: HomeComponent },
-    {
-        path: 'anime',
-        children: [
-            {
-                path: ':anime-name',
-                component: AnimeDetailsComponent
-            }
-        ]
-    }
+    { path: 'anime/:anime-name', component: AnimeDetailsComponent },
+    { path: 'not-found', component: NotFoundComponent },
+    { path: '**', component: NotFoundComponent },
 ];
 
 @NgModule({
