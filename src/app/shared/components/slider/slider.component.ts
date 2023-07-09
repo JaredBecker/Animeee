@@ -10,6 +10,7 @@ import {
 import { Observable, Subscription } from 'rxjs';
 
 import { AnimeResponse } from '../../models/anime-response.interface';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'app-slider',
@@ -25,16 +26,21 @@ export class SliderComponent implements OnChanges, OnInit, OnDestroy {
 
     private anime_subscription?: Subscription;
 
+    constructor(
+        private router: Router,
+    ) {}
+
     public ngOnChanges(changes: SimpleChanges): void {
         this.anime_subscription?.unsubscribe();
-
-        this.anime_subscription = this.$anime_stream?.subscribe((data) => {
-            this.animes = data.data;
-            this.is_loading = false;
-        })
+        this.subToStream();
     }
 
     public ngOnInit(): void {
+        this.subToStream();
+        this.is_loading = true;
+    }
+
+    private subToStream(): void {
         this.anime_subscription = this.$anime_stream?.subscribe((data) => {
             this.animes = data.data;
             this.is_loading = false;
@@ -43,5 +49,11 @@ export class SliderComponent implements OnChanges, OnInit, OnDestroy {
 
     public ngOnDestroy(): void {
         this.anime_subscription?.unsubscribe();
+    }
+
+    public onLoadAnime(anime: any): void {
+        this.router.navigateByUrl(`/anime/${anime.attributes.slug}`, {
+            state: { anime }
+        })
     }
 }

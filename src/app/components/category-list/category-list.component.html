@@ -1,10 +1,5 @@
 <ng-container *ngIf="is_loading;else menu">
-    <div class="text-center pt-5" [style]="{'height': '150px'}">
-        <div class="spinner-border text-primary" role="status">
-            <span class="visually-hidden">Loading...</span>
-          </div>
-          <h5>Loading...</h5>
-    </div>
+    <app-loader />
 </ng-container>
 
 <ng-template #menu>

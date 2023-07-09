@@ -10,6 +10,7 @@ import { AppComponent } from './app.component';
 import { HomeComponent } from './pages/home/home.component';
 import { CategoryListComponent } from './components/category-list/category-list.component';
 import { IntroComponent } from './components/intro/intro.component';
+import { AnimeDetailsComponent } from './pages/anime-details/anime-details.component';
 
 @NgModule({
     declarations: [
@@ -17,6 +18,7 @@ import { IntroComponent } from './components/intro/intro.component';
         HomeComponent,
         CategoryListComponent,
         IntroComponent,
+        AnimeDetailsComponent,
     ],
     imports: [
         BrowserModule,
