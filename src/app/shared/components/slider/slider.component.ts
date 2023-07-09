@@ -37,13 +37,17 @@ export class SliderComponent implements OnChanges, OnInit, OnDestroy {
 
     public ngOnInit(): void {
         this.subToStream();
-        this.is_loading = true;
     }
 
     private subToStream(): void {
-        this.anime_subscription = this.$anime_stream?.subscribe((data) => {
-            this.animes = data.data;
-            this.is_loading = false;
+        this.anime_subscription = this.$anime_stream?.subscribe({
+            next: (data) => {
+                this.animes = data.data;
+                this.is_loading = false;
+            },
+            error: (err) => {
+                console.error(err);
+            }
         })
     }
 
