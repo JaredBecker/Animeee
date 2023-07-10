@@ -4,21 +4,34 @@
             <img src="/assets/images/logo.png" alt="Animeee Logo">
             <span class="oswald ms-2 text-primary d-none d-sm-inline-block">ANIMEEE</span>
         </a>
-        <div class="input-group w-auto flex-nowrap navbar_search">
-            <input
-                type="search"
-                class="form-control form-control-sm"
-                placeholder="Search"
-                aria-label="Search"
-                aria-describedby="search_btn"
-            />
-            <button
-                class="btn btn-primary btn-sm text-white"
-                type="button"
-                id="search_btn"
-            >
-                <i class="fa-solid fa-magnifying-glass"></i>
-            </button>
+        <ul class="navbar-nav flex-row gap-3 d-flex">
+            <li class="nav-item">
+                <a class="nav-link fw-bold text-primary" routerLink="/">Anime</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link fw-bold text-primary" href="#" routerLink="/">Manga</a>
+            </li>
+            <li class="nav-item" *ngIf="!is_logged_in">
+                <a class="nav-link fw-bold text-primary" routerLink="/auth/sign-in">
+                    Sign In
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link fw-bold text-primary" routerLink="/" (click)="onLogout()">
+                    Logout
+                </a>
+            </li>
+        </ul>
+        <div class="controls">
+            <div class="auth_icons ms-5">
+
+            </div>
+            <div class="input-group w-auto flex-nowrap navbar_search">
+                <input type="search" class="form-control form-control-sm" placeholder="Search" aria-label="Search" aria-describedby="search_btn" />
+                <button class="btn btn-primary btn-sm text-white" type="button" id="search_btn">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                </button>
+            </div>
         </div>
     </div>
 </nav>

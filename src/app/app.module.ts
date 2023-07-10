@@ -28,14 +28,12 @@ import { EpisodesComponent } from './components/episodes/episodes.component';
 import { CharactersComponent } from './components/characters/characters.component';
 import { FranchiseComponent } from './components/franchise/franchise.component';
 import { NotFoundComponent } from './pages/not-found/not-found.component';
-import { LoginComponent } from './pages/login/login.component';
 
 // Environment
 import { environment } from 'src/environments/environment';
-import { RegisterComponent } from './pages/register/register.component';
-import { ProfileComponent } from './pages/profile/profile.component';
-import { ForgotPasswordComponent } from './pages/forgot-password/forgot-password.component';
-import { VerifyEmailComponent } from './pages/verify-email/verify-email.component';
+
+// Providers
+import { AuthService } from './shared/services/auth.service';
 
 @NgModule({
     declarations: [
@@ -50,11 +48,6 @@ import { VerifyEmailComponent } from './pages/verify-email/verify-email.componen
         CharactersComponent,
         FranchiseComponent,
         NotFoundComponent,
-        LoginComponent,
-        RegisterComponent,
-        ProfileComponent,
-        ForgotPasswordComponent,
-        VerifyEmailComponent,
     ],
     imports: [
         BrowserModule,
@@ -67,7 +60,7 @@ import { VerifyEmailComponent } from './pages/verify-email/verify-email.componen
         AngularFireStorageModule,
         AngularFireDatabaseModule,
     ],
-    providers: [],
+    providers: [AuthService],
     bootstrap: [AppComponent],
 })
 export class AppModule { }

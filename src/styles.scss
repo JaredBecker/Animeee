@@ -31,3 +31,20 @@ main {
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
 }
+
+.google_btn {
+    border: 1px solid #ccc;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    img {
+        max-width: 20px;
+        height: 20px;
+        margin-right: 0.75rem;
+    }
+
+    &:hover {
+        border: 1px solid #ccc;
+    }
+}

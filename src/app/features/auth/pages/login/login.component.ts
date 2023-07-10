@@ -10,6 +10,6 @@ export class LoginComponent {
     constructor(private authService: AuthService) {}
 
     public onLogin() {
-        this.authService.GoogleAuth();
+        this.authService.googleAuth();
     }
 }

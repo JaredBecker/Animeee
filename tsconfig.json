@@ -2,6 +2,11 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
+    "skipLibCheck": true, // Temp fix for firebase interface foreach thing not working
+    "paths": {
+        "@shared/*": ["src/app/shared/*"],
+        "@features/*": ["src/app/features/*"],
+    },
     "baseUrl": "./",
     "outDir": "./dist/out-tsc",
     "forceConsistentCasingInFileNames": true,
