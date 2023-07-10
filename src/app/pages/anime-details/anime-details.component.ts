@@ -1,4 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { Subscription, of, switchMap } from 'rxjs';
@@ -17,9 +18,12 @@ export class AnimeDetailsComponent implements OnInit, OnDestroy {
     public is_loading: boolean = true;
     public anime_details: AnimeDetail[] = [];
 
+    public url?: SafeHtml;
+
     private route_subscription?: Subscription;
 
     constructor(
+        private sanitizer: DomSanitizer,
         private animeDetailService: AnimeDetailService,
         private activatedRoute: ActivatedRoute,
         private router: Router,
@@ -46,6 +50,8 @@ export class AnimeDetailsComponent implements OnInit, OnDestroy {
                         this.anime = anime.data[0];
                         this.buildDetailsList();
                         this.is_loading = false;
+
+                        this.url = this.sanitizer.bypassSecurityTrustResourceUrl('http://www.youtube.com/embed/' + this.anime.attributes.youtubeVideoId);
 
                         console.log(this.anime);
                     }
@@ -74,7 +80,7 @@ export class AnimeDetailsComponent implements OnInit, OnDestroy {
         const anime = this.anime.attributes;
 
         details.push({title: 'English', value: anime.titles.en});
-        details.push({title: 'Japanese', value: anime.titles.jp});
+        details.push({title: 'Japanese', value: anime.titles.ja_jp});
         details.push({title: 'Japanese (Romaji)', value: anime.titles.en_jp});
         details.push({title: 'Type', value: anime.showType});
         details.push({title: 'Episodes', value: anime.episodeCount});
