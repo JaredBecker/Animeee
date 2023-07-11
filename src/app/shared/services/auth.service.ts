@@ -14,17 +14,45 @@ import {
     map
 } from 'rxjs';
 
-import { User } from '../models/user.interface';
-
 @Injectable({
     providedIn: 'root',
 })
 export class AuthService {
+    private $authStream: Observable<boolean>;
+
     constructor(
         public angularFirestore: AngularFirestore, // Inject Firestore service
         public angularFireAuth: AngularFireAuth, // Inject Firebase auth service
         public router: Router,
-    ) { }
+    ) {
+        this.$authStream = this.angularFireAuth.user.pipe(
+            map(user => user ? true : false)
+        );
+    }
+
+    /**
+     * Gets the stream tracking the auth state
+     *
+     * @returns Auth stream
+     */
+    public getAuthStream(): Observable<boolean> {
+        return this.$authStream;
+    }
+
+    /**
+     * Checks if the current user is logged in
+     *
+     * @returns Boolean indicating if the user is logged in or not
+     */
+    public async isAuthenticated() {
+        const isAuthenticated = await firstValueFrom(
+            this.angularFireAuth.user.pipe(
+                map(user => user ? true : false)
+            )
+        );
+
+        return isAuthenticated;
+    }
 
     /**
      * Handles login with email and password for firebase

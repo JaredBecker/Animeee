@@ -1,21 +1,12 @@
 import { inject } from "@angular/core";
 import { Router } from "@angular/router";
 
-import { map } from "rxjs";
-
 import { AuthService } from "@shared/services/auth.service";
 
-export function AuthGuard() {
+export async function AuthGuard() {
     const authService: AuthService = inject(AuthService);
     const router: Router = inject(Router);
+    const isAuthenticated = await authService.isAuthenticated();
 
-    return authService.isLoggedIn()
-        .pipe(
-            map(is_logged_in => {
-                if (is_logged_in) {
-                    return true;
-                }
-                return router.navigateByUrl('/auth/sign-in');
-            })
-        );
+    return isAuthenticated ? true : router.navigateByUrl('/auth/sign-in');
 }

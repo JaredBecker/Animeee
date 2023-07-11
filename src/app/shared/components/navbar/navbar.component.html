@@ -11,13 +11,13 @@
             <li class="nav-item">
                 <a class="nav-link fw-bold text-primary" href="#" routerLink="/">Manga</a>
             </li>
-            <li class="nav-item">
+            <li class="nav-item" *ngIf="!isAuthenticated">
                 <a class="nav-link fw-bold text-primary" routerLink="/auth/sign-in">
                     Sign In
                 </a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link fw-bold text-primary" (click)="onLogout()">
+            <li class="nav-item" *ngIf="isAuthenticated">
+                <a class="nav-link fw-bold text-primary" style="cursor: pointer;" (click)="onLogout()">
                     Logout
                 </a>
             </li>
