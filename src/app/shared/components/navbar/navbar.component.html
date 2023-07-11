@@ -11,26 +11,23 @@
             <li class="nav-item">
                 <a class="nav-link fw-bold text-primary" href="#" routerLink="/">Manga</a>
             </li>
-            <li class="nav-item" *ngIf="!isAuthenticated">
-                <a class="nav-link fw-bold text-primary" routerLink="/auth/sign-in">
-                    Sign In
-                </a>
-            </li>
-            <li class="nav-item" *ngIf="isAuthenticated">
-                <a class="nav-link fw-bold text-primary" style="cursor: pointer;" (click)="onLogout()">
-                    Logout
-                </a>
-            </li>
         </ul>
-        <div class="controls">
-            <div class="auth_icons ms-5">
-
-            </div>
+        <div class="controls d-flex align-items-center">
             <div class="input-group w-auto flex-nowrap navbar_search">
                 <input type="search" class="form-control form-control-sm" placeholder="Search" aria-label="Search" aria-describedby="search_btn" />
                 <button class="btn btn-primary btn-sm text-white" type="button" id="search_btn">
                     <i class="fa-solid fa-magnifying-glass"></i>
                 </button>
+            </div>
+            <div ngbDropdown class="ms-3">
+                <a role="button" class="profile_icon" id="profile" ngbDropdownToggle>
+                    <img src="/assets/images/profile.png" alt="Profile Icon">
+                </a>
+                <div ngbDropdownMenu aria-labelledby="profile">
+                    <a routerLink="/auth/sign-in" ngbDropdownItem *ngIf="!isAuthenticated">Sign In</a>
+                    <a routerLink="/profile" ngbDropdownItem *ngIf="isAuthenticated">Profile</a>
+                    <a role="button" (click)="onLogout()" ngbDropdownItem  *ngIf="isAuthenticated">Sign Out</a>
+                </div>
             </div>
         </div>
     </div>
