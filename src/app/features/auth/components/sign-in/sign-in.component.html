@@ -11,16 +11,22 @@
         <div class="mb-3">
             <input type="password" class="form-control" id="passowrd" placeholder="Password" #password />
         </div>
-        <button type="button" class="btn btn-primary text-white w-100 mb-2" (click)="onSignIn(email.value, password.value)">Sign In</button>
-        <button type="button" class="btn btn-secondary text-white w-100 mb-2">Forgot Password</button>
+        <button
+            type="button"
+            class="btn btn-primary text-white w-100 mb-2"
+            (click)="onSignIn(email.value, password.value)"
+        >
+            Sign In
+        </button>
         <button type="button" class="btn w-100 mb-3 google_btn" (click)="googleSignIn()">
             <img src='https://developers.google.com/identity/images/g-logo.png'>
             Sign In with Google
         </button>
     </div>
+    <p class="register_text mb-2">
+        Don't have an account? <a routerLink="/auth/sign-up">Sign Up!</a>
+    </p>
     <p class="register_text">
-        Don't have an account?
-        <br />
-        <a routerLink="/auth/sign-up">Sign Up!</a>
+        <a routerLink="/auth/forgot-password">Forgot password</a>
     </p>
 </app-card>

@@ -1,3 +1,4 @@
+
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
@@ -21,10 +22,11 @@ export class AuthService {
     private $authStream: Observable<boolean>;
 
     constructor(
-        public angularFirestore: AngularFirestore, // Inject Firestore service
-        public angularFireAuth: AngularFireAuth, // Inject Firebase auth service
+        public angularFirestore: AngularFirestore,
+        public angularFireAuth: AngularFireAuth,
         public router: Router,
     ) {
+        // Store firebase auth stream
         this.$authStream = this.angularFireAuth.user.pipe(
             map(user => user ? true : false)
         );
@@ -60,13 +62,14 @@ export class AuthService {
      * @param email The email of the user
      * @param password Password for the user
      *
-     * @returns
+     * @returns void
      */
     public signIn(email: string, password: string): Promise<void> {
         return this.angularFireAuth
             .signInWithEmailAndPassword(email, password)
             .then(result => {
-                console.log('signed in');
+                console.log(result);
+                this.router.navigateByUrl('/');
             })
             .catch((error) => {
                 window.alert(error.message);
@@ -79,31 +82,25 @@ export class AuthService {
      * @param email The email of the user
      * @param password The password for the user
      *
-     * @returns
+     * @returns void
      */
     public signUp(email: string, password: string): Promise<void> {
         return this.angularFireAuth
             .createUserWithEmailAndPassword(email, password)
             .then((result) => {
-                /* Call the SendVerificaitonMail() function when new user sign
-                up and returns promise */
-                this.sendVerificationMail();
+                // TODO: figure out how to do email verification for users who don't use Google sign in
+                this.router.navigateByUrl('/');
             })
             .catch((error) => {
                 window.alert(error.message);
             });
     }
 
-    // Send email verification when new user sign up
-    public sendVerificationMail() {
-        return this.angularFireAuth.currentUser
-            .then((u: any) => u.sendEmailVerification())
-            .then(() => {
-                this.router.navigate(['verify-email-address']);
-            });
-    }
-
-    // Reset forgot password
+    /**
+     *
+     * @param passwordResetEmail
+     * @returns
+     */
     public forgotPassword(passwordResetEmail: string) {
         return this.angularFireAuth
             .sendPasswordResetEmail(passwordResetEmail)

@@ -6,13 +6,10 @@
 
     <div class="monty">
         <div class="mb-3">
-            <input type="text" class="form-control" id="email" placeholder="Username" #email />
+            <input type="email" class="form-control" id="email" placeholder="Email" #email required />
         </div>
         <div class="mb-3">
-            <input type="email" class="form-control" id="email" placeholder="Email" #password />
-        </div>
-        <div class="mb-3">
-            <input type="password" class="form-control" id="passowrd" placeholder="Password" />
+            <input type="password" class="form-control" id="passowrd" placeholder="Password" #password required />
         </div>
         <button type="button" class="btn btn-primary text-white w-100 mb-2" (click)="onSignUp(email.value, password.value)">Sign Up</button>
         <button type="button" class="btn w-100 mb-3 google_btn">
@@ -21,7 +18,7 @@
         </button>
     </div>
     <p class="register_text">
-        Don't have an account?
+        Already have an account?
         <br />
         <a routerLink="/auth/sign-in">Sign In!</a>
     </p>

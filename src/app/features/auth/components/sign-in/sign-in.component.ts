@@ -10,7 +10,7 @@ export class SignInComponent {
     constructor(private authService: AuthService) { }
 
     public onSignIn(email: string, password: string) {
-
+        this.authService.signIn(email, password);
     }
 
     public googleSignIn() {
