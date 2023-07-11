@@ -8,14 +8,19 @@
     z-index: 100;
 
     .controls {
-        .auth_icons {
-            display: flex;
+        .profile_icon {
+            --size: 40px;
+            border-radius: 50%;
+            height: var(--size);
+            width: var(--size);
 
-            a {
-                display: flex;
-                flex-direction: column;
-                align-items: center;
+            & img {
+                max-width: var(--size);
             }
+        }
+
+        .dropdown-toggle::after {
+            content: none;
         }
     }
 }
