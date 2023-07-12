@@ -1,7 +1,7 @@
 import { AnimeResponse } from './../models/anime-response.interface';
 import { Injectable } from '@angular/core';
 
-import { Observable, of } from 'rxjs';
+import { Observable, map, of } from 'rxjs';
 
 import { AnimeService } from './anime.service';
 
@@ -9,6 +9,7 @@ import { AnimeService } from './anime.service';
     providedIn: 'root'
 })
 export class AnimeDetailService {
+    private anime: any;
 
     constructor(
         private animeService: AnimeService,
@@ -34,5 +35,18 @@ export class AnimeDetailService {
         }
 
         return this.animeService.getAnime(anime_name);
+    }
+
+    /**
+     * Gets the currently selected anime
+     *
+     * @returns The currently selected anime
+     */
+    public getCurrentAnime() {
+        return this.anime;
+    }
+
+    public setCurrentAnime(anime: any) {
+        this.anime = anime;
     }
 }

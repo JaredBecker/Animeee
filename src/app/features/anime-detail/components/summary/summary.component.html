@@ -3,13 +3,15 @@
 </ng-container>
 
 <ng-template #view>
-    <h4 class="oswald fw-bold">{{ anime.attributes.titles.en ? anime.attributes.titles.en : anime.attributes.titles.en_jp }}</h4>
-    <!-- Make this color changed based on the rating. Green good red bad -->
-    <p class="text-primary fw-bold" *ngIf="anime.attributes.averageRating">{{ anime.attributes.averageRating }}% Community Approval</p>
-    <hr>
-    <h5 class="oswald fw-bold">Description</h5>
-    <p class="monty">{{ anime.attributes.description }}</p>
-    <h5 class="oswald fw-bold mt-5">Synopsis</h5>
-    <p class="monty">{{ anime.attributes.synopsis }}</p>
-    <div class="py-5"></div>
+    <!-- Crappy fix. Fix later -->
+    <div class="vh-100">
+        <h4 class="oswald fw-bold">{{ anime.attributes.titles.en ? anime.attributes.titles.en : anime.attributes.titles.en_jp }}</h4>
+        <!-- Make this color changed based on the rating. Green good red bad -->
+        <p class="text-primary fw-bold" *ngIf="anime.attributes.averageRating">{{ anime.attributes.averageRating }}% Community Approval</p>
+        <hr>
+        <h5 class="oswald fw-bold text-uppercase">Description</h5>
+        <p class="monty">{{ anime.attributes.description }}</p>
+        <div class="py-3"></div>
+        <app-related-categories></app-related-categories>
+    </div>
 </ng-template>
