@@ -10,6 +10,7 @@ import { EpisodesComponent } from './components/episodes/episodes.component';
 import { FranchiseComponent } from './components/franchise/franchise.component';
 import { SummaryComponent } from './components/summary/summary.component';
 import { TabMenuComponent } from './components/tab-menu/tab-menu.component';
+import { RelatedCategoriesComponent } from './components/related-categories/related-categories.component';
 
 @NgModule({
     declarations: [
@@ -19,6 +20,7 @@ import { TabMenuComponent } from './components/tab-menu/tab-menu.component';
         FranchiseComponent,
         SummaryComponent,
         TabMenuComponent,
+        RelatedCategoriesComponent
     ],
     imports: [
         CommonModule,

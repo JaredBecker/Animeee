@@ -8,7 +8,7 @@ import { NgbNavChangeEvent } from '@ng-bootstrap/ng-bootstrap';
   styleUrls: ['./tab-menu.component.scss']
 })
 export class TabMenuComponent {
-    @Input() public anime?: any;
+    // @Input() public anime?: any;
 
     public active: number = 1;
 

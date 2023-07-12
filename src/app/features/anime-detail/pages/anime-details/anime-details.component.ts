@@ -36,7 +36,7 @@ export class AnimeDetailsComponent implements OnInit, OnDestroy {
                     const anime_name = params.get('anime-name');
 
                     if (!anime_name) {
-                        this.router.navigateByUrl('/not-found', { skipLocationChange: true });
+                        this.router.navigateByUrl('/');
                         return of({} as AnimeResponse);
                     }
 
@@ -48,16 +48,14 @@ export class AnimeDetailsComponent implements OnInit, OnDestroy {
                     if (anime.data.length > 0) {
                         sessionStorage.setItem('selected-anime', JSON.stringify(anime));
                         this.anime = anime.data[0];
+                        this.animeDetailService.setCurrentAnime(this.anime);
                         this.buildDetailsList();
-                        this.is_loading = false;
-
                         this.url = this.sanitizer.bypassSecurityTrustResourceUrl('http://www.youtube.com/embed/' + this.anime.attributes.youtubeVideoId);
-
-                        console.log(this.anime);
+                        this.is_loading = false;
                     }
                 },
                 error: (err) => {
-                    console.error(err);
+                    console.error('Failed to get selected anime', err);
                     this.is_loading = false;
                 }
             });
