@@ -8,6 +8,7 @@ import { CardComponent } from './components/card/card.component';
 import { SliderComponent } from './components/slider/slider.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { LoaderComponent } from './components/loader/loader.component';
+import { PageLoaderComponent } from './components/page-loader/page-loader.component';
 
 @NgModule({
     declarations: [
@@ -15,6 +16,7 @@ import { LoaderComponent } from './components/loader/loader.component';
         SliderComponent,
         NavbarComponent,
         LoaderComponent,
+        PageLoaderComponent,
     ],
     imports: [
         CommonModule,
@@ -27,6 +29,7 @@ import { LoaderComponent } from './components/loader/loader.component';
         SliderComponent,
         NavbarComponent,
         LoaderComponent,
+        PageLoaderComponent,
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })

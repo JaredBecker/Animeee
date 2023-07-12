@@ -3,20 +3,16 @@ import { User } from './../models/user.interface';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
-import {
-    AngularFirestore,
-    AngularFirestoreDocument
-} from '@angular/fire/compat/firestore';
-
-import * as FirebaseAuth from 'firebase/auth';
-import * as firebase from 'firebase/app';
+import { AngularFirestore } from '@angular/fire/compat/firestore';
 
 import {
     Observable,
-    BehaviorSubject,
     firstValueFrom,
     map
 } from 'rxjs';
+import * as FirebaseAuth from 'firebase/auth';
+
+import { PageLoaderService } from './page-loader.service';
 
 @Injectable({
     providedIn: 'root',
@@ -25,9 +21,10 @@ export class AuthService {
     private $authStream: Observable<boolean>;
 
     constructor(
-        public angularFirestore: AngularFirestore,
-        public angularFireAuth: AngularFireAuth,
-        public router: Router,
+        private router: Router,
+        private angularFireAuth: AngularFireAuth,
+        private pageLoaderService: PageLoaderService,
+
     ) {
         // Store firebase auth stream
         this.$authStream = this.angularFireAuth.user.pipe(
@@ -85,6 +82,8 @@ export class AuthService {
      * @returns void
      */
     public signIn(email: string, password: string): Promise<void> {
+        this.pageLoaderService.setLoadingState({state: true, title: 'Logging In'});
+
         return this.angularFireAuth
             .signInWithEmailAndPassword(email, password)
             .then(result => {
@@ -93,6 +92,7 @@ export class AuthService {
             })
             .catch((error) => {
                 window.alert(error.message);
+                this.pageLoaderService.setLoadingState(false);
             });
     }
 
@@ -105,6 +105,8 @@ export class AuthService {
      * @returns void
      */
     public signUp(email: string, password: string): Promise<void> {
+        this.pageLoaderService.setLoadingState({state: true, title: 'Creating Account'});
+
         return this.angularFireAuth
             .createUserWithEmailAndPassword(email, password)
             .then((result) => {
@@ -112,14 +114,17 @@ export class AuthService {
                 this.router.navigateByUrl('/');
             })
             .catch((error) => {
-                window.alert(error.message);
+                this.pageLoaderService.setLoadingState(false);
+                console.error(error.message);
             });
     }
 
     /**
+     * Sends Forgot password link to provided email
      *
-     * @param passwordResetEmail
-     * @returns
+     * @param passwordResetEmail Email to send link to
+     *
+     * @returns void
      */
     public forgotPassword(passwordResetEmail: string) {
         return this.angularFireAuth
@@ -136,6 +141,7 @@ export class AuthService {
      * Requests login using Google Account
      */
     public googleAuth(): void {
+        this.pageLoaderService.setLoadingState({state: true, title: 'Logging In'});
         this.authLogin(new FirebaseAuth.GoogleAuthProvider())
     }
 
@@ -143,10 +149,13 @@ export class AuthService {
     public authLogin(provider: any) {
         return this.angularFireAuth
             .signInWithPopup(provider)
-            .then(() => this.router.navigateByUrl('/'))
+            .then(() => {
+                this.router.navigateByUrl('/');
+            })
             .catch((error) => {
                 // Install toaster here for better UI
-                window.alert(error);
+                console.error(error);
+                this.pageLoaderService.setLoadingState(false);
             });
     }
 
@@ -154,6 +163,18 @@ export class AuthService {
      * Signs the current user out
      */
     public signOut(): void {
+        this.pageLoaderService.setLoadingState({state: true, title: 'Logging Out'});
         this.angularFireAuth.signOut()
+
+        // Sign out is so dam fast and I want to show my loader I worked hard on🤣
+        setTimeout(() => {
+            const url = window.location.toString();
+
+            if (url.includes('profile')) {
+                this.router.navigateByUrl('/');
+            } else {
+                this.pageLoaderService.setLoadingState(false);
+            }
+        }, 500);
     }
 }

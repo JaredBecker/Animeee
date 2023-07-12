@@ -8,9 +8,7 @@ import { register } from 'swiper/element/bundle';
     styleUrls: ['./app.component.scss'],
 })
 export class AppComponent implements AfterViewInit {
-    constructor() {}
-
-    ngAfterViewInit(): void {
+    public ngAfterViewInit(): void {
         register();
     }
 }
