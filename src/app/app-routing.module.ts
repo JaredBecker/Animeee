@@ -19,15 +19,18 @@ const routes: Routes = [
     },
     {
         path: 'anime/:anime-name',
+        pathMatch: 'full',
         loadChildren: () => import('@features/anime-detail/anime-detail.module').then(m => m.AnimeDetailModule)
     },
+    { path: 'anime', component: HomeComponent },
+    { path: 'manga', component: HomeComponent },
     { path: 'not-found', component: NotFoundComponent },
     { path: '**', component: NotFoundComponent },
 ];
 
 @NgModule({
     imports: [
-        RouterModule.forRoot(routes, { scrollPositionRestoration: 'enabled' })
+        RouterModule.forRoot(routes)
     ],
     exports: [RouterModule]
 })
