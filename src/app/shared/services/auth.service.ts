@@ -1,3 +1,4 @@
+import { User } from './../models/user.interface';
 
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
@@ -8,6 +9,8 @@ import {
 } from '@angular/fire/compat/firestore';
 
 import * as FirebaseAuth from 'firebase/auth';
+import * as firebase from 'firebase/app';
+
 import {
     Observable,
     BehaviorSubject,
@@ -39,6 +42,23 @@ export class AuthService {
      */
     public getAuthStream(): Observable<boolean> {
         return this.$authStream;
+    }
+
+    /**
+     * Gets the info of the current user
+     *
+     * @returns User info or null
+     */
+    public async getUserInfo() {
+        const user = await firstValueFrom(
+            this.angularFireAuth.user.pipe(
+                map(user => {
+                    return user;
+                })
+            )
+        );
+
+        return user;
     }
 
     /**
