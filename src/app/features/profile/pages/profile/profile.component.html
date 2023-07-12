@@ -16,31 +16,88 @@
                         </button>
                         <ul class="profile_stats mt-3">
                             <li class="profile_stats_item">
-                                <a href="" class="profile_stats_item_link">
+                                <a
+                                    routerLink="/profile"
+                                    routerLinkActive="active"
+                                    [routerLinkActiveOptions]="{exact: true}"
+                                    class="profile_stats_item_link"
+                                >
+                                    <span>Overview</span>
+                                </a>
+                            </li>
+                            <li class="profile_stats_item">
+                                <a
+                                    routerLink="/profile/completed"
+                                    routerLinkActive="active"
+                                    [routerLinkActiveOptions]="{exact: true}"
+                                    class="profile_stats_item_link"
+                                >
                                     <span>Completed</span>
                                     <span>15</span>
                                 </a>
                             </li>
                             <li class="profile_stats_item">
-                                <a href="" class="profile_stats_item_link">
+                                <a
+                                    routerLink="/profile/on-hold"
+                                    routerLinkActive="active"
+                                    [routerLinkActiveOptions]="{exact: true}"
+                                    class="profile_stats_item_link"
+                                >
                                     <span>On Hold</span>
                                     <span>3</span>
                                 </a>
                             </li>
                             <li class="profile_stats_item">
-                                <a href="" class="profile_stats_item_link">
+                                <a
+                                    routerLink="/profile/want-to-watch"
+                                    routerLinkActive="active"
+                                    [routerLinkActiveOptions]="{exact: true}"
+                                    class="profile_stats_item_link"
+                                >
                                     <span>Want to watch</span>
                                     <span>9</span>
                                 </a>
                             </li>
                             <li class="profile_stats_item">
-                                <a href="" class="profile_stats_item_link">
+                                <a
+                                    routerLink="/profile/currently-watching"
+                                    routerLinkActive="active"
+                                    [routerLinkActiveOptions]="{exact: true}"
+                                    class="profile_stats_item_link"
+                                >
                                     <span>Currently Watching</span>
                                     <span>2</span>
                                 </a>
                             </li>
                             <li class="profile_stats_item">
-                                <a href="" class="profile_stats_item_link">
+                                <a
+                                    routerLink="/profile/must-watch"
+                                    routerLinkActive="active"
+                                    [routerLinkActiveOptions]="{exact: true}"
+                                    class="profile_stats_item_link"
+                                >
+                                    <span>Must Watch</span>
+                                    <span>10</span>
+                                </a>
+                            </li>
+                            <li class="profile_stats_item">
+                                <a
+                                    routerLink="/profile/favorite-characters"
+                                    routerLinkActive="active"
+                                    [routerLinkActiveOptions]="{exact: true}"
+                                    class="profile_stats_item_link"
+                                >
+                                    <span>Favorite Characters</span>
+                                    <span>15</span>
+                                </a>
+                            </li>
+                            <li class="profile_stats_item">
+                                <a
+                                    routerLink="/profile/friend-list"
+                                    routerLinkActive="active"
+                                    [routerLinkActiveOptions]="{exact: true}"
+                                    class="profile_stats_item_link"
+                                >
                                     <span>Friend List</span>
                                     <span>32</span>
                                 </a>
