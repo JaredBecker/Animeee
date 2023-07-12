@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
-import { Observable, shareReplay, throwError } from 'rxjs';
+import { Observable, map, shareReplay, throwError } from 'rxjs';
 
 import { AnimeResponse } from '../models/anime-response.interface';
 import { CategoryResponse } from '../models/category-response.interface';
@@ -99,9 +99,22 @@ export class AnimeService {
     }
 
     /**
+     * Used to get the categories of an anime
+     *
+     * @param url The URL provided in the anime response under "relationships -> categories -> links -> related"
+     *
+     * @returns Stream of categories for the provided URL
+     */
+    public getCategories(url: string): Observable<CategoryResponse> {
+        return this.http.get<CategoryResponse>(url).pipe(
+            map((categories) => categories)
+        )
+    }
+
+    /**
      * Gets anime info for the requested name
      *
-     * @param anime_name The slug prop of an anime response. IE: one pice -> one-piece
+     * @param anime_name The slug prop of an anime response. IE: one piece -> one-piece
      *
      * @returns Anime stream
      */
@@ -174,6 +187,13 @@ export class AnimeService {
             );
     }
 
+    /**
+     * Builds a category request
+     *
+     * @param url The URL the request needs to be made to
+     *
+     * @returns Observable of the anime info for the provided request
+     */
     private getCategoryStream(url: string) {
         return this.http
             .get<CategoryResponse>(url)
