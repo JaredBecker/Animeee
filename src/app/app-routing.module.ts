@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
 import { HomeComponent } from './pages/home/home.component';
-import { AnimeDetailsComponent } from './pages/anime-details/anime-details.component';
 import { NotFoundComponent } from './pages/not-found/not-found.component';
 
 import { AuthGuard } from '@shared/guards/auth.guard';
@@ -18,7 +17,10 @@ const routes: Routes = [
         canActivateChild: [AuthGuard],
         loadChildren: () => import('@features/profile/profile.module').then(m => m.ProfileModule)
     },
-    { path: 'anime/:anime-name', component: AnimeDetailsComponent },
+    {
+        path: 'anime/:anime-name',
+        loadChildren: () => import('@features/anime-detail/anime-detail.module').then(m => m.AnimeDetailModule)
+    },
     { path: 'not-found', component: NotFoundComponent },
     { path: '**', component: NotFoundComponent },
 ];
