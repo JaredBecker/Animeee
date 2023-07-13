@@ -23,3 +23,6 @@ It's build using the following:
 >     }]
 6. Go to the `environment.ts` and add a `firebase` property to the file. Copy the exported const into your other 2 environment files
 7. Now you need to create a Firebase project. When you do that it will give you a config object. Copy that and store it in the `firebase` property for each of the files.
+8. In Firebase you need to enable Storage, Authentication with Email and Password & Google and finally the Firestore Database
+
+Once you have done that you should be ready to go!🥳
