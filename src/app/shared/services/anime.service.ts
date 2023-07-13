@@ -119,11 +119,22 @@ export class AnimeService {
      * @returns Anime stream
      */
     public getAnime(anime_name: string) {
-        const url = `${this.api}/anime?filter[slug]=${anime_name}`;
+        const url = `${this.api}/anime?fields[categories]=slug,title&filter[slug]=${anime_name}&include=categories,animeProductions.producer`;
         const error = 'No anime with the provided name could be found.';
         const $stream = this.checkAnimeStream(anime_name, url, error);
 
         return $stream;
+    }
+
+    /**
+     * Gets first 5 characters for the anime ID provided
+     *
+     * @param id The ID of the anime to get the additional info for
+     *
+     * @returns Additional info API call
+     */
+    public getCharacterInfo(anime_id: number): Observable<any> {
+        return this.http.get(`${this.api}/castings?filter[is_character]=true&filter[language]=Japanese&filter[media_id]=${anime_id}&filter[media_type]=Anime&include=character&page[limit]=4&sort=-featured`)
     }
 
     /**

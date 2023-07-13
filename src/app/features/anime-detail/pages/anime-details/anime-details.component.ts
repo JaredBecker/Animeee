@@ -3,8 +3,9 @@ import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { Subscription, of, switchMap } from 'rxjs';
-import { AnimeDetail } from 'src/app/shared/models/anime-detail.interface';
 
+import { AnimeService } from '@shared/services/anime.service';
+import { AnimeDetail } from 'src/app/shared/models/anime-detail.interface';
 import { AnimeResponse } from 'src/app/shared/models/anime-response.interface';
 import { AnimeDetailService } from 'src/app/shared/services/anime-detail.service';
 
@@ -17,6 +18,7 @@ export class AnimeDetailsComponent implements OnInit, OnDestroy {
     public anime?: any;
     public is_loading: boolean = true;
     public anime_details: AnimeDetail[] = [];
+    public characters?: any[];
 
     public url?: SafeHtml;
 
@@ -25,6 +27,7 @@ export class AnimeDetailsComponent implements OnInit, OnDestroy {
     constructor(
         private sanitizer: DomSanitizer,
         private animeDetailService: AnimeDetailService,
+        private animeService: AnimeService,
         private activatedRoute: ActivatedRoute,
         private router: Router,
     ) { }
@@ -40,19 +43,32 @@ export class AnimeDetailsComponent implements OnInit, OnDestroy {
                         return of({} as AnimeResponse);
                     }
 
-                    return this.animeDetailService.getAnimeSummary(anime_name);
+                    // Need to chain these because the anime ID is needed to get the characters
+                    return this.animeDetailService.getAnimeSummary(anime_name).pipe(
+                        switchMap((anime_details) => {
+                            if (anime_details.data.length > 0) {
+                                sessionStorage.setItem('selected-anime', JSON.stringify(anime_details));
+                                this.anime = anime_details.data[0];
+                                this.animeDetailService.setCurrentAnime(this.anime);
+                                this.url = this.sanitizer.bypassSecurityTrustResourceUrl('http://www.youtube.com/embed/' + this.anime.attributes.youtubeVideoId);
+                                this.buildDetailsList();
+
+                                const categories = anime_details.includes?.filter(info => info.type === 'categories');
+
+                                if (categories) {
+                                    this.animeDetailService.setCategories(categories);
+                                }
+                            }
+
+                            return this.animeService.getCharacterInfo(this.anime.id)
+                        })
+                    );
                 })
             )
             .subscribe({
-                next: (anime) => {
-                    if (anime.data.length > 0) {
-                        sessionStorage.setItem('selected-anime', JSON.stringify(anime));
-                        this.anime = anime.data[0];
-                        this.animeDetailService.setCurrentAnime(this.anime);
-                        this.buildDetailsList();
-                        this.url = this.sanitizer.bypassSecurityTrustResourceUrl('http://www.youtube.com/embed/' + this.anime.attributes.youtubeVideoId);
-                        this.is_loading = false;
-                    }
+                next: (character_info) => {
+                    this.animeDetailService.setCharacterInfo(character_info.included);
+                    this.is_loading = false;
                 },
                 error: (err) => {
                     console.error('Failed to get selected anime', err);

@@ -1,7 +1,7 @@
 import { AnimeResponse } from './../models/anime-response.interface';
 import { Injectable } from '@angular/core';
 
-import { Observable, map, of } from 'rxjs';
+import { Observable, of } from 'rxjs';
 
 import { AnimeService } from './anime.service';
 
@@ -10,6 +10,8 @@ import { AnimeService } from './anime.service';
 })
 export class AnimeDetailService {
     private anime: any;
+    private categories?: any[];
+    private characterInfo?: any[];
 
     constructor(
         private animeService: AnimeService,
@@ -38,15 +40,56 @@ export class AnimeDetailService {
     }
 
     /**
+     * Stores the list of related categories for an anime
+     *
+     * @param categories Array of related categories for the anime
+     */
+    public setCategories(categories: any[]): void {
+        this.categories = categories;
+    }
+
+    /**
+     * Gets the list of related categories
+     *
+     * @returns Array of related categories
+     */
+    public getCategories(): any[] | undefined {
+        return this.categories;
+    }
+
+    /**
      * Gets the currently selected anime
      *
      * @returns The currently selected anime
      */
-    public getCurrentAnime() {
+    public getCurrentAnime(): any {
         return this.anime;
     }
 
-    public setCurrentAnime(anime: any) {
+    /**
+     * Sets the currently active anime
+     *
+     * @param anime Anime response from API call
+     */
+    public setCurrentAnime(anime: any): void {
         this.anime = anime;
+    }
+
+    /**
+     * Take the character array and store it
+     *
+     * @param data Data you get back from getCharacterInfo call in animeService
+     */
+    public setCharacterInfo(data: any): void {
+        this.characterInfo = data;
+    }
+
+    /**
+     * Retries the currently stored characters
+     *
+     * @returns Character info
+     */
+    public getCharacters() {
+        return this.characterInfo;
     }
 }
