@@ -8,4 +8,5 @@ export interface AnimeResponse {
     meta: {
         count: number;
     }
+    includes?: any[];
 }

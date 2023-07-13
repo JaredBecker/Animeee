@@ -5,13 +5,67 @@
 <ng-template #view>
     <!-- Crappy fix. Fix later -->
     <div class="vh-100">
-        <h4 class="oswald fw-bold">{{ anime.attributes.titles.en ? anime.attributes.titles.en : anime.attributes.titles.en_jp }}</h4>
+        <h4 class="oswald fw-bold">
+            {{ anime.attributes.titles.en ? anime.attributes.titles.en : anime.attributes.titles.en_jp }}
+        </h4>
         <!-- Make this color changed based on the rating. Green good red bad -->
-        <p class="text-primary fw-bold" *ngIf="anime.attributes.averageRating">{{ anime.attributes.averageRating }}% Community Approval</p>
-        <hr>
+        <div class="d-flex justify-content-between align-items-center">
+            <p class="text-primary fw-bold m-0" *ngIf="anime.attributes.averageRating">{{ anime.attributes.averageRating }}% Community Approval</p>
+            <div class="ratings">
+                <div>
+                    <i class="fa-solid fa-star me-2" style="color: #f39c12;"></i>
+                    <span class="fw-bold me-2">Rating:</span> # {{ anime.attributes.ratingRank }}
+                </div>
+                <div>
+                    <i class="fa-solid fa-heart me-2" style="color: #e74c3c;"></i>
+                    <span class="fw-bold me-2">Popularity:</span> # {{ anime.attributes.popularityRank }}
+                </div>
+            </div>
+        </div>
+        <hr />
         <h5 class="oswald fw-bold text-uppercase">Description</h5>
-        <p class="monty">{{ anime.attributes.description }}</p>
-        <div class="py-3"></div>
+        <p class="monty m-0">{{ anime.attributes.description }}</p>
+
+        <div class="py-4"></div>
+
         <app-related-categories></app-related-categories>
+
+        <div class="py-4"></div>
+
+        <ng-container *ngIf="loading_characters">
+            <app-loader></app-loader>
+        </ng-container>
+
+        <ng-container *ngIf="loading_characters">
+            <app-loader></app-loader>
+        </ng-container>
+
+        <ng-container *ngIf="!loading_characters && !characters;else characters_view">
+            <h5 class="oswald fw-bold text-uppercase">Characters</h5>
+            <p>Hmm, there doesn't seem to be anything here yet.</p>
+        </ng-container>
+
+        <ng-template #characters_view>
+            <h5 class="oswald fw-bold text-uppercase">Characters</h5>
+            <div class="row" id="character_summary">
+                <div class="col-6 col-md-4 col-lg-3" *ngFor="let character of characters">
+                    <a href="#" class="character_card d-flex flex-column h-100">
+                        <div class="character_card_img">
+                            <img [src]="character.attributes.image.original" class="img-fluid" [alt]="character.attributes.name">
+                        </div>
+                        <div class="character_card_name">
+                            {{ character.attributes.name }}
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <div class="d-flex justify-content-end mt-2">
+                <a href="#" class="fw-bold text-decoration-none">
+                    View More
+                    <i class="fa-solid fa-arrow-right ms-2"></i>
+                </a>
+            </div>
+            <div class="py-5"></div>
+        </ng-template>
     </div>
 </ng-template>
