@@ -1,5 +1,6 @@
 import { PageLoaderService } from '@shared/services/page-loader.service';
-import { Component, Input, OnDestroy } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
+
 import { Subscription } from 'rxjs';
 
 @Component({
