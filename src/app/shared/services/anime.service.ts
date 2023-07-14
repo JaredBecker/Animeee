@@ -122,15 +122,17 @@ export class AnimeService {
     }
 
     /**
-     * Gets characters for the anime ID provided
+     * Gets character info for the provided anime ID
      *
-     * @param id The ID of the anime to get the additional info for
-     * @param count The number of items to return
+     * @param anime_id ID of the anime
+     * @param count Amount of results to return. -1 returns 20 (API limit)
      *
-     * @returns Additional info stream
+     * @returns Character info stream
      */
     public getCharacterInfo(anime_id: number, count: number = 4): Observable<Response> {
-        return this.http.get<Response>(`${this.api}/castings?filter[is_character]=true&filter[language]=Japanese&filter[media_id]=${anime_id}&filter[media_type]=Anime&include=character&page[limit]=${count}&sort=-featured`)
+        const count_filter = `&page[limit]=${count === -1 || count > 20 ? 20 : count}`;
+
+        return this.http.get<Response>(`${this.api}/castings?filter[media_type]=Anime&filter[media_id]=${anime_id}&filter[is_character]=true&filter[language]=Japanese${count_filter}&include=character&sort=-featured`)
             .pipe(
                 shareReplay(1)
             );
