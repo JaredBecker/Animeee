@@ -50,6 +50,14 @@ export class AnimeDetailsComponent implements OnInit, OnDestroy {
                                 this.anime = anime_details.data[0];
                                 this.animeDetailService.setCurrentAnime(this.anime);
 
+                                /**
+                                 * Need to set reaction type here so the stream can get
+                                 * setup so when it's actually used its available. I
+                                 * Don't like this fix but I can't seem to get it to
+                                 * work any other way so it's staying like this for now
+                                 */
+                                this.animeDetailService.setReactionType('popular');
+
                                 if (this.anime.attributes.youtubeVideoId) {
                                     this.url = this.sanitizer.bypassSecurityTrustResourceUrl('http://www.youtube.com/embed/' + this.anime.attributes.youtubeVideoId);
                                 }

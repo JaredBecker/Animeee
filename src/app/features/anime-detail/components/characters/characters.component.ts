@@ -13,7 +13,7 @@ export class CharactersComponent implements OnInit {
     constructor(private animeDetailService: AnimeDetailService) { }
 
     public ngOnInit(): void {
-        this.characters = this.animeDetailService.getCharacters();
+        this.characters = this.animeDetailService.getCharacterInfo();
         this.loading_characters = false;
     }
 }
