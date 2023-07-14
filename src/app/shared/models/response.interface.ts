@@ -1,4 +1,4 @@
-export interface AnimeResponse {
+export interface Response {
     data: any | any[];
     links: {
         first: string;

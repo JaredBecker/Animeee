@@ -2,14 +2,14 @@
     <h5 class="oswald fw-bold text-uppercase">Reactions</h5>
 
     <div ngbDropdown>
-        <a role="button" id="post_sort" ngbDropdownToggle>
+        <a role="button" id="post_sort" ngbDropdownToggle class="text-capitalize">
             {{ selected_sort_type }}
         </a>
         <div ngbDropdownMenu aria-labelledby="post_sort">
-            <button ngbDropdownItem (click)="updateSortType('Popular')">
+            <button ngbDropdownItem (click)="updateSortType('popular')">
                 Popular
             </button>
-            <button ngbDropdownItem (click)="updateSortType('Recent')">
+            <button ngbDropdownItem (click)="updateSortType('recent')">
                 Recent
             </button>
         </div>

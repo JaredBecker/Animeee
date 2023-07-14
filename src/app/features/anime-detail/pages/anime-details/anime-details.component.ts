@@ -4,10 +4,10 @@ import { ActivatedRoute, Router } from '@angular/router';
 
 import { Subscription, of, switchMap } from 'rxjs';
 
-import { AnimeService } from '@shared/services/anime.service';
 import { AnimeDetail } from 'src/app/shared/models/anime-detail.interface';
-import { AnimeResponse } from 'src/app/shared/models/anime-response.interface';
 import { AnimeDetailService } from 'src/app/shared/services/anime-detail.service';
+import { Response } from '@shared/models/response.interface';
+import { AnimeService } from '@shared/services/anime.service';
 
 @Component({
     selector: 'app-anime-details',
@@ -40,17 +40,20 @@ export class AnimeDetailsComponent implements OnInit, OnDestroy {
 
                     if (!anime_name) {
                         this.router.navigateByUrl('/');
-                        return of({} as AnimeResponse);
+                        return of({} as Response);
                     }
 
-                    // Need to chain these because the anime ID is needed to get the characters
+                    // Need to chain these switchMaps because the anime ID is needed to get the characters
                     return this.animeDetailService.getAnimeSummary(anime_name).pipe(
                         switchMap((anime_details) => {
                             if (anime_details.data.length > 0) {
-                                sessionStorage.setItem('selected-anime', JSON.stringify(anime_details));
                                 this.anime = anime_details.data[0];
                                 this.animeDetailService.setCurrentAnime(this.anime);
-                                this.url = this.sanitizer.bypassSecurityTrustResourceUrl('http://www.youtube.com/embed/' + this.anime.attributes.youtubeVideoId);
+
+                                if (this.anime.attributes.youtubeVideoId) {
+                                    this.url = this.sanitizer.bypassSecurityTrustResourceUrl('http://www.youtube.com/embed/' + this.anime.attributes.youtubeVideoId);
+                                }
+
                                 this.buildDetailsList();
 
                                 const categories = anime_details.includes?.filter(info => info.type === 'categories');
@@ -67,7 +70,7 @@ export class AnimeDetailsComponent implements OnInit, OnDestroy {
             )
             .subscribe({
                 next: (character_info) => {
-                    this.animeDetailService.setCharacterInfo(character_info.included);
+                    this.animeDetailService.setCharacterInfo(character_info.includes);
                     this.is_loading = false;
                 },
                 error: (err) => {

@@ -3,8 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 
 import { AnimeService } from 'src/app/shared/services/anime.service';
-
-import { AnimeResponse } from 'src/app/shared/models/anime-response.interface';
+import { Response } from '@shared/models/response.interface';
 
 @Component({
     selector: 'app-home',
@@ -63,11 +62,11 @@ export class HomeComponent implements OnInit {
         'Some Category',
     ]
 
-    private $trending_anime?: Observable<AnimeResponse>;
-    private $top_airing_anime?: Observable<AnimeResponse>;
-    private $highest_rating_anime?: Observable<AnimeResponse>;
-    private $most_popular_anime?: Observable<AnimeResponse>;
-    private $top_upcoming_anime?: Observable<AnimeResponse>;
+    private $trending_anime?: Observable<Response>;
+    private $top_airing_anime?: Observable<Response>;
+    private $highest_rating_anime?: Observable<Response>;
+    private $most_popular_anime?: Observable<Response>;
+    private $top_upcoming_anime?: Observable<Response>;
 
     public get trending() {
         return this.$trending_anime;

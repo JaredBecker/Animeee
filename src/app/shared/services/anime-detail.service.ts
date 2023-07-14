@@ -1,9 +1,9 @@
-import { AnimeResponse } from './../models/anime-response.interface';
 import { Injectable } from '@angular/core';
 
 import { Observable, of } from 'rxjs';
 
 import { AnimeService } from './anime.service';
+import { Response } from '@shared/models/response.interface';
 
 @Injectable({
     providedIn: 'root'
@@ -24,11 +24,11 @@ export class AnimeDetailService {
      *
      * @returns The anime in session storage if found or a stream for the anime provided
      */
-    public getAnimeSummary(anime_name: string): Observable<AnimeResponse> {
+    public getAnimeSummary(anime_name: string): Observable<Response> {
         let loaded_anime: string | null = sessionStorage.getItem('selected-anime');
 
         if (loaded_anime) {
-            let parsed_anime: AnimeResponse = JSON.parse(loaded_anime) as AnimeResponse;
+            let parsed_anime: Response = JSON.parse(loaded_anime) as Response;
             let slug: string = parsed_anime.data[0].attributes.slug;
 
             if (slug === anime_name) {
@@ -73,6 +73,7 @@ export class AnimeDetailService {
      */
     public setCurrentAnime(anime: any): void {
         this.anime = anime;
+        sessionStorage.setItem('selected-anime', JSON.stringify(anime));
     }
 
     /**
