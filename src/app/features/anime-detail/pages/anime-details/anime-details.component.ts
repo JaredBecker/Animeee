@@ -44,7 +44,7 @@ export class AnimeDetailsComponent implements OnInit, OnDestroy {
                     }
 
                     // Need to chain these switchMaps because the anime ID is needed to get the characters
-                    return this.animeDetailService.getAnimeSummary(anime_name).pipe(
+                    return this.animeService.getAnime(anime_name).pipe(
                         switchMap((anime_details) => {
                             if (anime_details.data.length > 0) {
                                 this.anime = anime_details.data[0];
@@ -56,7 +56,7 @@ export class AnimeDetailsComponent implements OnInit, OnDestroy {
 
                                 this.buildDetailsList();
 
-                                const categories = anime_details.includes?.filter(info => info.type === 'categories');
+                                const categories = anime_details.included?.filter(info => info.type === 'categories');
 
                                 if (categories) {
                                     this.animeDetailService.setCategories(categories);
@@ -70,7 +70,7 @@ export class AnimeDetailsComponent implements OnInit, OnDestroy {
             )
             .subscribe({
                 next: (character_info) => {
-                    this.animeDetailService.setCharacterInfo(character_info.includes);
+                    this.animeDetailService.setCharacterInfo(character_info.included);
                     this.is_loading = false;
                 },
                 error: (err) => {

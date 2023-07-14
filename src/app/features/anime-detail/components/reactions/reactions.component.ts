@@ -4,7 +4,7 @@ import { Subscription } from 'rxjs';
 
 import { AnimeService } from '@shared/services/anime.service';
 import { AnimeDetailService } from '@shared/services/anime-detail.service';
-import { ReactionType } from '@shared/models/Reaction.type';
+import { ReactionType } from '@shared/models/reaction.type';
 
 @Component({
   selector: 'app-reactions',
@@ -14,6 +14,7 @@ import { ReactionType } from '@shared/models/Reaction.type';
 export class ReactionsComponent implements OnInit, OnDestroy {
     public selected_sort_type: ReactionType = 'popular';
     public reactions: any[] = [];
+    public is_loading: boolean = true;
 
     private reaction_subscription?: Subscription;
 
@@ -28,14 +29,31 @@ export class ReactionsComponent implements OnInit, OnDestroy {
         if (anime) {
             this.reaction_subscription = this.animeService.getReactions(anime.id, this.selected_sort_type, 10).subscribe({
                 next: (reactions) => {
+                    /**
+                     * I can't believe this is how I need to build the relationships between post and user...
+                     * Post is under .data prop
+                     * User is under .included prop
+                     * They are linked via the indexes... like wtf even .data[0] is a post by user .included[0]
+                     * If this structure changes... Ima cry because everything will need to change...
+                     */
                     const reaction_array = [];
 
-                    // I can't believe this is how I need to build the relationships between post and user...
                     for(let i = 0; i < 10; i++) {
-                        const reaction = reactions.data[i]
+                        let reaction = reactions.data[i];
+                        let user = reactions.included ? reactions.included[i] : undefined;
+
+                        reaction.userInfo = user;
+                        reaction_array.push(reaction);
                     }
+
+                    this.reactions = reaction_array;
+                    console.log(this.reactions);
+                    this.is_loading = false;
                 },
-                error: err => console.error('Error fetching reactions', err),
+                error: err => {
+                    console.error('Error fetching reactions', err);
+                    this.is_loading = false;
+                },
             })
         }
     }

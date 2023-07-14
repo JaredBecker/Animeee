@@ -8,5 +8,5 @@ export interface Response {
     meta: {
         count: number;
     }
-    includes?: any[];
+    included?: any[];
 }

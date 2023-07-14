@@ -24,20 +24,20 @@ export class AnimeDetailService {
      *
      * @returns The anime in session storage if found or a stream for the anime provided
      */
-    public getAnimeSummary(anime_name: string): Observable<Response> {
-        let loaded_anime: string | null = sessionStorage.getItem('selected-anime');
+    // public getAnimeSummary(anime_name: string): Observable<Response> {
+    //     let loaded_anime: string | null = sessionStorage.getItem('selected-anime');
 
-        if (loaded_anime) {
-            let parsed_anime: Response = JSON.parse(loaded_anime) as Response;
-            let slug: string = parsed_anime.data[0].attributes.slug;
+    //     if (loaded_anime) {
+    //         let parsed_anime: Response = JSON.parse(loaded_anime) as Response;
+    //         let slug: string = parsed_anime.data[0].attributes.slug;
 
-            if (slug === anime_name) {
-                return of(parsed_anime);
-            }
-        }
+    //         if (slug === anime_name) {
+    //             return of(parsed_anime);
+    //         }
+    //     }
 
-        return this.animeService.getAnime(anime_name);
-    }
+    //     return this.animeService.getAnime(anime_name);
+    // }
 
     /**
      * Stores the list of related categories for an anime
@@ -73,7 +73,6 @@ export class AnimeDetailService {
      */
     public setCurrentAnime(anime: any): void {
         this.anime = anime;
-        sessionStorage.setItem('selected-anime', JSON.stringify(anime));
     }
 
     /**
