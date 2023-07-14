@@ -1,0 +1,17 @@
+<div class="d-flex justify-content-between">
+    <h5 class="oswald fw-bold text-uppercase">Reactions</h5>
+
+    <div ngbDropdown>
+        <a role="button" id="post_sort" ngbDropdownToggle>
+            {{ selected_sort_type }}
+        </a>
+        <div ngbDropdownMenu aria-labelledby="post_sort">
+            <button ngbDropdownItem (click)="updateSortType('Popular')">
+                Popular
+            </button>
+            <button ngbDropdownItem (click)="updateSortType('Recent')">
+                Recent
+            </button>
+        </div>
+    </div>
+</div>
