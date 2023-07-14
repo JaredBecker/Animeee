@@ -4,10 +4,10 @@ import { ActivatedRoute, Router } from '@angular/router';
 
 import { Subscription, of, switchMap } from 'rxjs';
 
-import { AnimeService } from '@shared/services/anime.service';
 import { AnimeDetail } from 'src/app/shared/models/anime-detail.interface';
-import { AnimeResponse } from 'src/app/shared/models/anime-response.interface';
 import { AnimeDetailService } from 'src/app/shared/services/anime-detail.service';
+import { Response } from '@shared/models/response.interface';
+import { AnimeService } from '@shared/services/anime.service';
 
 @Component({
     selector: 'app-anime-details',
@@ -40,20 +40,31 @@ export class AnimeDetailsComponent implements OnInit, OnDestroy {
 
                     if (!anime_name) {
                         this.router.navigateByUrl('/');
-                        return of({} as AnimeResponse);
+                        return of({} as Response);
                     }
 
-                    // Need to chain these because the anime ID is needed to get the characters
-                    return this.animeDetailService.getAnimeSummary(anime_name).pipe(
+                    // Need to chain these switchMaps because the anime ID is needed to get the characters
+                    return this.animeService.getAnime(anime_name).pipe(
                         switchMap((anime_details) => {
                             if (anime_details.data.length > 0) {
-                                sessionStorage.setItem('selected-anime', JSON.stringify(anime_details));
                                 this.anime = anime_details.data[0];
                                 this.animeDetailService.setCurrentAnime(this.anime);
-                                this.url = this.sanitizer.bypassSecurityTrustResourceUrl('http://www.youtube.com/embed/' + this.anime.attributes.youtubeVideoId);
+
+                                /**
+                                 * Need to set reaction type here so the stream can get
+                                 * setup so when it's actually used its available. I
+                                 * Don't like this fix but I can't seem to get it to
+                                 * work any other way so it's staying like this for now
+                                 */
+                                this.animeDetailService.setReactionType('popular');
+
+                                if (this.anime.attributes.youtubeVideoId) {
+                                    this.url = this.sanitizer.bypassSecurityTrustResourceUrl('http://www.youtube.com/embed/' + this.anime.attributes.youtubeVideoId);
+                                }
+
                                 this.buildDetailsList();
 
-                                const categories = anime_details.includes?.filter(info => info.type === 'categories');
+                                const categories = anime_details.included?.filter(info => info.type === 'categories');
 
                                 if (categories) {
                                     this.animeDetailService.setCategories(categories);
