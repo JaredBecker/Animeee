@@ -6,11 +6,11 @@ import {
     OnInit,
     SimpleChanges
 } from '@angular/core';
+import { Router } from '@angular/router';
 
 import { Observable, Subscription } from 'rxjs';
 
-import { AnimeResponse } from '../../models/anime-response.interface';
-import { Router } from '@angular/router';
+import { Response } from '@shared/models/response.interface';
 
 @Component({
     selector: 'app-slider',
@@ -18,7 +18,7 @@ import { Router } from '@angular/router';
     styleUrls: ['./slider.component.scss'],
 })
 export class SliderComponent implements OnChanges, OnInit, OnDestroy {
-    @Input() public $anime_stream?: Observable<AnimeResponse>;
+    @Input() public $anime_stream?: Observable<Response>;
     @Input() public title?: string;
 
     public animes?: any[];

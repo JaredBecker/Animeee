@@ -1,4 +1,4 @@
-export interface AnimeResponse {
+export interface Response {
     data: any | any[];
     links: {
         first: string;
@@ -8,5 +8,5 @@ export interface AnimeResponse {
     meta: {
         count: number;
     }
-    includes?: any[];
+    included?: any[];
 }

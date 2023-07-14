@@ -1,0 +1,44 @@
+<ng-container *ngIf="is_loading;else reactions_list">
+    <app-loader></app-loader>
+</ng-container>
+
+<ng-template #reactions_list>
+    <div class="d-flex justify-content-between">
+        <h5 class="oswald fw-bold text-uppercase">Reactions</h5>
+
+        <div ngbDropdown>
+            <a role="button" id="post_sort" ngbDropdownToggle class="text-capitalize text-decoration-none fw-bold">
+                {{ reaction_type }}
+            </a>
+            <div ngbDropdownMenu aria-labelledby="post_sort">
+                <button ngbDropdownItem (click)="updateSortType('popular')">
+                    Popular
+                </button>
+                <button ngbDropdownItem (click)="updateSortType('recent')">
+                    Recent
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="reactions">
+        <div class="reactions_card" *ngFor="let reaction of reactions">
+            <div class="reactions_card_likes">
+                <i class="fa-regular fa-thumbs-up"></i>
+                {{ reaction.attributes.upVotesCount }}
+            </div>
+            <div class="reactions_card_content">
+                <h6 class="reactions_card_content_user oswald">
+                    <img
+                        *ngIf="reaction.userInfo.attributes.avatar"
+                        [src]="reaction.userInfo.attributes.avatar.tiny"
+                        [alt]="reaction.userInfo.attributes.name + ' Avatar'"
+                    />
+                    {{ reaction.userInfo.attributes.name }}
+                </h6>
+                <p class="reactions_card_content_post">
+                    {{ reaction.attributes.reaction }}
+                </p>
+            </div>
+        </div>
+    </div>
+</ng-template>

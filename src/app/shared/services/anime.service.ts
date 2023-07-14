@@ -1,24 +1,19 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Response } from '@shared/models/response.interface';
 
 import { Observable, map, shareReplay, throwError } from 'rxjs';
-
-import { AnimeResponse } from '../models/anime-response.interface';
-import { CategoryResponse } from '../models/category-response.interface';
 
 @Injectable({
     providedIn: 'root'
 })
 export class AnimeService {
+    // The more I work with this api the more I hate life... ಥ_ಥ
     private api: string = 'https://kitsu.io/api/edge';
-    private anime_stream_map = new Map<string, Observable<AnimeResponse>>();
-    private category_stream_map = new Map<string, Observable<CategoryResponse>>();
+    private anime_stream_map = new Map<string, Observable<Response>>();
+    private category_stream_map = new Map<string, Observable<Response>>();
 
     constructor(private http: HttpClient) { }
-
-    public get base_api() {
-        return this.api;
-    }
 
     /**
      * Gets the top 10 trending anime
@@ -64,7 +59,7 @@ export class AnimeService {
      *
      * @returns Top Airing anime stream
      */
-    public getTopUpcomingAnime(): Observable<AnimeResponse> {
+    public getTopUpcomingAnime(): Observable<Response> {
         const url = `${this.api}/anime?filter[status]=upcoming&page[limit]=10&sort=-user_count`;
         const error = 'No top upcoming anime stream found';
         const $stream = this.checkAnimeStream('top_upcoming', url, error);
@@ -77,7 +72,7 @@ export class AnimeService {
      *
      * @returns Top Airing anime stream
      */
-    public getMostPopularAnime(): Observable<AnimeResponse> {
+    public getMostPopularAnime(): Observable<Response> {
         const url = `${this.api}/anime?page[limit]=10&sort=-user_count`;
         const error = 'No most popular anime stream found';
         const $stream = this.checkAnimeStream('most_popular', url, error);
@@ -90,7 +85,7 @@ export class AnimeService {
      *
      * @returns Anime categories stream
      */
-    public getAnimeCategories(): Observable<CategoryResponse> {
+    public getAnimeCategories(): Observable<Response> {
         const url = `${this.api}/categories?page[limit]=40&sort=-total_media_count`;
         const error = 'No anime with the provided name could be found.';
         const $stream = this.checkCategoryStream('anime_categories', url, error);
@@ -105,8 +100,8 @@ export class AnimeService {
      *
      * @returns Stream of categories for the provided URL
      */
-    public getCategories(url: string): Observable<CategoryResponse> {
-        return this.http.get<CategoryResponse>(url).pipe(
+    public getCategories(url: string): Observable<Response> {
+        return this.http.get<Response>(url).pipe(
             map((categories) => categories)
         )
     }
@@ -127,14 +122,36 @@ export class AnimeService {
     }
 
     /**
-     * Gets first 5 characters for the anime ID provided
+     * Gets characters for the anime ID provided
      *
      * @param id The ID of the anime to get the additional info for
+     * @param count The number of items to return
      *
-     * @returns Additional info API call
+     * @returns Additional info stream
      */
-    public getCharacterInfo(anime_id: number): Observable<any> {
-        return this.http.get(`${this.api}/castings?filter[is_character]=true&filter[language]=Japanese&filter[media_id]=${anime_id}&filter[media_type]=Anime&include=character&page[limit]=4&sort=-featured`)
+    public getCharacterInfo(anime_id: number, count: number = 4): Observable<Response> {
+        return this.http.get<Response>(`${this.api}/castings?filter[is_character]=true&filter[language]=Japanese&filter[media_id]=${anime_id}&filter[media_type]=Anime&include=character&page[limit]=${count}&sort=-featured`)
+            .pipe(
+                shareReplay(1)
+            );
+    }
+
+    /**
+     * Gets the reactions for an anime
+     *
+     * @param anime_id ID of the anime to get reactions from
+     * @param sort How to sort the results
+     * @param count The number of reaction to return
+     *
+     * @returns Reactions stream
+     */
+    public getReactions(anime_id: number, sort: 'popular' | 'recent', count: number): Observable<Response> {
+        const sort_option = sort === 'popular' ? '-upVotesCount' : '-createdAt';
+
+        return this.http.get<Response>(`${this.api}/media-reactions?filter[animeId]=${anime_id}&include=user&page[limit]=${count}&sort=${sort_option}`)
+            .pipe(
+                shareReplay(1)
+            );
     }
 
     /**
@@ -146,7 +163,7 @@ export class AnimeService {
      *
      * @returns Stream of the requested API call
      */
-    private checkAnimeStream(key: string, url: string, error_msg: string): Observable<AnimeResponse> {
+    private checkAnimeStream(key: string, url: string, error_msg: string): Observable<Response> {
         if (!this.anime_stream_map.has(key)) {
             this.storeAnimeStream(key, url);
         }
@@ -169,7 +186,7 @@ export class AnimeService {
      *
      * @returns Stream of the requested API call
      */
-    private checkCategoryStream(key: string, url: string, error_msg: string): Observable<CategoryResponse> {
+    private checkCategoryStream(key: string, url: string, error_msg: string): Observable<Response> {
         if (!this.category_stream_map.has(key)) {
             this.storeCategoryStream(key, url);
         }
@@ -190,9 +207,9 @@ export class AnimeService {
      *
      * @returns Observable of the anime info for the provided request
      */
-    private getAnimeStream(url: string): Observable<AnimeResponse> {
+    private getAnimeStream(url: string): Observable<Response> {
         return this.http
-            .get<AnimeResponse>(url)
+            .get<Response>(url)
             .pipe(
                 shareReplay(1)
             );
@@ -207,7 +224,7 @@ export class AnimeService {
      */
     private getCategoryStream(url: string) {
         return this.http
-            .get<CategoryResponse>(url)
+            .get<Response>(url)
             .pipe(
                 shareReplay(1)
             );
