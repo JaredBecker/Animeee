@@ -33,24 +33,27 @@ export class ReactionsComponent implements OnInit, OnDestroy {
                 )
                 .subscribe({
                     next: (reactions) => {
-                        /**
-                         * I can't believe this is how I need to build the relationships between post and user...
-                         * Post is under .data prop
-                         * User is under .included prop
-                         * They are linked via the indexes... like wtf even .data[0] is a post by user .included[0]
-                         * If this structure changes... Ima cry because everything will need to change...
-                         */
-                        const reaction_array = [];
+                        if (reactions.data.length > 0) {
+                            /**
+                             * I can't believe this is how I need to build the relationships between post and user...
+                             * Post is under .data prop
+                             * User is under .included prop
+                             * They are linked via the indexes... like wtf even .data[0] is a post by user .included[0]
+                             * If this structure changes... Ima cry because everything will need to change...
+                             */
+                            const reaction_array = [];
 
-                        for (let i = 0; i < 10; i++) {
-                            let reaction = reactions.data[i];
-                            let user = reactions.included ? reactions.included[i] : undefined;
+                            for (let i = 0; i < 10; i++) {
+                                let reaction = reactions.data[i];
+                                let user = reactions.included ? reactions.included[i] : undefined;
 
-                            reaction.userInfo = user;
-                            reaction_array.push(reaction);
+                                reaction.userInfo = user;
+                                reaction_array.push(reaction);
+                            }
+
+                            this.reactions = reaction_array;
                         }
 
-                        this.reactions = reaction_array;
                         this.is_loading = false;
                     },
                     error: err => {
