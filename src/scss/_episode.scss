@@ -10,6 +10,9 @@
         background-color: $primary;
         color: #fff;
 
+        .episode_card_content p {
+            color: #fff;
+        }
     }
 
     &_img img{
@@ -19,5 +22,10 @@
 
     &_content {
         padding: 0.5rem;
+
+        p {
+            font-size: 0.75rem;
+            color: #1f1f1f;
+        }
     }
 }
