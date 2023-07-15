@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 
 import { HomeComponent } from './pages/home/home.component';
 import { NotFoundComponent } from './pages/not-found/not-found.component';
+import { SearchPageComponent } from './pages/search-page/search-page.component';
 
 import { AuthGuard } from '@shared/guards/auth.guard';
 
@@ -23,6 +24,7 @@ const routes: Routes = [
         loadChildren: () => import('@features/anime-detail/anime-detail.module').then(m => m.AnimeDetailModule)
     },
     { path: 'anime', component: HomeComponent },
+    { path: 'search/:search-phrase', component: SearchPageComponent },
     { path: 'manga', component: HomeComponent },
     { path: 'not-found', component: NotFoundComponent },
     { path: '**', component: NotFoundComponent },

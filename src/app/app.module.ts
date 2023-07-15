@@ -26,6 +26,8 @@ import { IntroComponent } from './components/intro/intro.component';
 
 // Environment
 import { environment } from 'src/environments/environment';
+import { SearchPageComponent } from './pages/search-page/search-page.component';
+import { AnimeCardComponent } from './components/anime-card/anime-card.component';
 
 @NgModule({
     declarations: [
@@ -34,6 +36,8 @@ import { environment } from 'src/environments/environment';
         CategoryListComponent,
         IntroComponent,
         NotFoundComponent,
+        SearchPageComponent,
+        AnimeCardComponent,
     ],
     imports: [
         BrowserModule,

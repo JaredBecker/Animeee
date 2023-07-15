@@ -1,0 +1,23 @@
+<div (click)="onLoadAnime(anime)" class="anime_card">
+    <img
+        [src]="anime.attributes.posterImage.medium ? anime.attributes.posterImage.medium : anime.attributes.posterImage.original"
+        [alt]="anime.attributes.titles.en ? anime.attributes.titles.en : anime.attributes.titles.en_jp"
+    />
+    <div class="anime_card_description">
+        <h6 class="fw-bold oswald">
+            {{ anime.attributes.titles.en ? anime.attributes.titles.en : anime.attributes.titles.en_jp }}
+        </h6>
+        <div class="d-flex justify-content-between">
+            <div *ngIf="anime.attributes.ratingRank">
+                <i class="fa-solid fa-star me-1"></i>
+                {{ anime.attributes.ratingRank }}
+            </div>
+            <div>
+                <i class="fa-solid fa-heart me-1"></i>
+                {{ anime.attributes.popularityRank }}
+            </div>
+        </div>
+        <p class="desc">{{ anime.attributes.description }}</p>
+        <button type="button" class="btn btn-primary btn-sm text-white rounded-pill w-100 mt-auto mb-2">View</button>
+    </div>
+</div>

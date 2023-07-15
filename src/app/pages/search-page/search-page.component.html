@@ -1,0 +1,67 @@
+<app-navbar></app-navbar>
+
+<main>
+    <div class="container py-5 monty">
+        <div class="row">
+            <div class="col-12 col-lg-9">
+                <h1 class="fw-bold oswald text-uppercase">
+                    Search: {{ search_phrase ? search_phrase : '' }}
+                </h1>
+                <div class="search_wrapper mb-5">
+                    <div class="input-group">
+                        <input
+                            type="text"
+                            class="form-control"
+                            placeholder="Search Anime"
+                            aria-label="Search bar"
+                        />
+                        <button ngbDropdown class="btn btn-secondary">
+                            <a role="button" ngbDropdownToggle class="text-decoration-none text-white text-capitalize">
+                                {{ search_type }}
+                            </a>
+                            <div ngbDropdownMenu aria-labelledby="profile">
+                                <button (click)="onUpdateSearchType('anime')" ngbDropdownItem>Anime</button>
+                                <button (click)="onUpdateSearchType('manga')" ngbDropdownItem>Manga</button>
+                                <button (click)="onUpdateSearchType('users')" ngbDropdownItem>User</button>
+                            </div>
+                        </button>
+                        <button class="btn btn-primary text-white" type="button">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="results_wrapper">
+                    <ng-container *ngIf="is_loading">
+                        <div class="d-flex justify-content-center">
+                            <app-loader></app-loader>
+                        </div>
+                    </ng-container>
+
+                    <ng-container *ngIf="!is_loading && animes.length === 0">
+                        <div class="no_results d-flex align-items-center" >
+                            <img src="/assets/images/no-results.png" style="max-width: 250px;" alt="No results">
+                            <div class="text">
+                                <h3 class="fw-bold oswald text-primary">Oops...</h3>
+                                <h5 class="fw-bold monty">Nothing to see here. Try searching something else.</h5>
+                            </div>
+                        </div>
+                    </ng-container>
+
+                    <ng-container *ngIf="!is_loading && animes.length > 0">
+                        <div class="row" >
+                            <div class="col-6 col-md-4 col-lg-3 mb-3" *ngFor="let anime of animes">
+                                <app-anime-card [anime]="anime" />
+                            </div>
+                        </div>
+                    </ng-container>
+                </div>
+            </div>
+            <div class="col-12 col-lg-3">
+                <app-card [is_sticky]="true">
+                    <h3 class="oswald fw-bold text-uppercase">Categories</h3>
+                    <app-category-list></app-category-list>
+                </app-card>
+            </div>
+        </div>
+    </div>
+</main>
