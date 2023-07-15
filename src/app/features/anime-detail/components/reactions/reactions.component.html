@@ -19,7 +19,9 @@
             </div>
         </div>
     </div>
+
     <p *ngIf="reactions.length === 0">Nothing to see here yet...</p>
+
     <div class="reactions" *ngIf="reactions.length > 0;">
         <div class="reactions_card" *ngFor="let reaction of reactions">
             <div class="reactions_card_likes">

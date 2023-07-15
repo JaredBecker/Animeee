@@ -42,8 +42,8 @@ export class ReactionsComponent implements OnInit, OnDestroy {
                              * If this structure changes... Ima cry because everything will need to change...
                              */
                             const reaction_array = [];
-
-                            for (let i = 0; i < 10; i++) {
+                            const len = reactions?.included?.length ?? 10
+                            for (let i = 0; i < len; i++) {
                                 let reaction = reactions.data[i];
                                 let user = reactions.included ? reactions.included[i] : undefined;
 

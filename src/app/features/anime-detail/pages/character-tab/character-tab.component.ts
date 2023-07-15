@@ -6,9 +6,9 @@ import { AnimeService } from '@shared/services/anime.service';
 import { AnimeDetailService } from '@shared/services/anime-detail.service';
 
 @Component({
-  selector: 'app-character-tab',
-  templateUrl: './character-tab.component.html',
-  styleUrls: ['./character-tab.component.scss']
+    selector: 'app-character-tab',
+    templateUrl: './character-tab.component.html',
+    styleUrls: ['./character-tab.component.scss']
 })
 export class CharacterTabComponent implements OnInit, OnDestroy {
     public is_loading: boolean = true;
@@ -29,7 +29,7 @@ export class CharacterTabComponent implements OnInit, OnDestroy {
                 .subscribe({
                     next: (characters_res) => {
                         if (characters_res.included) {
-                           this.characters = characters_res.included;
+                            this.characters = characters_res.included;
                         }
 
                         this.is_loading = false;
