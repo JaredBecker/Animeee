@@ -17,7 +17,11 @@
                 </h6>
                 <div class="franchise_card_img">
                     <img *ngIf="!franchise.attributes.posterImage" src="/assets/images/no-image.png" class="img-fluid" alt="No image for the resource" />
-                    <img *ngIf="franchise.attributes.posterImage" [src]="franchise.attributes.posterImage.medium" class="img-fluid" [alt]="franchise.attributes.canonicalTitle" />
+                    <img
+                        *ngIf="franchise.attributes.posterImage"
+                        [src]="franchise.attributes.posterImage.medium ? franchise.attributes.posterImage.medium : franchise.attributes.posterImage.original"
+                        class="img-fluid" [alt]="franchise.attributes.canonicalTitle"
+                    />
                 </div>
                 <div class="franchise_card_content">
                     <div class="franchise_card_content_name">
