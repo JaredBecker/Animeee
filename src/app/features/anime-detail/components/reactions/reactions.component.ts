@@ -33,7 +33,6 @@ export class ReactionsComponent implements OnInit, OnDestroy {
                 )
                 .subscribe({
                     next: (reactions) => {
-                        console.log(reactions);
                         if (reactions.data.length > 0) {
                             /**
                              * I can't believe this is how I need to build the relationships between post and user...
