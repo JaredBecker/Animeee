@@ -7,13 +7,31 @@
         <h3 class="oswald fw-bold text_gradient slider_title">{{ title }}</h3>
         <swiper-container
             initial-slide="0"
-            slides-per-view="5"
+            slides-per-view="4"
             autoplay="true"
-            delay="2500"
+            autoplay-delay="2000"
+            autoplay-pause-on-mouse-enter="true"
+            autoplay-disable-on-interaction="true"
+            space-between="15"
         >
-            <swiper-slide class="me-3" *ngFor="let anime of animes">
+            <swiper-slide *ngFor="let anime of animes">
                 <div (click)="onLoadAnime(anime)" class="anime_card">
                     <img [src]="anime.attributes.posterImage.medium" [alt]="anime.attributes.titles.en ? anime.attributes.titles.en : anime.attributes.titles.en_jp">
+                    <div class="anime_card_description">
+                        <h6 class="fw-bold oswald">{{ anime.attributes.titles.en ? anime.attributes.titles.en : anime.attributes.titles.en_jp }}</h6>
+                        <div class="d-flex justify-content-between">
+                            <div *ngIf="anime.attributes.ratingRank">
+                                <i class="fa-solid fa-star me-1"></i>
+                                {{ anime.attributes.ratingRank }}
+                            </div>
+                            <div>
+                                <i class="fa-solid fa-heart me-1"></i>
+                                {{ anime.attributes.popularityRank }}
+                            </div>
+                        </div>
+                        <p class="desc">{{ anime.attributes.description }}</p>
+                        <button type="button" class="btn btn-primary btn-sm text-white rounded-pill w-100 mt-auto mb-2">View</button>
+                    </div>
                 </div>
             </swiper-slide>
         </swiper-container>

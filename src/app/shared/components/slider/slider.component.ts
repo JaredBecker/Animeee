@@ -4,7 +4,6 @@ import {
     OnChanges,
     OnDestroy,
     OnInit,
-    SimpleChanges
 } from '@angular/core';
 import { Router } from '@angular/router';
 
@@ -30,13 +29,17 @@ export class SliderComponent implements OnChanges, OnInit, OnDestroy {
         private router: Router,
     ) {}
 
-    public ngOnChanges(changes: SimpleChanges): void {
+    public ngOnChanges(): void {
         this.anime_subscription?.unsubscribe();
         this.subToStream();
     }
 
     public ngOnInit(): void {
         this.subToStream();
+    }
+
+    public ngOnDestroy(): void {
+        this.anime_subscription?.unsubscribe();
     }
 
     private subToStream(): void {
@@ -51,13 +54,7 @@ export class SliderComponent implements OnChanges, OnInit, OnDestroy {
         })
     }
 
-    public ngOnDestroy(): void {
-        this.anime_subscription?.unsubscribe();
-    }
-
     public onLoadAnime(anime: any): void {
-        this.router.navigateByUrl(`/anime/${anime.attributes.slug}`, {
-            state: { anime }
-        })
+        this.router.navigateByUrl(`/anime/${anime.attributes.slug}`);
     }
 }
