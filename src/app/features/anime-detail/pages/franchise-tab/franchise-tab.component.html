@@ -11,7 +11,7 @@
     <h5 class="oswald fw-bold text-uppercase">Franchises</h5>
     <div class="row" id="character_summary">
         <div class="col-6 col-md-4 mb-3" *ngFor="let franchise of franchises">
-            <a href="#" class="franchise_card">
+            <a [routerLink]="['/anime', franchise.attributes.slug]" class="franchise_card">
                 <h6 class="ribbon date fw-bold oswald" *ngIf="franchise.attributes.startDate">
                     {{ franchise.attributes.startDate | date: 'y' }}
                 </h6>

@@ -82,6 +82,11 @@ export class AnimeDetailsComponent implements OnInit, OnDestroy {
                     this.is_loading = false;
                 },
                 error: (err) => {
+                    /**
+                     * From testing I notice you end up her when the API had no result for an anime
+                     * it gives to you in the franchise section.
+                     */
+                    this.router.navigateByUrl('/not-found')
                     console.error('Failed to get selected anime', err);
                     this.is_loading = false;
                 }
