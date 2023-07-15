@@ -11,10 +11,9 @@
     <h5 class="fw-bold oswald text-uppercase">Episodes</h5>
     <div class="row">
         <div class="col-6 col-lg-4 mb-4" *ngFor="let episode of episodes">
-            <a href="#" class="episode_card">
-                <div class="episode_card_img ratio ratio-4x3">
+            <a role="button" class="episode_card">
+                <div class="episode_card_img ratio ratio-4x3" *ngIf="episode.attributes.thumbnail">
                     <img
-                        *ngIf="episode.attributes.thumbnail"
                         [src]="episode.attributes.thumbnail.original"
                         class="img-fluid"
                         [alt]="episode.attributes.titles.en_us"

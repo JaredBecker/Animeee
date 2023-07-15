@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Response } from '@shared/models/response.interface';
 
-import { Observable, map, shareReplay, throwError } from 'rxjs';
+import { BehaviorSubject, Observable, Subject, firstValueFrom, map, shareReplay, throwError } from 'rxjs';
 
 @Injectable({
     providedIn: 'root'
@@ -12,6 +12,8 @@ export class AnimeService {
     private api: string = 'https://kitsu.io/api/edge';
     private anime_stream_map = new Map<string, Observable<Response>>();
     private category_stream_map = new Map<string, Observable<Response>>();
+    private $search_stream: Subject<Observable<Response>> = new Subject();
+    private $search_phrase: BehaviorSubject<string> = new BehaviorSubject<string>('');
 
     constructor(private http: HttpClient) { }
 
@@ -20,7 +22,7 @@ export class AnimeService {
      *
      * @returns Trending anime stream
      */
-    public getTrendingAnime() {
+    public getTrendingAnime(): Observable<Response> {
         const url = `${this.api}/trending/anime?limit=10`;
         const error = 'No trending anime stream found';
         const $stream = this.checkAnimeStream('trending', url, error);
@@ -33,7 +35,7 @@ export class AnimeService {
      *
      * @returns Highest rated anime stream
      */
-    public getHighestRatedAnime() {
+    public getHighestRatedAnime(): Observable<Response> {
         const url = `${this.api}/anime?page[limit]=10&sort=-average_rating`;
         const error = 'No highest rated anime stream found';
         const $stream = this.checkAnimeStream('highest_rated', url, error);
@@ -46,7 +48,7 @@ export class AnimeService {
      *
      * @returns Top Airing anime stream
      */
-    public getTopAiringAnime() {
+    public getTopAiringAnime(): Observable<Response> {
         const url = `${this.api}/anime?filter[status]=current&page[limit]=10&sort=-user_count`;
         const error = 'No top airing anime stream found';
         const $stream = this.checkAnimeStream('top_airing', url, error);
@@ -113,7 +115,7 @@ export class AnimeService {
      *
      * @returns Anime stream
      */
-    public getAnime(anime_name: string) {
+    public getAnime(anime_name: string): Observable<Response> {
         const url = `${this.api}/anime?fields[categories]=slug,title&filter[slug]=${anime_name}&include=categories,animeProductions.producer`;
         const error = 'No anime with the provided name could be found.';
         const $stream = this.checkAnimeStream(anime_name, url, error);
@@ -172,7 +174,7 @@ export class AnimeService {
      *
      * @returns Franchise stream
      */
-    public getFranchise(anime_id: number) {
+    public getFranchise(anime_id: number): Observable<Response> {
         return this.http.get<Response>(`${this.api}/media-relationships?filter[source_id]=${anime_id}&filter[source_type]=Anime&include=destination&page[limit]=20&sort=role`)
     }
 
@@ -184,8 +186,45 @@ export class AnimeService {
      *
      * @returns Search stream
      */
-    public generalSearch(search_phrase: string, type: 'anime' | 'manga' = 'anime') {
-        return this.http.get<Response>(`${this.api}/${type}&filter[text]=${search_phrase}`);
+    public generalSearch(search_phrase: string, type: 'anime' | 'manga' = 'anime'): Observable<Response> {
+        return this.http.get<Response>(`${this.api}/${type}?filter[text]=${search_phrase}&page[limit]=20`);
+    }
+
+    /**
+     * Takes the search phrase and sets search stream
+     *
+     * @param search_phrase Search phrase
+     * @param type Anime or mange
+     */
+    public setSearchPhrase(search_phrase: string, type: 'anime' | 'manga' = 'anime'): void {
+        this.$search_stream.next(
+            this.generalSearch(search_phrase, type)
+        );
+        this.$search_phrase.next(search_phrase);
+    }
+
+    /**
+     * Get the search stream
+     *
+     * @returns Search stream
+     */
+    public getSearchStream(): Observable<Observable<Response>> {
+        return this.$search_stream.asObservable();
+    }
+
+    /**
+     * Gets the current search phrase
+     *
+     * @returns Current search phrase
+     */
+    public async getSearchPhrase() {
+        const phrase = await firstValueFrom(
+            this.$search_phrase.pipe(
+                map(phrase => phrase)
+            )
+        )
+
+        return phrase;
     }
 
     /**
@@ -256,7 +295,7 @@ export class AnimeService {
      *
      * @returns Observable of the anime info for the provided request
      */
-    private getCategoryStream(url: string) {
+    private getCategoryStream(url: string): Observable<Response> {
         return this.http
             .get<Response>(url)
             .pipe(

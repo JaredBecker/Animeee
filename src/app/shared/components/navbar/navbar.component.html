@@ -4,17 +4,16 @@
             <img src="/assets/images/logo.png" alt="Animeee Logo">
             <span class="oswald ms-2 text-primary d-none d-sm-inline-block">ANIMEEE</span>
         </a>
-        <ul class="navbar-nav flex-row gap-3 d-flex">
-            <li class="nav-item">
-                <a class="nav-link fw-bold text-primary" routerLink="/">Anime</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link fw-bold text-primary" href="#" routerLink="/">Manga</a>
-            </li>
-        </ul>
         <div class="controls d-flex align-items-center">
             <div class="input-group w-auto flex-nowrap navbar_search">
-                <input type="search" class="form-control form-control-sm" placeholder="Search" aria-label="Search" aria-describedby="search_btn" />
+                <input
+                    type="search"
+                    class="form-control form-control-sm"
+                    placeholder="Search"
+                    aria-label="Search"
+                    aria-describedby="search_btn"
+                    [formControl]="search"
+                />
                 <button class="btn btn-primary btn-sm text-white" type="button" id="search_btn">
                     <i class="fa-solid fa-magnifying-glass"></i>
                 </button>

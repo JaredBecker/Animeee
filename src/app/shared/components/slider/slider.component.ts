@@ -5,11 +5,11 @@ import {
     OnDestroy,
     OnInit,
 } from '@angular/core';
-import { Router } from '@angular/router';
 
 import { Observable, Subscription } from 'rxjs';
 
 import { Response } from '@shared/models/response.interface';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'app-slider',
@@ -25,9 +25,7 @@ export class SliderComponent implements OnChanges, OnInit, OnDestroy {
 
     private anime_subscription?: Subscription;
 
-    constructor(
-        private router: Router,
-    ) {}
+    constructor(private router: Router) { }
 
     public ngOnChanges(): void {
         this.anime_subscription?.unsubscribe();
