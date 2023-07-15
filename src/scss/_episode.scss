@@ -1,0 +1,23 @@
+.episode_card {
+    border: 1px solid #ccc;
+    border-radius: 0.5rem;
+    text-decoration: none;
+    display: block;
+    height: 100%;
+    transition: all 0.2s ease-in-out;
+
+    &:hover {
+        background-color: $primary;
+        color: #fff;
+
+    }
+
+    &_img img{
+        border-radius: 0.25rem 0.25rem 0 0;
+        border-bottom: 1px solid #ccc;
+    }
+
+    &_content {
+        padding: 0.5rem;
+    }
+}

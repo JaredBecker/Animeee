@@ -1,1 +1,30 @@
-<p>episode-tab works!</p>
+<ng-container *ngIf="is_loading">
+    <app-loader />
+</ng-container>
+
+<ng-container *ngIf="!is_loading && episodes.length === 0;">
+    <h5 class="fw-bold oswald">Episodes</h5>
+    <p>Oh no... It seems like there is no info here yet...</p>
+</ng-container>
+
+<ng-container *ngIf="!is_loading && episodes.length > 0;">
+    <h5 class="fw-bold oswald text-uppercase">Episodes</h5>
+    <div class="row">
+        <div class="col-6 col-lg-4 mb-4" *ngFor="let episode of episodes">
+            <a href="#" class="episode_card">
+                <div class="episode_card_img">
+                    <img
+                        *ngIf="episode.attributes.thumbnail"
+                        [src]="episode.attributes.thumbnail.original"
+                        class="img-fluid"
+                        [alt]="episode.attributes.titles.en_us"
+                    />
+                </div>
+                <div class="episode_card_content">
+                    <h6 class="fw-bold oswald mt-2">Episode {{ episode.attributes.number }}</h6>
+                    <p class=" m-0">{{ episode.attributes.titles.en_us ? episode.attributes.titles.en_us : episode.attributes.titles.en_jp }}</p>
+                </div>
+            </a>
+        </div>
+    </div>
+</ng-container>

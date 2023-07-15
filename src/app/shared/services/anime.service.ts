@@ -151,10 +151,18 @@ export class AnimeService {
     public getReactions(anime_id: number, sort: 'popular' | 'recent', count: number): Observable<Response> {
         const sort_option = sort === 'popular' ? '-upVotesCount' : '-createdAt';
 
-        return this.http.get<Response>(`${this.api}/media-reactions?filter[animeId]=${anime_id}&include=user&page[limit]=${count}&sort=${sort_option}`)
-            .pipe(
-                shareReplay(1)
-            );
+        return this.http.get<Response>(`${this.api}/media-reactions?filter[animeId]=${anime_id}&include=user&page[limit]=${count}&sort=${sort_option}`);
+    }
+
+    /**
+     * Gets the first 20 episodes for an anime
+     *
+     * @param anime_id The ID of the anime to get episodes for
+     *
+     * @returns Episode stream
+     */
+    public getEpisodes(anime_id: number): Observable<Response> {
+        return this.http.get<Response>(`${this.api}/episodes?filter[mediaType]=Anime&filter[media_id]=${anime_id}&page[limit]=20&sort=number`);
     }
 
     /**
