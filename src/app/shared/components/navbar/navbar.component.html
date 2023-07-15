@@ -12,9 +12,10 @@
                     placeholder="Search"
                     aria-label="Search"
                     aria-describedby="search_btn"
+                    (keydown)="onSearch($event)"
                     [formControl]="search"
                 />
-                <button class="btn btn-primary btn-sm text-white" type="button" id="search_btn">
+                <button class="btn btn-primary btn-sm text-white" type="button" id="search_btn" (click)="onSearch()">
                     <i class="fa-solid fa-magnifying-glass"></i>
                 </button>
             </div>

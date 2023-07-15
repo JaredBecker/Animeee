@@ -13,7 +13,8 @@
         <div class="col-6 col-md-4 col-lg-3" *ngFor="let character of characters">
             <a href="#" class="character_card">
                 <div class="character_card_img">
-                    <img [src]="character.attributes.image.original" class="img-fluid" [alt]="character.attributes.name">
+                    <img *ngIf="!character.attributes.image" src="/assets/images/no-image.png" class="img-fluid" alt="No image for the resource" />
+                    <img *ngIf="character.attributes.image" [src]="character.attributes.image.original" class="img-fluid" [alt]="character.attributes.name">
                 </div>
                 <div class="character_card_name">
                     {{ character.attributes.name }}

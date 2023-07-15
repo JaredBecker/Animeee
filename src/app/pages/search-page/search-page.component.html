@@ -14,19 +14,17 @@
                             class="form-control"
                             placeholder="Search Anime"
                             aria-label="Search bar"
+                            [formControl]="search_input"
                         />
-                        <button ngbDropdown class="btn btn-secondary">
+                        <button ngbDropdown class="btn btn-primary">
                             <a role="button" ngbDropdownToggle class="text-decoration-none text-white text-capitalize">
                                 {{ search_type }}
                             </a>
                             <div ngbDropdownMenu aria-labelledby="profile">
                                 <button (click)="onUpdateSearchType('anime')" ngbDropdownItem>Anime</button>
                                 <button (click)="onUpdateSearchType('manga')" ngbDropdownItem>Manga</button>
-                                <button (click)="onUpdateSearchType('users')" ngbDropdownItem>User</button>
+                                <button (click)="onUpdateSearchType('user')" ngbDropdownItem>User</button>
                             </div>
-                        </button>
-                        <button class="btn btn-primary text-white" type="button">
-                            <i class="fa-solid fa-magnifying-glass"></i>
                         </button>
                     </div>
                 </div>
@@ -38,11 +36,13 @@
                     </ng-container>
 
                     <ng-container *ngIf="!is_loading && animes.length === 0">
-                        <div class="no_results d-flex align-items-center" >
-                            <img src="/assets/images/no-results.png" style="max-width: 250px;" alt="No results">
-                            <div class="text">
-                                <h3 class="fw-bold oswald text-primary">Oops...</h3>
-                                <h5 class="fw-bold monty">Nothing to see here. Try searching something else.</h5>
+                        <div class="no_results d-flex align-items-center justify-content-center">
+                            <img src="/assets/images/no-results.png" style="max-width: 250px; border-radius: 50%;" alt="No results">
+                            <div class="text me-5">
+                                <h3 class="fw-bold oswald text-primary">No Results...</h3>
+                                <h5 class="fw-bold monty">
+                                    Nothing to see here.
+                                </h5>
                             </div>
                         </div>
                     </ng-container>
