@@ -7,13 +7,13 @@ import { AnimeDetailService } from '@shared/services/anime-detail.service';
     styleUrls: ['./characters.component.scss']
 })
 export class CharactersComponent implements OnInit {
-    public characters?: any;
+    public characters: any[] = [];
     public loading_characters: boolean = true;
 
     constructor(private animeDetailService: AnimeDetailService) { }
 
     public ngOnInit(): void {
-        this.characters = this.animeDetailService.getCharacterInfo();
+        this.characters = this.animeDetailService.getCharacterInfo() ?? [];
         this.loading_characters = false;
     }
 }

@@ -1,0 +1,57 @@
+.franchise_card {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #ccc;
+    border-radius: 0.5rem;
+    height: 100%;
+    position: relative;
+    text-decoration: none;
+    transition: all 0.2s ease-in-out;
+
+    &:hover {
+        background-color: $primary;
+        color: #fff;
+
+        .date {
+            width: 100%;
+            transition: width 0.2s ease-in-out;
+        }
+
+        .franchise_card_content_type {
+            color: #fff;
+        }
+    }
+
+    .date {
+        font-size: 0.8rem;
+        width: 90px;
+        display: flex;
+        justify-content: center;
+        transition: width 0.2s ease-in-out;
+    }
+
+    &_img img {
+        border-radius: 0.25rem 0.25rem 0 0;
+        border-bottom: 1px solid #ccc;
+    }
+
+    &_content {
+        padding: 0.5rem;
+        font-size: 0.9rem;
+        font-weight: bold;
+
+        &_name {
+            text-overflow: ellipsis;
+            word-break:normal;
+            overflow: hidden;
+            white-space: nowrap;
+        }
+
+        &_type {
+            font-size: 0.75rem;
+            font-weight: 400;
+            color: #1f1f1f;
+            text-transform: capitalize;
+        }
+    }
+}

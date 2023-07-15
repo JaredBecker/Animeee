@@ -1,20 +1,17 @@
-<!-- LOADER -->
 <ng-container *ngIf="loading_characters">
     <app-loader></app-loader>
 </ng-container>
 
-<!-- NO RESULTS -->
-<ng-container *ngIf="!loading_characters && !characters || characters.length === 0;else characters_view">
+<ng-container *ngIf="!loading_characters && characters.length === 0">
     <h5 class="oswald fw-bold text-uppercase">Characters</h5>
     <p >Oh no... There doesn't seem to be any character info</p>
 </ng-container>
 
-<!-- VIEW -->
-<ng-template #characters_view>
+<ng-container *ngIf="!loading_characters && characters.length > 0">
     <h5 class="oswald fw-bold text-uppercase">Characters</h5>
     <div class="row" id="character_summary">
         <div class="col-6 col-md-4 col-lg-3" *ngFor="let character of characters">
-            <a href="#" class="character_card d-flex flex-column h-100">
+            <a href="#" class="character_card">
                 <div class="character_card_img">
                     <img [src]="character.attributes.image.original" class="img-fluid" [alt]="character.attributes.name">
                 </div>
@@ -30,4 +27,4 @@
             <i class="fa-solid fa-arrow-right ms-2"></i>
         </a>
     </div>
-</ng-template>
+</ng-container>
