@@ -2,12 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormControl } from '@angular/forms';
 
-import {
-    Subscription,
-    debounceTime,
-    distinctUntilChanged,
-    map,
-} from 'rxjs';
+import { Subscription, map } from 'rxjs';
 
 import { AuthService } from '@shared/services/auth.service';
 import { AnimeService } from '@shared/services/anime.service';
@@ -22,7 +17,6 @@ export class NavbarComponent implements OnInit, OnDestroy {
     public search = new FormControl('');
 
     private auth_sub?: Subscription;
-    private search_subscription?: Subscription;
 
     constructor(
         private authService: AuthService,
@@ -31,24 +25,6 @@ export class NavbarComponent implements OnInit, OnDestroy {
     ) { }
 
     public ngOnInit(): void {
-        this.search_subscription = this.search.valueChanges
-            .pipe(
-                debounceTime(350),
-                distinctUntilChanged(),
-            )
-            .subscribe({
-                next: (search) => {
-                    if (search !== '' && search) {
-                        this.animeService.setSearchPhrase(search);
-
-                        if (!location.pathname.includes('/search')) {
-                            this.router.navigate(['/search', search])
-                        }
-                    }
-                }
-            })
-
-
         this.auth_sub = this.authService.getAuthStream()
             .pipe(
                 map(isLoggedIn => isLoggedIn)
@@ -61,10 +37,27 @@ export class NavbarComponent implements OnInit, OnDestroy {
 
     public ngOnDestroy(): void {
         this.auth_sub?.unsubscribe();
-        this.search_subscription?.unsubscribe();
     }
 
     public onLogout(): void {
         this.authService.signOut();
+    }
+
+    public onSearch(event?: KeyboardEvent) {
+        const value = this.search.value;
+
+        if (event instanceof KeyboardEvent) {
+            if (event.key === 'Enter') {
+                if (value && value !== '') {
+                    this.animeService.setSearchPhrase(value);
+                    this.router.navigate(['/search', value]);
+                }
+            }
+        } else {
+            if (value && value !== '') {
+                this.animeService.setSearchPhrase(value);
+                this.router.navigate(['/search', value]);
+            }
+        }
     }
 }
