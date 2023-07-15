@@ -131,8 +131,9 @@ export class AnimeService {
      */
     public getCharacterInfo(anime_id: number, count: number = 4): Observable<Response> {
         const count_filter = `&page[limit]=${count === -1 || count > 20 ? 20 : count}`;
+        const url = `${this.api}/castings?filter[media_type]=Anime&filter[media_id]=${anime_id}&filter[is_character]=true&filter[language]=Japanese${count_filter}&include=character&sort=-featured`;
 
-        return this.http.get<Response>(`${this.api}/castings?filter[media_type]=Anime&filter[media_id]=${anime_id}&filter[is_character]=true&filter[language]=Japanese${count_filter}&include=character&sort=-featured`)
+        return this.http.get<Response>(url)
             .pipe(
                 shareReplay(1)
             );

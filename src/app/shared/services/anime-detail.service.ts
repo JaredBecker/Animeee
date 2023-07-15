@@ -74,6 +74,7 @@ export class AnimeDetailService {
      */
     public getCharacterInfo(): any[] | undefined {
         return this.characterInfo;
+
     }
 
     /**

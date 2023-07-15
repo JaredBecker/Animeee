@@ -4,7 +4,7 @@
 </ng-container>
 
 <!-- NO RESULTS -->
-<ng-container *ngIf="!loading_characters && !characters;else characters_view">
+<ng-container *ngIf="!loading_characters && !characters || characters.length === 0;else characters_view">
     <h5 class="oswald fw-bold text-uppercase">Characters</h5>
     <p >Oh no... There doesn't seem to be any character info</p>
 </ng-container>
