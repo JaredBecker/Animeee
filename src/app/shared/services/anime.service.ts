@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Response } from '@shared/models/response.interface';
 
-import { BehaviorSubject, Observable, Subject, firstValueFrom, map, shareReplay, throwError } from 'rxjs';
+import { Observable, Subject, map, shareReplay, throwError } from 'rxjs';
 
 @Injectable({
     providedIn: 'root'
@@ -13,7 +13,6 @@ export class AnimeService {
     private anime_stream_map = new Map<string, Observable<Response>>();
     private category_stream_map = new Map<string, Observable<Response>>();
     private $search_stream: Subject<Observable<Response>> = new Subject();
-    private $search_phrase: BehaviorSubject<string> = new BehaviorSubject<string>('');
 
     constructor(private http: HttpClient) { }
 
@@ -200,7 +199,6 @@ export class AnimeService {
         this.$search_stream.next(
             this.generalSearch(search_phrase, type)
         );
-        this.$search_phrase.next(search_phrase);
     }
 
     /**
@@ -210,21 +208,6 @@ export class AnimeService {
      */
     public getSearchStream(): Observable<Observable<Response>> {
         return this.$search_stream.asObservable();
-    }
-
-    /**
-     * Gets the current search phrase
-     *
-     * @returns Current search phrase
-     */
-    public async getSearchPhrase() {
-        const phrase = await firstValueFrom(
-            this.$search_phrase.pipe(
-                map(phrase => phrase)
-            )
-        )
-
-        return phrase;
     }
 
     /**
