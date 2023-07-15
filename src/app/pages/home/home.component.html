@@ -3,7 +3,7 @@
 <main class="custom_bg">
     <div class="container py-5 monty">
         <div class="row">
-            <div class="col-12 col-lg-8">
+            <div class="col-12 col-lg-9">
                 <app-intro></app-intro>
                 <app-slider title="Trending This Week" [$anime_stream]="trending"></app-slider>
                 <app-slider title="Top Airing Anime" [$anime_stream]="topAiring"></app-slider>
@@ -11,7 +11,7 @@
                 <app-slider title="Highest Rated Anime" [$anime_stream]="highestRating"></app-slider>
                 <app-slider title="Most Popular Anime" [$anime_stream]="mostPopular"></app-slider>
             </div>
-            <div class="col-12 col-lg-4">
+            <div class="col-12 col-lg-3">
                 <app-card [is_sticky]="true">
                     <h3 class="oswald fw-bold text-secondary text-uppercase">Categories</h3>
                     <app-category-list></app-category-list>

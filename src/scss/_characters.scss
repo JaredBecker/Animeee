@@ -1,0 +1,35 @@
+#character_summary {
+
+    .character_card {
+        padding: 0.25rem;
+        border: 1px solid #ccc;
+        border-radius: 0.5rem;
+        text-decoration: none;
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+
+        & img {
+            border-radius: 0.5rem;
+        }
+
+        &:hover {
+            background-color: $primary;
+
+            .character_card_name {
+                color: #fff !important;
+            }
+        }
+
+        &_name {
+            display: block;
+            padding: 0.5rem 0;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            white-space: nowrap;
+            text-align: center;
+            font-weight: bold;
+            color: $secondary;
+        }
+    }
+}

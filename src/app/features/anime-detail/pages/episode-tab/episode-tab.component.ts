@@ -28,7 +28,6 @@ export class EpisodeTabComponent implements OnInit, OnDestroy {
             this.episode_subscription = this.animeService.getEpisodes(anime.id)
             .subscribe({
                 next: (episode_res) => {
-                    console.log(episode_res.data);
                     if (episode_res.data.length > 0) {
                         this.episodes = episode_res.data;
                     }
