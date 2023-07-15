@@ -1,6 +1,7 @@
 import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
@@ -21,7 +22,9 @@ import { PageLoaderComponent } from './components/page-loader/page-loader.compon
     imports: [
         CommonModule,
         NgbModule,
-        RouterModule
+        RouterModule,
+        FormsModule,
+        ReactiveFormsModule,
     ],
     exports: [
         NgbModule,
@@ -30,6 +33,8 @@ import { PageLoaderComponent } from './components/page-loader/page-loader.compon
         NavbarComponent,
         LoaderComponent,
         PageLoaderComponent,
+        FormsModule,
+        ReactiveFormsModule,
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })

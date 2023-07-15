@@ -15,10 +15,22 @@
             space-between="15"
         >
             <swiper-slide *ngFor="let anime of animes">
+                <!--
+                    Not sure why I can't use a component inside here
+                    When I do it doesn't work. Seems like it needs to
+                    have the markup defined inside of the slide.
+                    Will need to look into this to see if there is
+                    a way around it
+                 -->
                 <div (click)="onLoadAnime(anime)" class="anime_card">
-                    <img [src]="anime.attributes.posterImage.medium" [alt]="anime.attributes.titles.en ? anime.attributes.titles.en : anime.attributes.titles.en_jp">
+                    <img
+                        [src]="anime.attributes.posterImage.medium"
+                        [alt]="anime.attributes.titles.en ? anime.attributes.titles.en : anime.attributes.titles.en_jp"
+                    />
                     <div class="anime_card_description">
-                        <h6 class="fw-bold oswald">{{ anime.attributes.titles.en ? anime.attributes.titles.en : anime.attributes.titles.en_jp }}</h6>
+                        <h6 class="fw-bold oswald">
+                            {{ anime.attributes.titles.en ? anime.attributes.titles.en : anime.attributes.titles.en_jp }}
+                        </h6>
                         <div class="d-flex justify-content-between">
                             <div *ngIf="anime.attributes.ratingRank">
                                 <i class="fa-solid fa-star me-1"></i>
