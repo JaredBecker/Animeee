@@ -12,7 +12,7 @@
     <div class="row">
         <div class="col-6 col-lg-4 mb-4" *ngFor="let episode of episodes">
             <a href="#" class="episode_card">
-                <div class="episode_card_img">
+                <div class="episode_card_img ratio ratio-4x3">
                     <img
                         *ngIf="episode.attributes.thumbnail"
                         [src]="episode.attributes.thumbnail.original"

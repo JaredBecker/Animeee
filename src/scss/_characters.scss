@@ -11,6 +11,8 @@
 
         & img {
             border-radius: 0.5rem;
+            height: 203px; // Fixed height to try an make everything look uniform because API images could be tiny
+            width: 100%;
         }
 
         &:hover {
