@@ -16,4 +16,8 @@ export class CharactersComponent implements OnInit {
         this.characters = this.animeDetailService.getCharacterInfo() ?? [];
         this.loading_characters = false;
     }
+
+    public onViewCharacters() {
+        this.animeDetailService.triggerViewCharacters();
+    }
 }

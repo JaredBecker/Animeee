@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { EventEmitter, Injectable } from '@angular/core';
 
 import { BehaviorSubject, Observable, Subject, of } from 'rxjs';
 
@@ -15,12 +15,28 @@ export class AnimeDetailService {
     private characterInfo?: any[];
     private reaction_type: ReactionType = 'popular';
 
-
+    private view_characters: EventEmitter<undefined> = new EventEmitter();
     private $reaction_subject: BehaviorSubject<Observable<Response>> = new BehaviorSubject<Observable<Response>>(of({} as Response));
 
     constructor(
         private animeService: AnimeService,
     ) {}
+
+    /**
+     * Fires an event when view more character link is clicked on summary page
+     */
+    public triggerViewCharacters(): void {
+        this.view_characters.emit();
+    }
+
+    /**
+     * Gets the character event stream
+     *
+     * @returns Character event stream
+     */
+    public getViewCharacterEvent(): EventEmitter<undefined> {
+        return this.view_characters;
+    }
 
     /**
      * Stores the list of related categories for an anime

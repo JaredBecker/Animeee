@@ -1,20 +1,29 @@
-import { Component, Input } from '@angular/core';
-
-import { NgbNavChangeEvent } from '@ng-bootstrap/ng-bootstrap';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { NgbNav } from '@ng-bootstrap/ng-bootstrap';
+import { AnimeDetailService } from '@shared/services/anime-detail.service';
+import { Subscription } from 'rxjs';
 
 @Component({
-  selector: 'app-tab-menu',
-  templateUrl: './tab-menu.component.html',
-  styleUrls: ['./tab-menu.component.scss']
+    selector: 'app-tab-menu',
+    templateUrl: './tab-menu.component.html',
+    styleUrls: ['./tab-menu.component.scss']
 })
-export class TabMenuComponent {
-    // @Input() public anime?: any;
+export class TabMenuComponent implements OnInit, OnDestroy {
+    public active: number = 0;
 
-    public active: number = 1;
+    @ViewChild('nav') public nav!: NgbNav;
+    private view_event_subscription?: Subscription;
 
-    public onNavChange(changeEvent: NgbNavChangeEvent) {
-        // if (changeEvent.nextId === 3) {
-        //     changeEvent.preventDefault();
-        // }
+    constructor(private animeDetailService: AnimeDetailService) { }
+
+    public ngOnInit(): void {
+        this.view_event_subscription = this.animeDetailService.getViewCharacterEvent()
+            .subscribe({
+                next: () => this.nav.select(2)
+            })
+    }
+
+    public ngOnDestroy(): void {
+        this.view_event_subscription?.unsubscribe();
     }
 }

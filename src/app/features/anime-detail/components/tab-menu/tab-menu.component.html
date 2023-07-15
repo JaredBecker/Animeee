@@ -1,23 +1,23 @@
-<ul ngbNav #nav="ngbNav" [(activeId)]="active" (navChange)="onNavChange($event)" class="nav-tabs">
-    <li [ngbNavItem]="1">
+<ul ngbNav #nav="ngbNav" [(activeId)]="active" class="nav-tabs">
+    <li [ngbNavItem]="0">
         <button ngbNavLink>Summary</button>
         <ng-template ngbNavContent>
-            <app-summary-tab />
+            <app-summary-tab (view_characters)="nav.select(2)" />
         </ng-template>
     </li>
-    <li [ngbNavItem]="2">
+    <li [ngbNavItem]="1">
         <button ngbNavLink>Episodes</button>
         <ng-template ngbNavContent>
             <app-episode-tab />
         </ng-template>
     </li>
-    <li [ngbNavItem]="3">
+    <li [ngbNavItem]="2">
         <button ngbNavLink>Characters</button>
         <ng-template ngbNavContent>
             <app-character-tab />
         </ng-template>
     </li>
-    <li [ngbNavItem]="4">
+    <li [ngbNavItem]="3">
         <button ngbNavLink>Franchise</button>
         <ng-template ngbNavContent>
             <app-franchise-tab />

@@ -47,7 +47,7 @@ export class FranchiseTabComponent implements OnInit, OnDestroy {
                                 this.franchises = franchise_res.included;
                             }
                         }
-                        console.log(this.franchises);
+
                         this.is_loading = false;
                     },
                     error: (err) => {
