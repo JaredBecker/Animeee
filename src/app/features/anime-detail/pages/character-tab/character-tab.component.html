@@ -1,8 +1,14 @@
-<ng-container *ngIf="is_loading;else view">
+<ng-container *ngIf="is_loading">
     <app-loader />
 </ng-container>
 
-<ng-template #view>
+<ng-container *ngIf="!is_loading && characters.length === 0">
+    <h5 class="oswald fw-bold text-uppercase">Characters</h5>
+    <p >Oh no... There doesn't seem to be any character info</p>
+</ng-container>
+
+<!-- Doing ngIf like this because if I use an else on the template above this title show up for a split second and an it looks janky -->
+<ng-container *ngIf="!is_loading && characters.length > 0;">
     <h5 class="oswald fw-bold text-uppercase">Characters</h5>
     <div class="row" id="character_summary">
         <div class="col-6 col-md-4 col-lg-3 mb-3" *ngFor="let character of characters">
@@ -17,4 +23,4 @@
             </a>
         </div>
     </div>
-</ng-template>
+</ng-container>

@@ -1,17 +1,11 @@
-<ng-container *ngIf="is_loading">
+<ng-container *ngIf="is_loading; else reactions_list">
     <app-loader></app-loader>
-</ng-container>
-
-<ng-container *ngIf="!is_loading && reactions.length === 0">
-    <h5 class="oswald fw-bold text-uppercase">Reactions</h5>
-    <p>Nothing to see here yet...</p>
 </ng-container>
 
 <ng-template #reactions_list>
     <div class="d-flex justify-content-between">
         <h5 class="oswald fw-bold text-uppercase">Reactions</h5>
-
-        <div ngbDropdown>
+        <div ngbDropdown *ngIf="reactions.length > 0;">
             <a role="button" id="post_sort" ngbDropdownToggle class="text-capitalize text-decoration-none fw-bold">
                 {{ reaction_type }}
             </a>
@@ -25,7 +19,8 @@
             </div>
         </div>
     </div>
-    <div class="reactions">
+    <p *ngIf="reactions.length === 0">Nothing to see here yet...</p>
+    <div class="reactions" *ngIf="reactions.length > 0;">
         <div class="reactions_card" *ngFor="let reaction of reactions">
             <div class="reactions_card_likes">
                 <i class="fa-regular fa-thumbs-up"></i>
