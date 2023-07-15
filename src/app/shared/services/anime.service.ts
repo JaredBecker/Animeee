@@ -165,8 +165,27 @@ export class AnimeService {
         return this.http.get<Response>(`${this.api}/episodes?filter[mediaType]=Anime&filter[media_id]=${anime_id}&page[limit]=20&sort=number`);
     }
 
+    /**
+     * Get franchise info for an anime
+     *
+     * @param anime_id ID of the anime
+     *
+     * @returns Franchise stream
+     */
     public getFranchise(anime_id: number) {
         return this.http.get<Response>(`${this.api}/media-relationships?filter[source_id]=${anime_id}&filter[source_type]=Anime&include=destination&page[limit]=20&sort=role`)
+    }
+
+    /**
+     * Use to do a general search on all available data
+     *
+     * @param search_phrase Search phrase
+     * @param type Anime or mange
+     *
+     * @returns Search stream
+     */
+    public generalSearch(search_phrase: string, type: 'anime' | 'manga' = 'anime') {
+        return this.http.get<Response>(`${this.api}/${type}&filter[text]=${search_phrase}`);
     }
 
     /**
