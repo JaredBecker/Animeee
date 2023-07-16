@@ -10,6 +10,8 @@ import { SliderComponent } from './components/slider/slider.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { LoaderComponent } from './components/loader/loader.component';
 import { PageLoaderComponent } from './components/page-loader/page-loader.component';
+import { CharacterModalComponent } from './components/character-modal/character-modal.component';
+import { TopShadowDirective } from './directives/top-shadow.directive';
 
 @NgModule({
     declarations: [
@@ -18,6 +20,8 @@ import { PageLoaderComponent } from './components/page-loader/page-loader.compon
         NavbarComponent,
         LoaderComponent,
         PageLoaderComponent,
+        CharacterModalComponent,
+        TopShadowDirective,
     ],
     imports: [
         CommonModule,
@@ -35,6 +39,7 @@ import { PageLoaderComponent } from './components/page-loader/page-loader.compon
         PageLoaderComponent,
         FormsModule,
         ReactiveFormsModule,
+        CharacterModalComponent,
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })

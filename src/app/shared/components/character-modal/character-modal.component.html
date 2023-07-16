@@ -1,0 +1,33 @@
+<div class="character_modal monty">
+    <button type="button" class="btn btn-sm fav_btn rounded-pill">
+        Add To Favorites
+        <i class="fa-solid fa-star ms-1 fav_btn_icon"></i>
+    </button>
+    <div class="character_modal_header">
+        <div class="character_modal_header_img">
+            <img *ngIf="!character.attributes.image" src="/assets/images/no-image.png" alt="No character image available">
+            <img
+                *ngIf="character.attributes.image"
+                [src]="character.attributes.image.original ? character.attributes.image.original : character.attributes.image.original"
+                [alt]="character.attributes.name + ' avatar picture'"
+            />
+        </div>
+        <h2 class="fw-bold oswald text-uppercase d-flex flex-column">
+            {{ character.attributes.name }}
+            <span *ngIf="character.attributes.names.ja_jp">
+                {{ character.attributes.names.ja_jp }}
+            </span>
+        </h2>
+    </div>
+    <div class="character_modal_body">
+        <ul class="list-unstyled character_details">
+            <ng-container *ngIf="character.attributes.otherNames.length > 0">
+                <li class="character_details_item">
+                    <span class="oswald character_details_item_title">Other Names</span>
+                    <span class="character_details_item_value">{{ character.attributes.otherNames.join(', ') }}</span>
+                </li>
+            </ng-container>
+        </ul>
+        <p class="character_modal_body_desc" [innerHTML]="description" appTopShadow></p>
+    </div>
+</div>
