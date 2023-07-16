@@ -10,8 +10,8 @@
 <ng-container *ngIf="!loading_characters && characters.length > 0">
     <h5 class="oswald fw-bold text-uppercase">Characters</h5>
     <div class="row" id="character_summary">
-        <div class="col-6 col-md-4 col-lg-3" *ngFor="let character of characters">
-            <a href="#" class="character_card">
+        <div class="col-6 col-md-4 col-lg-3 mb-3" *ngFor="let character of characters">
+            <a role="button" (click)="onSelectCharacter(character)" class="character_card">
                 <div class="character_card_img">
                     <img *ngIf="!character.attributes.image" src="/assets/images/no-image.png" class="img-fluid" alt="No image for the resource" />
                     <img *ngIf="character.attributes.image" [src]="character.attributes.image.original" class="img-fluid" [alt]="character.attributes.name">
