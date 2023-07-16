@@ -2,8 +2,11 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 
 import { Subscription } from 'rxjs';
 
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+
 import { AnimeService } from '@shared/services/anime.service';
 import { AnimeDetailService } from '@shared/services/anime-detail.service';
+import { CharacterModalComponent } from '@shared/components/character-modal/character-modal.component';
 
 @Component({
     selector: 'app-character-tab',
@@ -19,6 +22,7 @@ export class CharacterTabComponent implements OnInit, OnDestroy {
     constructor(
         private animeService: AnimeService,
         private animeDetailService: AnimeDetailService,
+        private modalService: NgbModal,
     ) { }
 
     public ngOnInit(): void {
@@ -44,5 +48,10 @@ export class CharacterTabComponent implements OnInit, OnDestroy {
 
     public ngOnDestroy(): void {
         this.character_subscription?.unsubscribe();
+    }
+
+    public onSelectCharacter(character: any): void {
+        const modalRef = this.modalService.open(CharacterModalComponent, { backdropClass: 'custom_backdrop' })
+        modalRef.componentInstance.character = character;
     }
 }
