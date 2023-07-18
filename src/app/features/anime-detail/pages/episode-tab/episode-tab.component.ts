@@ -4,6 +4,8 @@ import { Subscription } from 'rxjs';
 
 import { AnimeService } from '@shared/services/anime.service';
 import { AnimeDetailService } from '@shared/services/anime-detail.service';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { EpisodeModalComponent } from '@shared/components/episode-modal/episode-modal.component';
 
 @Component({
     selector: 'app-episode-tab',
@@ -19,6 +21,7 @@ export class EpisodeTabComponent implements OnInit, OnDestroy {
     constructor(
         private animeService: AnimeService,
         private animeDetailService: AnimeDetailService,
+        private modalService: NgbModal,
     ) { }
 
     public ngOnInit(): void {
@@ -44,5 +47,11 @@ export class EpisodeTabComponent implements OnInit, OnDestroy {
 
     public ngOnDestroy(): void {
         this.episode_subscription?.unsubscribe();
+    }
+
+    public onSelectEpisode(episode: any) {
+        console.log(episode);
+        const modal = this.modalService.open(EpisodeModalComponent);
+        modal.componentInstance.episode = episode;
     }
 }

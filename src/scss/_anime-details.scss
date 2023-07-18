@@ -32,7 +32,7 @@
     margin-bottom: 0.75rem;
 
     img {
-        border-radius: 0.5rem;
+        border-radius: 0.75rem;
         box-shadow: var(--box-shadow);
     }
 }
@@ -59,12 +59,6 @@
         display: inline-flex;
         align-items: center;
     }
-}
-
-.block {
-    height: 500px;
-    width: 100%;
-    background-color: rgba($primary, 0.3);
 }
 
 .ribbon {
