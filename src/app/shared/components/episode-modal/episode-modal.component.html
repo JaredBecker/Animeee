@@ -1,13 +1,21 @@
-<div class="episodes_modal monty p-3">
-    <button type="button" class="btn btn-sm fav_btn rounded-pill">
-        Add To Favorites
-        <i class="fa-solid fa-star ms-1 fav_btn_icon"></i>
-    </button>
+<div class="episode_modal monty p-3">
     <div class="episode_modal_header" *ngIf="episode.attributes.thumbnail">
-        <div class="episode_modal_header_img ratio ratio-16x9">
-            <img [src]="episode.attributes.thumbnail.original" [alt]="episode.attributes.canonicalTitle">
+        <div class="episode_modal_header_img">
+            <div [ngClass]="{'d-none': !loading_image}" class="placeholder-glow w-100" style="height: 250px;">
+                <div class="placeholder h-100 wi-100 rounded"></div>
+            </div>
+            <img
+                [src]="episode.attributes.thumbnail.medium ? episode.attributes.thumbnail.medium : episode.attributes.thumbnail.original"
+                [alt]="episode.attributes.canonicalTitle"
+                class="ratio ratio-16x9"
+                (load)="onLoad()"
+            />
+            <span *ngIf="episode.attributes.length" class="badge episode_length">
+                <i class="fa-regular fa-clock"></i>
+                {{ episode.attributes.length + ' min' }}
+            </span>
         </div>
-        <h2 class="fw-bold oswald text-uppercase d-flex flex-column">
+        <h2 class="oswald d-flex flex-column">
             {{ episode.attributes.canonicalTitle }}
             <span *ngIf="episode.attributes.titles.ja_jp">
                 {{ episode.attributes.titles.ja_jp }}
@@ -16,12 +24,8 @@
     </div>
     <div class="episode_modal_body">
         <ul class="list-unstyled episode_details">
-            <li class="episode_details_item" *ngIf="episode.attributes.length">
-                <span class="oswald episode_details_item_title">Length:</span>
-                <span class="episode_details_item_value">{{ episode.attributes.length }}</span>
-            </li>
             <li class="episode_details_item" *ngIf="episode.attributes.seasonNumber">
-                <span class="oswald episode_details_item_title">Season:</span>
+                <span class="oswald episode_details_item_title">Season</span>
                 <span class="episode_details_item_value">{{ episode.attributes.seasonNumber }}</span>
             </li>
             <li class="episode_details_item" *ngIf="episode.attributes.airdate">
@@ -29,6 +33,14 @@
                 <span class="episode_details_item_value">{{ episode.attributes.airdate }}</span>
             </li>
         </ul>
-        <p class="episode_modal_body_desc" *ngIf="description" [innerHTML]="description" appTopShadow></p>
+        <ng-container *ngIf="description">
+            <h6 class="fw-bold oswald">Description</h6>
+            <p
+                class="episode_modal_body_desc"
+                [innerHTML]="description"
+                appTopShadow
+                [height]="250"
+            ></p>
+        </ng-container>
     </div>
 </div>
