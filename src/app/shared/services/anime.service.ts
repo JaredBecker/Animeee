@@ -202,6 +202,35 @@ export class AnimeService {
     }
 
     /**
+     * Takes the category and sets the search stream
+     *
+     * @param category category name to search for
+     */
+    public setCategorySearch(category: string): void {
+        // TODO: Make category sort type dynamic
+        this.$search_stream.next(
+            this.http.get<Response>(`${this.api}/anime?filter[categories]=${category}&page[limit]=20&sort=popularityRank`)
+        );
+    }
+
+    /**
+     * Takes the type and sets the search stream (most-popular, top-airing...)
+     *
+     * @param key The type to search for
+     */
+    public setTypeSearch(key: string) {
+        const types = {
+            'trending-this-week': `${this.api}/trending/anime?limit=20`,
+            'top-airing-anime': `${this.api}/anime?page[limit]=20&sort=-user_count`,
+            'upcoming-anime': `${this.api}/anime?filter[status]=upcoming&page[limit]=20&sort=-user_count`,
+            'highest-rated-anime': `${this.api}/anime?page[limit]=20&sort=-average_rating`,
+            'most-popular-anime': `${this.api}/anime?page[limit]=20&sort=-user_count`,
+        };
+
+
+    }
+
+    /**
      * Get the search stream
      *
      * @returns Search stream

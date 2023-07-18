@@ -49,7 +49,7 @@
             </swiper-slide>
         </swiper-container>
         <div class="d-flex justify-content-end">
-            <a [routerLink]="['/search', search_url]" class="view_more">
+            <a routerLink="/search" [queryParams]="{'type': search_url}" class="view_more">
                 View More
                 <i class="fa-solid fa-arrow-right ms-2"></i>
             </a>

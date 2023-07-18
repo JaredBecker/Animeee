@@ -4,6 +4,7 @@ import { FormControl } from '@angular/forms';
 
 import {
     Subscription,
+    combineLatest,
     debounceTime,
     distinctUntilChanged,
     map,
@@ -23,6 +24,7 @@ export class SearchPageComponent implements OnInit, OnDestroy {
     public is_loading: boolean = true;
     public search_type: string = 'anime';
     public search_input: FormControl<string | null> = new FormControl('');
+    public next_results_url?: string;
 
     private search_input_subscription?: Subscription;
     private search_subscription?: Subscription;
@@ -57,21 +59,65 @@ export class SearchPageComponent implements OnInit, OnDestroy {
                 }
             })
 
-        this.route_subscription = this.activatedRoute.paramMap
+
+        const url_info = combineLatest([
+            this.activatedRoute.queryParamMap,
+            this.activatedRoute.paramMap,
+        ]);
+
+        this.route_subscription = url_info
             .pipe(
-                map(params => params),
+                map((url_data) => {
+                    const queries = url_data[0];
+                    const params = url_data[1];
+
+                    const category = queries.get('category');
+                    const type = queries.get('type');
+                    const search_phrase = params.get('search-phrase');
+
+                    if (category) {
+                        return { load: 'category', value: category };
+                    }
+
+                    if (type) {
+                        return { load: 'type', value: type };
+                    }
+
+                    if (search_phrase) {
+                        return {load: 'search', value: search_phrase };
+                    }
+
+                    return false;
+                }),
             )
             .subscribe({
-                next: params => {
-                    this.search_phrase = params.get('search-phrase') ?? '';
+                next: (query_data) => {
+                    if (query_data) {
+                        // Category
+                        if (query_data.load === 'category') {
+                            if (query_data.value && query_data.value !== '') {
+                                this.animeService.setCategorySearch(query_data.value);
+                            }
+                        }
 
-                    if (this.search_phrase !== '') {
-                        // Checking if it should be manga or anime
-                        this.setSearchPhrase(this.search_phrase);
-                        this.search_input.setValue(this.search_phrase);
-                    } else {
-                        // No search param so just show no results
-                        this.is_loading = false;
+                        // Type
+                        if (query_data.load === 'type') {
+                            if (query_data.value && query_data.value !== '') {
+                                this.animeService.setCategorySearch(query_data.value);
+                            }
+                        }
+
+                        // General Search
+                        if (query_data.load === 'search') {
+                            if (query_data.value && query_data.value !== '') {
+                                this.search_phrase = query_data.value;
+                                this.setSearchPhrase(this.search_phrase);
+                                this.search_input.setValue(this.search_phrase);
+                            } else {
+                                // No search param so just show no results
+                                this.is_loading = false;
+                            }
+                        }
                     }
                 },
                 error: err => {
