@@ -2,9 +2,10 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 
 import { Subscription } from 'rxjs';
 
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+
 import { AnimeService } from '@shared/services/anime.service';
 import { AnimeDetailService } from '@shared/services/anime-detail.service';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { EpisodeModalComponent } from '@shared/components/episode-modal/episode-modal.component';
 
 @Component({
@@ -50,8 +51,12 @@ export class EpisodeTabComponent implements OnInit, OnDestroy {
     }
 
     public onSelectEpisode(episode: any) {
+        const e = episode.attributes;
         console.log(episode);
-        const modal = this.modalService.open(EpisodeModalComponent);
-        modal.componentInstance.episode = episode;
+        // Make sure that there is some data to display before firing modal
+        if (e.canonicalTitle && e?.thumbnail) {
+            const modal = this.modalService.open(EpisodeModalComponent);
+            modal.componentInstance.episode = episode;
+        }
     }
 }
