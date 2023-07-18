@@ -1,0 +1,34 @@
+<div class="episodes_modal monty p-3">
+    <button type="button" class="btn btn-sm fav_btn rounded-pill">
+        Add To Favorites
+        <i class="fa-solid fa-star ms-1 fav_btn_icon"></i>
+    </button>
+    <div class="episode_modal_header" *ngIf="episode.attributes.thumbnail">
+        <div class="episode_modal_header_img ratio ratio-16x9">
+            <img [src]="episode.attributes.thumbnail.original" [alt]="episode.attributes.canonicalTitle">
+        </div>
+        <h2 class="fw-bold oswald text-uppercase d-flex flex-column">
+            {{ episode.attributes.canonicalTitle }}
+            <span *ngIf="episode.attributes.titles.ja_jp">
+                {{ episode.attributes.titles.ja_jp }}
+            </span>
+        </h2>
+    </div>
+    <div class="episode_modal_body">
+        <ul class="list-unstyled episode_details">
+            <li class="episode_details_item" *ngIf="episode.attributes.length">
+                <span class="oswald episode_details_item_title">Length:</span>
+                <span class="episode_details_item_value">{{ episode.attributes.length }}</span>
+            </li>
+            <li class="episode_details_item" *ngIf="episode.attributes.seasonNumber">
+                <span class="oswald episode_details_item_title">Season:</span>
+                <span class="episode_details_item_value">{{ episode.attributes.seasonNumber }}</span>
+            </li>
+            <li class="episode_details_item" *ngIf="episode.attributes.airdate">
+                <span class="oswald episode_details_item_title">Aired On:</span>
+                <span class="episode_details_item_value">{{ episode.attributes.airdate }}</span>
+            </li>
+        </ul>
+        <p class="episode_modal_body_desc" *ngIf="description" [innerHTML]="description" appTopShadow></p>
+    </div>
+</div>

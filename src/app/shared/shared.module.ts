@@ -12,6 +12,7 @@ import { LoaderComponent } from './components/loader/loader.component';
 import { PageLoaderComponent } from './components/page-loader/page-loader.component';
 import { CharacterModalComponent } from './components/character-modal/character-modal.component';
 import { TopShadowDirective } from './directives/top-shadow.directive';
+import { EpisodeModalComponent } from './components/episode-modal/episode-modal.component';
 
 @NgModule({
     declarations: [
@@ -22,6 +23,7 @@ import { TopShadowDirective } from './directives/top-shadow.directive';
         PageLoaderComponent,
         CharacterModalComponent,
         TopShadowDirective,
+        EpisodeModalComponent,
     ],
     imports: [
         CommonModule,
