@@ -5,7 +5,7 @@
 <ng-template #menu>
     <ul class="category_list">
         <li class="category_list_item" *ngFor="let category of categories">
-            <a class="category_list_link" [href]="category.links.self" target="_blank">
+            <a class="category_list_link" [routerLink]="['/search']" [queryParams]="{'category': category.attributes.slug}">
                 {{ category.attributes.title }}
             </a>
         </li>

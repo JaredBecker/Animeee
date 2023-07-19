@@ -90,10 +90,14 @@
             }
         }
 
+        h6 {
+            font-size: 0.9rem;
+        }
+
         &_desc {
             max-height: 400px;
             overflow: auto;
-            padding: 0 0.5rem;
+            padding: 0.5rem;
             border-radius: 0.25rem;
 
             &.top_shadow {
