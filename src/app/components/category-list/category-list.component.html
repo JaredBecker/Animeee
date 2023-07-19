@@ -9,6 +9,34 @@
                 {{ category.attributes.title }}
             </a>
         </li>
+        <ng-container *ngIf="show_type_links">
+            <hr class="w-100" />
+            <li class="category_list_item">
+                <a class="category_list_link" [routerLink]="['/search']" [queryParams]="{'type': 'trending'}">
+                    Trending
+                </a>
+            </li>
+            <li class="category_list_item">
+                <a class="category_list_link" [routerLink]="['/search']" [queryParams]="{'type': 'top-airing'}">
+                    Top Airing
+                </a>
+            </li>
+            <li class="category_list_item">
+                <a class="category_list_link" [routerLink]="['/search']" [queryParams]="{'type': 'upcoming'}">
+                    Upcoming
+                </a>
+            </li>
+            <li class="category_list_item">
+                <a class="category_list_link" [routerLink]="['/search']" [queryParams]="{'type': 'highest-rated'}">
+                    Highest Rated
+                </a>
+            </li>
+            <li class="category_list_item">
+                <a class="category_list_link" [routerLink]="['/search']" [queryParams]="{'type': 'most-popular'}">
+                    Most Popular
+                </a>
+            </li>
+        </ng-container>
     </ul>
     <a routerLink="/search" class="btn btn-primary btn-sm text-white d-flex justify-content-between align-items-center mt-3 px-3 rounded-pill">
         Full Search

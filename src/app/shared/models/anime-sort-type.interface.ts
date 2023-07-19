@@ -1,4 +1,4 @@
-export type AnimeSortType = 'trending-this-week' | 'top-airing-anime' | 'upcoming-anime' | 'highest-rated-anime' | 'most-popular-anime';
+export type AnimeSortType = 'trending' | 'top-airing' | 'upcoming' | 'highest-rated' | 'most-popular';
 
 export type AnimeSortTypeURL = {
     [K in AnimeSortType]: string;
