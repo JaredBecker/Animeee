@@ -19,6 +19,7 @@ import { Router } from '@angular/router';
 export class SliderComponent implements OnChanges, OnInit, OnDestroy {
     @Input() public $anime_stream?: Observable<Response>;
     @Input() public title?: string;
+    @Input() public search_url!: string;
 
     public animes?: any[];
     public is_loading: boolean = true;

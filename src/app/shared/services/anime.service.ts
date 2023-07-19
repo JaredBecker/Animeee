@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { AnimeSortType, AnimeSortTypeURL } from '@shared/models/anime-sort-type.interface';
 import { Response } from '@shared/models/response.interface';
 
 import { Observable, Subject, map, shareReplay, throwError } from 'rxjs';
@@ -198,6 +199,37 @@ export class AnimeService {
     public setSearchPhrase(search_phrase: string, type: 'anime' | 'manga' = 'anime'): void {
         this.$search_stream.next(
             this.generalSearch(search_phrase, type)
+        );
+    }
+
+    /**
+     * Takes the category and sets the search stream
+     *
+     * @param category category name to search for
+     */
+    public setCategorySearch(category: string): void {
+        // TODO: Make category sort type dynamic
+        this.$search_stream.next(
+            this.http.get<Response>(`${this.api}/anime?filter[categories]=${category}&page[limit]=20&sort=popularityRank`)
+        );
+    }
+
+    /**
+     * Takes the type and sets the search stream (most-popular, top-airing...)
+     *
+     * @param key The type to search for
+     */
+    public setTypeSearch(key: AnimeSortType) {
+        const types: AnimeSortTypeURL = {
+            'trending-this-week': `${this.api}/trending/anime?limit=20`,
+            'top-airing-anime': `${this.api}/anime?page[limit]=20&sort=-user_count`,
+            'upcoming-anime': `${this.api}/anime?filter[status]=upcoming&page[limit]=20&sort=-user_count`,
+            'highest-rated-anime': `${this.api}/anime?page[limit]=20&sort=-average_rating`,
+            'most-popular-anime': `${this.api}/anime?page[limit]=20&sort=-user_count`,
+        };
+
+        this.$search_stream.next(
+            this.http.get<Response>(types[key])
         );
     }
 

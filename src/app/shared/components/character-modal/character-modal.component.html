@@ -28,6 +28,9 @@
                 </li>
             </ng-container>
         </ul>
-        <p class="character_modal_body_desc" [innerHTML]="description" appTopShadow></p>
+        <ng-container *ngIf="description">
+            <h6 class="fw-bold oswald">Character Bio</h6>
+            <p class="character_modal_body_desc" [innerHTML]="description" appTopShadow></p>
+        </ng-container>
     </div>
 </div>
