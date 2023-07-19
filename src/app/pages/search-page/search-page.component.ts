@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormControl } from '@angular/forms';
 
@@ -8,7 +8,8 @@ import {
     debounceTime,
     distinctUntilChanged,
     map,
-    switchMap
+    switchMap,
+    tap
 } from 'rxjs';
 
 import { AnimeService } from '@shared/services/anime.service';
@@ -23,13 +24,15 @@ export class SearchPageComponent implements OnInit, OnDestroy {
     public animes: any[] = [];
     public search_phrase?: string;
     public is_loading: boolean = true;
+    public loading_more: boolean = false;
     public search_type: string = 'anime';
     public search_input: FormControl<string | null> = new FormControl('');
-    public next_results_url?: string;
+    public more_results_url?: string;
 
     private search_input_subscription?: Subscription;
     private search_subscription?: Subscription;
     private route_subscription?: Subscription;
+    private more_results_subscription?: Subscription;
 
     constructor(
         private router: Router,
@@ -48,8 +51,11 @@ export class SearchPageComponent implements OnInit, OnDestroy {
             )
             .subscribe({
                 next: (search_results) => {
+                    console.log(search_results);
+
                     if (search_results.data.length > 0) {
                         this.animes = search_results.data;
+                        this.more_results_url = search_results?.links?.next && search_results.links.next;
                     }
 
                     this.is_loading = false;
@@ -60,6 +66,23 @@ export class SearchPageComponent implements OnInit, OnDestroy {
                 }
             })
 
+        this.more_results_subscription = this.animeService.getMoreResultsStream()
+            .pipe(
+                switchMap(stream => stream)
+            )
+            .subscribe({
+                next: (next_results) => {
+                   if (next_results.data.length > 0) {
+                        this.animes.push(...next_results.data);
+                        this.loading_more = false;
+                        this.more_results_url = next_results?.links?.next && next_results.links.next;
+                   }
+                },
+                error: (err) => {
+                    this.loading_more = false;
+                    console.error('Failed to load more results', err);
+                }
+            })
 
         const url_info = combineLatest([
             this.activatedRoute.queryParamMap,
@@ -69,6 +92,9 @@ export class SearchPageComponent implements OnInit, OnDestroy {
         this.route_subscription = url_info
             .pipe(
                 map((url_data) => {
+                    this.is_loading = true;
+                    this.more_results_url = undefined;
+
                     const queries = url_data[0];
                     const params = url_data[1];
 
@@ -94,22 +120,21 @@ export class SearchPageComponent implements OnInit, OnDestroy {
             .subscribe({
                 next: (query_data) => {
                     if (query_data) {
-                        // Category
                         if (query_data.load === 'category') {
                             if (query_data.value && query_data.value !== '') {
                                 this.animeService.setCategorySearch(query_data.value);
+                                this.search_phrase = query_data.value;
                             }
                         }
 
-                        // Type
                         if (query_data.load === 'type') {
                             if (query_data.value && query_data.value !== '') {
                                 this.assertIsAnimeSortType(query_data.value);
                                 this.animeService.setTypeSearch(query_data.value);
+                                this.search_phrase = query_data.value;
                             }
                         }
 
-                        // General Search
                         if (query_data.load === 'search') {
                             if (query_data.value && query_data.value !== '') {
                                 this.search_phrase = query_data.value;
@@ -120,6 +145,8 @@ export class SearchPageComponent implements OnInit, OnDestroy {
                                 this.is_loading = false;
                             }
                         }
+                    } else {
+                        this.is_loading = false;
                     }
                 },
                 error: err => {
@@ -148,6 +175,7 @@ export class SearchPageComponent implements OnInit, OnDestroy {
         this.search_subscription?.unsubscribe();
         this.route_subscription?.unsubscribe();
         this.search_input_subscription?.unsubscribe();
+        this.more_results_subscription?.unsubscribe();
     }
 
     public onUpdateSearchType(type: string): void {
@@ -161,11 +189,11 @@ export class SearchPageComponent implements OnInit, OnDestroy {
 
     public assertIsAnimeSortType(param: string): asserts param is AnimeSortType {
         if (
-            param !== 'trending-this-week' &&
-            param !== 'top-airing-anime' &&
-            param !== 'upcoming-anime' &&
-            param !== 'highest-rated-anime' &&
-            param !== 'most-popular-anime'
+            param !== 'trending' &&
+            param !== 'top-airing' &&
+            param !== 'upcoming' &&
+            param !== 'highest-rated' &&
+            param !== 'most-popular'
         ) {
             throw new Error(`Invalid AnimeSortType: ${param}`);
         }
@@ -181,5 +209,12 @@ export class SearchPageComponent implements OnInit, OnDestroy {
         }
 
         this.animeService.setSearchPhrase(value, type);
+    }
+
+    public onLoadMore(): void {
+        if (this.more_results_url) {
+            this.loading_more = true;
+            this.animeService.LoadMoreRequest(this.more_results_url);
+        }
     }
 }
