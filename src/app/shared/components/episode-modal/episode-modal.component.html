@@ -4,8 +4,9 @@
             <div [ngClass]="{'d-none': !loading_image}" class="placeholder-glow w-100" style="height: 250px;">
                 <div class="placeholder h-100 wi-100 rounded"></div>
             </div>
+            <!-- TODO: change this back to medium check. Did this to flex to the homies -->
             <img
-                [src]="episode.attributes.thumbnail.medium ? episode.attributes.thumbnail.medium : episode.attributes.thumbnail.original"
+                [src]="episode.attributes.thumbnail.original ? episode.attributes.thumbnail.original : episode.attributes.thumbnail.original"
                 [alt]="episode.attributes.canonicalTitle"
                 class="ratio ratio-16x9"
                 (load)="onLoad()"

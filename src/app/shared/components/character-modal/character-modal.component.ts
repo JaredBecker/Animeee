@@ -8,12 +8,16 @@ import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 })
 export class CharacterModalComponent implements OnInit {
     @Input() public character!: any;
-    public description!: SafeHtml;
+    public description?: SafeHtml;
 
     constructor(private sanitizer: DomSanitizer) { }
 
     public ngOnInit(): void {
+        const desc = this.character.attributes.description;
+
         // This is here to handle HTML entities in the description like &gt;
-        this.description = this.sanitizer.bypassSecurityTrustHtml(this.character.attributes.description);
+        if (desc && desc !== '') {
+            this.description = this.sanitizer.bypassSecurityTrustHtml(this.character.attributes.description);
+        }
     }
 }

@@ -1,7 +1,6 @@
 import { Component, Input, OnInit, inject } from '@angular/core';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 
-
 @Component({
     selector: 'app-episode-modal',
     templateUrl: './episode-modal.component.html',
@@ -16,7 +15,6 @@ export class EpisodeModalComponent implements OnInit {
     private sanitizer: DomSanitizer = inject(DomSanitizer);
 
     public ngOnInit(): void {
-        console.log(this.loading_image);
         if (this.episode.attributes.description)
         this.description = this.sanitizer.bypassSecurityTrustHtml(this.episode.attributes.description);
     }

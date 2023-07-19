@@ -11,9 +11,11 @@ import { Observable, Subject, map, shareReplay, throwError } from 'rxjs';
 export class AnimeService {
     // The more I work with this api the more I hate life... ಥ_ಥ
     private api: string = 'https://kitsu.io/api/edge';
+
     private anime_stream_map = new Map<string, Observable<Response>>();
     private category_stream_map = new Map<string, Observable<Response>>();
     private $search_stream: Subject<Observable<Response>> = new Subject();
+    private $more_results_stream: Subject<Observable<Response>> = new Subject();
 
     constructor(private http: HttpClient) { }
 
@@ -219,18 +221,30 @@ export class AnimeService {
      *
      * @param key The type to search for
      */
-    public setTypeSearch(key: AnimeSortType) {
+    public setTypeSearch(key: AnimeSortType): void {
         const types: AnimeSortTypeURL = {
-            'trending-this-week': `${this.api}/trending/anime?limit=20`,
-            'top-airing-anime': `${this.api}/anime?page[limit]=20&sort=-user_count`,
-            'upcoming-anime': `${this.api}/anime?filter[status]=upcoming&page[limit]=20&sort=-user_count`,
-            'highest-rated-anime': `${this.api}/anime?page[limit]=20&sort=-average_rating`,
-            'most-popular-anime': `${this.api}/anime?page[limit]=20&sort=-user_count`,
+            'trending': `${this.api}/trending/anime?limit=20`,
+            'top-airing': `${this.api}/anime?page[limit]=20&sort=-user_count`,
+            'upcoming': `${this.api}/anime?filter[status]=upcoming&page[limit]=20&sort=-user_count`,
+            'highest-rated': `${this.api}/anime?page[limit]=20&sort=-average_rating`,
+            'most-popular': `${this.api}/anime?page[limit]=20&sort=-user_count`,
         };
 
         this.$search_stream.next(
             this.http.get<Response>(types[key])
         );
+    }
+
+    /**
+     * Sets the next set of results in the $more_results_stream
+     *
+     * @param next_link The URL to load the next set of data
+     */
+    public LoadMoreRequest(next_link: string): void {
+        // TODO: Make this dynamic so anything with a next link can load more results
+        this.$more_results_stream.next(
+            this.http.get<Response>(next_link)
+        )
     }
 
     /**
@@ -240,6 +254,10 @@ export class AnimeService {
      */
     public getSearchStream(): Observable<Observable<Response>> {
         return this.$search_stream.asObservable();
+    }
+
+    public getMoreResultsStream(): Observable<Observable<Response>> {
+        return this.$more_results_stream.asObservable();
     }
 
     /**

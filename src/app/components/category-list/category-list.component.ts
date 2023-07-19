@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 
 import { Subscription } from 'rxjs';
 
@@ -10,6 +10,7 @@ import { AnimeService } from 'src/app/shared/services/anime.service';
   styleUrls: ['./category-list.component.scss']
 })
 export class CategoryListComponent implements OnInit, OnDestroy {
+    @Input() public show_type_links: boolean = false;
     public categories?: any[];
     public is_loading: boolean = true;
 
