@@ -52,7 +52,7 @@ export class EpisodeTabComponent implements OnInit, OnDestroy {
 
     public onSelectEpisode(episode: any) {
         const e = episode.attributes;
-        console.log(episode);
+
         // Make sure that there is some data to display before firing modal
         if (e.canonicalTitle && e?.thumbnail) {
             const modal = this.modalService.open(EpisodeModalComponent);

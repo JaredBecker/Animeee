@@ -51,8 +51,6 @@ export class SearchPageComponent implements OnInit, OnDestroy {
             )
             .subscribe({
                 next: (search_results) => {
-                    console.log(search_results);
-
                     if (search_results.data.length > 0) {
                         this.animes = search_results.data;
                         this.more_results_url = search_results?.links?.next && search_results.links.next;
