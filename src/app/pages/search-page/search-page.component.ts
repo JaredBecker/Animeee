@@ -12,6 +12,7 @@ import {
 } from 'rxjs';
 
 import { AnimeService } from '@shared/services/anime.service';
+import { AnimeSortType } from '@shared/models/anime-sort-type.interface';
 
 @Component({
     selector: 'app-search-page',
@@ -84,7 +85,7 @@ export class SearchPageComponent implements OnInit, OnDestroy {
                     }
 
                     if (search_phrase) {
-                        return {load: 'search', value: search_phrase };
+                        return { load: 'search', value: search_phrase };
                     }
 
                     return false;
@@ -103,7 +104,8 @@ export class SearchPageComponent implements OnInit, OnDestroy {
                         // Type
                         if (query_data.load === 'type') {
                             if (query_data.value && query_data.value !== '') {
-                                this.animeService.setCategorySearch(query_data.value);
+                                this.assertIsAnimeSortType(query_data.value);
+                                this.animeService.setTypeSearch(query_data.value);
                             }
                         }
 
@@ -154,6 +156,18 @@ export class SearchPageComponent implements OnInit, OnDestroy {
         if (this.search_phrase && this.search_phrase !== '') {
             this.is_loading = true;
             this.setSearchPhrase(this.search_phrase);
+        }
+    }
+
+    public assertIsAnimeSortType(param: string): asserts param is AnimeSortType {
+        if (
+            param !== 'trending-this-week' &&
+            param !== 'top-airing-anime' &&
+            param !== 'upcoming-anime' &&
+            param !== 'highest-rated-anime' &&
+            param !== 'most-popular-anime'
+        ) {
+            throw new Error(`Invalid AnimeSortType: ${param}`);
         }
     }
 

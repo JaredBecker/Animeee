@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { AnimeSortType, AnimeSortTypeURL } from '@shared/models/anime-sort-type.interface';
 import { Response } from '@shared/models/response.interface';
 
 import { Observable, Subject, map, shareReplay, throwError } from 'rxjs';
@@ -218,8 +219,8 @@ export class AnimeService {
      *
      * @param key The type to search for
      */
-    public setTypeSearch(key: string) {
-        const types = {
+    public setTypeSearch(key: AnimeSortType) {
+        const types: AnimeSortTypeURL = {
             'trending-this-week': `${this.api}/trending/anime?limit=20`,
             'top-airing-anime': `${this.api}/anime?page[limit]=20&sort=-user_count`,
             'upcoming-anime': `${this.api}/anime?filter[status]=upcoming&page[limit]=20&sort=-user_count`,
@@ -227,7 +228,9 @@ export class AnimeService {
             'most-popular-anime': `${this.api}/anime?page[limit]=20&sort=-user_count`,
         };
 
-
+        this.$search_stream.next(
+            this.http.get<Response>(types[key])
+        );
     }
 
     /**
