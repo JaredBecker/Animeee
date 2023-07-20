@@ -25,7 +25,8 @@ export class SearchPageComponent implements OnInit, OnDestroy {
     public search_phrase?: string;
     public is_loading: boolean = true;
     public loading_more: boolean = false;
-    public search_type: string = 'anime';
+    public lookup_type: string = 'anime';
+    public current_search_type?: string;
     public search_input: FormControl<string | null> = new FormControl('');
     public more_results_url?: string;
 
@@ -118,30 +119,17 @@ export class SearchPageComponent implements OnInit, OnDestroy {
             .subscribe({
                 next: (query_data) => {
                     if (query_data) {
-                        if (query_data.load === 'category') {
-                            if (query_data.value && query_data.value !== '') {
-                                this.animeService.setCategorySearch(query_data.value);
-                                this.search_phrase = query_data.value;
-                            }
-                        }
+                        this.current_search_type = query_data.load;
 
-                        if (query_data.load === 'type') {
-                            if (query_data.value && query_data.value !== '') {
-                                this.assertIsAnimeSortType(query_data.value);
-                                this.animeService.setTypeSearch(query_data.value);
-                                this.search_phrase = query_data.value;
-                            }
-                        }
+                        if (query_data.value && query_data.value !== '') {
+                            this.search_phrase = query_data.value;
+                            this.setSearchPhrase(query_data.value)
 
-                        if (query_data.load === 'search') {
-                            if (query_data.value && query_data.value !== '') {
-                                this.search_phrase = query_data.value;
-                                this.setSearchPhrase(this.search_phrase);
+                            if (this.current_search_type === 'search') {
                                 this.search_input.setValue(this.search_phrase);
-                            } else {
-                                // No search param so just show no results
-                                this.is_loading = false;
                             }
+
+                            this.is_loading = false;
                         }
                     } else {
                         this.is_loading = false;
@@ -177,7 +165,7 @@ export class SearchPageComponent implements OnInit, OnDestroy {
     }
 
     public onUpdateSearchType(type: string): void {
-        this.search_type = type;
+        this.lookup_type = type;
 
         if (this.search_phrase && this.search_phrase !== '') {
             this.is_loading = true;
@@ -198,15 +186,18 @@ export class SearchPageComponent implements OnInit, OnDestroy {
     }
 
     public setSearchPhrase(value: string): void {
-        let type: 'anime' | 'manga';
+        let type = this.getType();
 
-        if (this.search_type === 'user' || this.search_type === 'anime') {
-            type = 'anime';
+        if (this.current_search_type === 'category') {
+            this.animeService.setCategorySearch(this.search_phrase ?? '', type);
+        } else if (this.current_search_type === 'type') {
+            const phrase = this.search_phrase as AnimeSortType;
+
+            this.assertIsAnimeSortType(phrase);
+            this.animeService.setTypeSearch(phrase, type);
         } else {
-            type = 'manga';
+            this.animeService.setSearchPhrase(value, type);
         }
-
-        this.animeService.setSearchPhrase(value, type);
     }
 
     public onLoadMore(): void {
@@ -214,5 +205,17 @@ export class SearchPageComponent implements OnInit, OnDestroy {
             this.loading_more = true;
             this.animeService.LoadMoreRequest(this.more_results_url);
         }
+    }
+
+    private getType(): 'anime' | 'manga' {
+        let type: 'anime' | 'manga';
+        // TODO: Add in user lookup
+        if (this.lookup_type === 'user' || this.lookup_type === 'anime') {
+            type = 'anime';
+        } else {
+            type = 'manga';
+        }
+
+        return type;
     }
 }

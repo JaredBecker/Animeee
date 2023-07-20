@@ -109,14 +109,19 @@ export class AnimeDetailsComponent implements OnInit, OnDestroy {
         const details: AnimeDetail[] = [];
         const anime = this.anime.attributes;
 
-        details.push({title: 'English', value: anime.titles.en});
-        details.push({title: 'Japanese', value: anime.titles.ja_jp});
-        details.push({title: 'Japanese (Romaji)', value: anime.titles.en_jp});
-        details.push({title: 'Type', value: anime.showType});
-        details.push({title: 'Episodes', value: anime.episodeCount});
-        details.push({title: 'Status', value: anime.status});
-        details.push({title: 'Aired', value: `${anime.startDate} to ${anime.endDate}`});
-        details.push({title: 'Rating', value: anime.ageRatingGuide});
+        if (anime.titles.en) details.push({title: 'English', value: anime.titles.en});
+        if (anime.titles.ja_jp) details.push({title: 'Japanese', value: anime.titles.ja_jp});
+        if (anime.titles.en_jp) details.push({title: 'Romaji', value: anime.titles.en_jp});
+        if (anime.showType) details.push({title: 'Type', value: anime.showType});
+        if (anime.episodeCount) details.push({title: 'Episodes', value: anime.episodeCount});
+        if (anime.status) details.push({title: 'Status', value: anime.status});
+        if (anime.startDate && anime.endDate) {
+            details.push({title: 'Aired', value: `${anime.startDate} to ${anime.endDate}`})
+        } else if (anime.startDate) {
+            details.push({title: 'Aired', value: `${anime.startDate}`})
+        }
+        if (anime.ageRatingGuide) details.push({title: 'Rating', value: anime.ageRatingGuide});
+        if (anime.nsfw !== null) details.push({title: 'NSFW', value: anime.nsfw});
 
         this.anime_details = details;
     }
