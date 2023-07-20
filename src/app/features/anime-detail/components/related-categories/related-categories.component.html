@@ -4,7 +4,12 @@
 <ng-container *ngIf="!is_loading && categories.length > 0; else no_results">
     <h5 class="oswald fw-bold text-uppercase">Related Categories</h5>
     <div class="d-flex gap-2 flex-wrap">
-        <a class="badge bg-primary text-white text-decoration-none p-2" href="#"  *ngFor="let category of categories">
+        <a
+            *ngFor="let category of categories"
+            routerLink="/search"
+            [queryParams]="{'category': category.attributes.slug}"
+            class="badge bg-primary text-white text-decoration-none p-2"
+        >
             {{ category.attributes.title }}
         </a>
     </div>
