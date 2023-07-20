@@ -209,10 +209,10 @@ export class AnimeService {
      *
      * @param category category name to search for
      */
-    public setCategorySearch(category: string): void {
+    public setCategorySearch(category: string, type: 'anime' | 'manga' = 'anime'): void {
         // TODO: Make category sort type dynamic
         this.$search_stream.next(
-            this.http.get<Response>(`${this.api}/anime?filter[categories]=${category}&page[limit]=20&sort=popularityRank`)
+            this.http.get<Response>(`${this.api}/${type}?filter[categories]=${category}&page[limit]=20&sort=popularityRank`)
         );
     }
 
@@ -221,13 +221,13 @@ export class AnimeService {
      *
      * @param key The type to search for
      */
-    public setTypeSearch(key: AnimeSortType): void {
+    public setTypeSearch(key: AnimeSortType, type: 'anime' | 'manga' = 'anime'): void {
         const types: AnimeSortTypeURL = {
-            'trending': `${this.api}/trending/anime?limit=20`,
-            'top-airing': `${this.api}/anime?page[limit]=20&sort=-user_count`,
-            'upcoming': `${this.api}/anime?filter[status]=upcoming&page[limit]=20&sort=-user_count`,
-            'highest-rated': `${this.api}/anime?page[limit]=20&sort=-average_rating`,
-            'most-popular': `${this.api}/anime?page[limit]=20&sort=-user_count`,
+            'trending': `${this.api}/trending/${type}?limit=20`,
+            'top-airing': `${this.api}/${type}?page[limit]=20&sort=-user_count`,
+            'upcoming': `${this.api}/${type}?filter[status]=upcoming&page[limit]=20&sort=-user_count`,
+            'highest-rated': `${this.api}/${type}?page[limit]=20&sort=-average_rating`,
+            'most-popular': `${this.api}/${type}?page[limit]=20&sort=-user_count`,
         };
 
         this.$search_stream.next(
