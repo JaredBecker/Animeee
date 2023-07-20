@@ -71,6 +71,9 @@ export class ReactionsComponent implements OnInit, OnDestroy {
     public updateSortType(value: ReactionType) {
         this.is_loading = true;
         this.reaction_type = value;
-        this.animeDetailService.setReactionType(value);
+
+        let media_type = this.animeDetailService.getCurrentAnime();
+        media_type = media_type.type === 'anime' ? 'Anime' : 'Manga';
+        this.animeDetailService.setReactionType(media_type, value);
     }
 }

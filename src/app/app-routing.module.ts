@@ -23,6 +23,11 @@ const routes: Routes = [
         pathMatch: 'full',
         loadChildren: () => import('@features/anime-detail/anime-detail.module').then(m => m.AnimeDetailModule)
     },
+    {
+        path: 'manga/:manga-name',
+        pathMatch: 'full',
+        loadChildren: () => import('@features/anime-detail/anime-detail.module').then(m => m.AnimeDetailModule)
+    },
     { path: 'anime', component: HomeComponent },
     { path: 'search', component: SearchPageComponent, pathMatch: 'full' },
     { path: 'search/:search-phrase', component: SearchPageComponent },

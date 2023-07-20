@@ -8,10 +8,11 @@ import { Router } from '@angular/router';
 })
 export class AnimeCardComponent {
     @Input() public anime!: any;
+    @Input() public type!: string;
 
     constructor(private router: Router) { }
 
     public onLoadAnime(anime: any): void {
-        this.router.navigateByUrl(`/anime/${anime.attributes.slug}`);
+        this.router.navigateByUrl(`/${this.type}/${anime.attributes.slug}`);
     }
 }

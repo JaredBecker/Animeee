@@ -14,6 +14,7 @@ export class AnimeService {
 
     private anime_stream_map = new Map<string, Observable<Response>>();
     private category_stream_map = new Map<string, Observable<Response>>();
+    private manga_stream_map = new Map<string, Observable<Response>>();
     private $search_stream: Subject<Observable<Response>> = new Subject();
     private $more_results_stream: Subject<Observable<Response>> = new Subject();
 
@@ -113,7 +114,7 @@ export class AnimeService {
     /**
      * Gets anime info for the requested name
      *
-     * @param anime_name The slug prop of an anime response. IE: one piece -> one-piece
+     * @param anime_name The slug for the anime
      *
      * @returns Anime stream
      */
@@ -126,36 +127,49 @@ export class AnimeService {
     }
 
     /**
-     * Gets character info for the provided anime ID
+     * Gets manga info for the requested name
      *
-     * @param anime_id ID of the anime
+     * @param manga_name The slug for the manga
+     *
+     * @returns Manga stream
+     */
+    public getManga(manga_name: string): Observable<Response> {
+        const url = `${this.api}/manga?fields[categories]=slug,title&filter[slug]=${manga_name}&include=categories`;
+        const error = 'No anime with the provided name could be found.';
+        const $stream = this.checkAnimeStream(manga_name, url, error);
+
+        return $stream;
+    }
+
+    /**
+     * Gets character info for the provided anime/manga ID
+     *
+     * @param id ID of the anime/manga
      * @param count Amount of results to return. -1 returns 20 (API limit)
      *
      * @returns Character info stream
      */
-    public getCharacterInfo(anime_id: number, count: number = 4): Observable<Response> {
+    public getCharacterInfo(id: number, type: 'Anime' | 'Manga', count: number = 4): Observable<Response> {
         const count_filter = `&page[limit]=${count === -1 || count > 20 ? 20 : count}`;
-        const url = `${this.api}/castings?filter[media_type]=Anime&filter[media_id]=${anime_id}&filter[is_character]=true&filter[language]=Japanese${count_filter}&include=character&sort=-featured`;
+        const language = type === 'Anime' ? '&filter[language]=Japanese' : '';
+        const url = `${this.api}/castings?filter[media_type]=${type}&filter[media_id]=${id}&filter[is_character]=true${language}${count_filter}&include=character&sort=-featured`;
 
-        return this.http.get<Response>(url)
-            .pipe(
-                shareReplay(1)
-            );
+        return this.http.get<Response>(url);
     }
 
     /**
-     * Gets the reactions for an anime
+     * Gets the reactions for a anime/manga
      *
-     * @param anime_id ID of the anime to get reactions from
+     * @param id ID of the anime/manga to get reactions from
      * @param sort How to sort the results
      * @param count The number of reaction to return
      *
      * @returns Reactions stream
      */
-    public getReactions(anime_id: number, sort: 'popular' | 'recent', count: number): Observable<Response> {
+    public getReactions(id: number, type: 'Anime' | 'Manga', sort: 'popular' | 'recent', count: number): Observable<Response> {
         const sort_option = sort === 'popular' ? '-upVotesCount' : '-createdAt';
-
-        return this.http.get<Response>(`${this.api}/media-reactions?filter[animeId]=${anime_id}&include=user&page[limit]=${count}&sort=${sort_option}`);
+        const id_type = type === 'Anime' ? 'animeId' : 'mangaId'
+        return this.http.get<Response>(`${this.api}/media-reactions?filter[${id_type}]=${id}&include=user&page[limit]=${count}&sort=${sort_option}`);
     }
 
     /**
@@ -284,6 +298,29 @@ export class AnimeService {
     }
 
     /**
+     * Checks the manga stream for an existing request and creates one if nothing is found
+     *
+     * @param key They key to lookup in the map
+     * @param url The URL of the request that needs to be made
+     * @param error_msg An error message to display if getting the stream fails
+     *
+     * @returns Stream of the requested API call
+     */
+    public checkMangaStream(key: string, url: string, error_msg: string) {
+        if (!this.manga_stream_map.has(key)) {
+            this.storeMangaStream(key, url);
+        }
+
+        const $stream = this.manga_stream_map.get(key);
+
+        if (!$stream) {
+            return throwError(() => new Error(error_msg));
+        }
+
+        return $stream;
+    }
+
+    /**
      * Checks the category stream for an existing request and creates one if nothing is found
      *
      * @param key They key to lookup in the map
@@ -307,13 +344,13 @@ export class AnimeService {
     }
 
     /**
-     * Builds an anime request
+     * Builds an GET request with the provided URL
      *
      * @param url The URL the request needs to be made to
      *
-     * @returns Observable of the anime info for the provided request
+     * @returns Observable of the info for the provided request
      */
-    private getAnimeStream(url: string): Observable<Response> {
+    private getStream(url: string): Observable<Response> {
         return this.http
             .get<Response>(url)
             .pipe(
@@ -337,14 +374,25 @@ export class AnimeService {
     }
 
     /**
-     * Stores an anime stream
+     * Stores a anime stream
      *
      * @param key The key to store the stream under in the hash map
      * @param url The URL of the endpoint to query
      */
     private storeAnimeStream(key: string, url: string): void {
-        const $anime_stream = this.getAnimeStream(url);
+        const $anime_stream = this.getStream(url);
         this.anime_stream_map.set(key, $anime_stream);
+    }
+
+    /**
+     * Stores a manga stream
+     *
+     * @param key The key to store the stream under in the hash map
+     * @param url The URL of the endpoint to query
+     */
+    private storeMangaStream(key: string, url: string): void {
+        const $manga_stream = this.getStream(url);
+        this.manga_stream_map.set(key, $manga_stream);
     }
 
     /**

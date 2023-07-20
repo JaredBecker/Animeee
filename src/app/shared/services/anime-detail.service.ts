@@ -98,11 +98,11 @@ export class AnimeDetailService {
      *
      * @param type Reaction type
      */
-    public setReactionType(type: ReactionType): void {
+    public setReactionType(media_type: 'Anime' | 'Manga', type: ReactionType): void {
         this.reaction_type = type;
 
         this.$reaction_subject.next(
-            this.animeService.getReactions(this.anime.id, this.reaction_type, 10)
+            this.animeService.getReactions(this.anime.id, media_type ,this.reaction_type, 20)
         )
     }
 

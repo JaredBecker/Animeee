@@ -29,7 +29,7 @@ export class CharacterTabComponent implements OnInit, OnDestroy {
         const anime = this.animeDetailService.getCurrentAnime();
 
         if (anime) {
-            this.character_subscription = this.animeService.getCharacterInfo(anime.id, -1)
+            this.character_subscription = this.animeService.getCharacterInfo(anime.id, anime.type, -1)
                 .subscribe({
                     next: (characters_res) => {
                         if (characters_res.included) {

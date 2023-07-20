@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 
-import { Subscription, of, switchMap } from 'rxjs';
+import { Observable, Subscription, of, switchMap } from 'rxjs';
 
 import { AnimeDetail } from 'src/app/shared/models/anime-detail.interface';
 import { AnimeDetailService } from 'src/app/shared/services/anime-detail.service';
@@ -37,43 +37,17 @@ export class AnimeDetailsComponent implements OnInit, OnDestroy {
             .pipe(
                 switchMap((params) => {
                     const anime_name = params.get('anime-name');
-
-                    if (!anime_name) {
-                        this.router.navigateByUrl('/');
-                        return of({} as Response);
-                    }
+                    const manga_name = params.get('manga-name');
 
                     // Need to chain these switchMaps because the anime ID is needed to get the characters
-                    return this.animeService.getAnime(anime_name).pipe(
-                        switchMap((anime_details) => {
-                            if (anime_details.data.length > 0) {
-                                this.anime = anime_details.data[0];
-                                this.animeDetailService.setCurrentAnime(this.anime);
+                    if (anime_name) {
+                        return this.handleAnimeLoad(anime_name);
+                    } else if (manga_name) {
+                        return this.handleMangaLoad(manga_name);
+                    }
 
-                                /**
-                                 * Need to set reaction type here so the stream can get
-                                 * setup so when it's actually used its available. I
-                                 * Don't like this fix but I can't seem to get it to
-                                 * work any other way so it's staying like this for now
-                                 */
-                                this.animeDetailService.setReactionType('popular');
-
-                                if (this.anime.attributes.youtubeVideoId) {
-                                    this.url = this.sanitizer.bypassSecurityTrustResourceUrl('http://www.youtube.com/embed/' + this.anime.attributes.youtubeVideoId);
-                                }
-
-                                this.buildDetailsList();
-
-                                const categories = anime_details.included?.filter(info => info.type === 'categories');
-
-                                if (categories) {
-                                    this.animeDetailService.setCategories(categories);
-                                }
-                            }
-
-                            return this.animeService.getCharacterInfo(this.anime.id)
-                        })
-                    );
+                    this.router.navigateByUrl('/');
+                    return of({} as Response);
                 })
             )
             .subscribe({
@@ -105,7 +79,7 @@ export class AnimeDetailsComponent implements OnInit, OnDestroy {
         return '/assets/images/default-cover.png';
     }
 
-    public buildDetailsList(): void {
+    public buildDetailsList(type: 'anime' | 'manga'): void {
         const details: AnimeDetail[] = [];
         const anime = this.anime.attributes;
 
@@ -114,19 +88,85 @@ export class AnimeDetailsComponent implements OnInit, OnDestroy {
         if (anime.titles.en_jp) details.push({title: 'Romaji', value: anime.titles.en_jp});
         if (anime.showType) details.push({title: 'Type', value: anime.showType});
         if (anime.episodeCount) details.push({title: 'Episodes', value: anime.episodeCount});
+        if (anime.chapterCount) details.push({title: 'Chapters', value: anime.chapterCount});
         if (anime.status) details.push({title: 'Status', value: anime.status});
         if (anime.startDate && anime.endDate) {
-            details.push({title: 'Aired', value: `${anime.startDate} to ${anime.endDate}`})
+            details.push({title: type === 'anime' ? 'Aired' : 'Published' , value: `${anime.startDate} to ${anime.endDate}`})
         } else if (anime.startDate) {
-            details.push({title: 'Aired', value: `${anime.startDate}`})
+            details.push({title: type === 'anime' ? 'Aired' : 'Published', value: `${anime.startDate}`})
         }
         if (anime.ageRatingGuide) details.push({title: 'Rating', value: anime.ageRatingGuide});
-        if (anime.nsfw !== null) details.push({title: 'NSFW', value: anime.nsfw});
+        if (anime.nsfw && anime.nsfw !== null) details.push({title: 'NSFW', value: anime.nsfw});
 
         this.anime_details = details;
     }
 
     public onClick(): void {
         alert('This will work one day... I promise');
+    }
+
+    private handleAnimeLoad(anime_name: string): Observable<Response> {
+        return this.animeService.getAnime(anime_name).pipe(
+            switchMap((anime_details) => {
+                if (anime_details.data.length > 0) {
+                    this.anime = anime_details.data[0];
+                    this.anime.type = 'anime';
+                    this.animeDetailService.setCurrentAnime(this.anime);
+
+                    /**
+                     * Need to set reaction type here so the stream can get
+                     * setup so when it's actually used its available. I
+                     * Don't like this fix but I can't seem to get it to
+                     * work any other way so it's staying like this for now
+                     */
+                    this.animeDetailService.setReactionType('Anime', 'popular');
+
+                    if (this.anime.attributes.youtubeVideoId) {
+                        this.url = this.sanitizer.bypassSecurityTrustResourceUrl('http://www.youtube.com/embed/' + this.anime.attributes.youtubeVideoId);
+                    }
+
+                    this.buildDetailsList('anime');
+
+                    const categories = anime_details.included?.filter(info => info.type === 'categories');
+
+                    if (categories) {
+                        this.animeDetailService.setCategories(categories);
+                    }
+                }
+
+                return this.animeService.getCharacterInfo(this.anime.id, 'Anime')
+            })
+        );
+    }
+
+    private handleMangaLoad(manga_name: string) {
+        return this.animeService.getManga(manga_name).pipe(
+            switchMap((manga_details) => {
+
+                console.log(manga_details);
+
+                if (manga_details.data.length > 0) {
+                    this.anime = manga_details.data[0];
+                    this.anime.type = 'manga';
+                    this.animeDetailService.setCurrentAnime(this.anime);
+
+                    /**
+                     * Need to set reaction type here so the stream can get
+                     * setup so when it's actually used its available. I
+                     * Don't like this fix but I can't seem to get it to
+                     * work any other way so it's staying like this for now
+                     */
+                    this.animeDetailService.setReactionType('Manga', 'popular');
+
+                    this.buildDetailsList('manga');
+
+                    if (manga_details.included) {
+                        this.animeDetailService.setCategories(manga_details.included);
+                    }
+                }
+
+                return this.animeService.getCharacterInfo(this.anime.id, 'Manga')
+            })
+        )
     }
 }
