@@ -14,6 +14,7 @@ import { CharacterModalComponent } from './components/character-modal/character-
 import { TopShadowDirective } from './directives/top-shadow.directive';
 import { EpisodeModalComponent } from './components/episode-modal/episode-modal.component';
 import { FooterComponent } from './components/footer/footer.component';
+import { SwiperConfigDirective } from './directives/swiper-config.directive';
 
 @NgModule({
     declarations: [
@@ -26,6 +27,7 @@ import { FooterComponent } from './components/footer/footer.component';
         TopShadowDirective,
         EpisodeModalComponent,
         FooterComponent,
+        SwiperConfigDirective,
     ],
     imports: [
         CommonModule,
