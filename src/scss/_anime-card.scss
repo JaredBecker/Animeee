@@ -50,9 +50,17 @@
             overflow: hidden;
             text-overflow: ellipsis;
             display: -webkit-box;
-            -webkit-line-clamp: 9;
+            -webkit-line-clamp: 4;
             font-size: 0.8rem;
             -webkit-box-orient: vertical;
+
+            @include media-breakpoint-up(lg) {
+                -webkit-line-clamp: 7;
+            }
+
+            @include media-breakpoint-up(xl) {
+                -webkit-line-clamp: 9;
+            }
         }
     }
 }
