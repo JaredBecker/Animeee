@@ -8,6 +8,7 @@ import { AnimeDetail } from 'src/app/shared/models/anime-detail.interface';
 import { AnimeDetailService } from 'src/app/shared/services/anime-detail.service';
 import { Response } from '@shared/models/response.interface';
 import { AnimeService } from '@shared/services/anime.service';
+import { environment } from 'src/environments/environment.development';
 
 @Component({
     selector: 'app-anime-details',
@@ -123,7 +124,8 @@ export class AnimeDetailsComponent implements OnInit, OnDestroy {
                     this.animeDetailService.setReactionType('Anime', 'popular');
 
                     if (this.anime.attributes.youtubeVideoId) {
-                        this.url = this.sanitizer.bypassSecurityTrustResourceUrl('http://www.youtube.com/embed/' + this.anime.attributes.youtubeVideoId);
+                        const http = environment.production ? 'https://' : 'http://';
+                        this.url = this.sanitizer.bypassSecurityTrustResourceUrl(`${http}www.youtube.com/embed/${this.anime.attributes.youtubeVideoId}`);
                     }
 
                     this.buildDetailsList('anime');
