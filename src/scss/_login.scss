@@ -3,23 +3,33 @@
     display: flex;
 
     .background_image {
-        width: 70%;
-        height: 100%;
-        background-image: linear-gradient(to bottom, rgba(52, 24, 69, 0.7), rgba(52, 24, 69, 0.3)), url('/assets/images/login.jpg');
-        background-color: rgba(#000, 0.3);
-        background-size: cover;
-        background-repeat: no-repeat;
-        background-position: center;
+        display: none;
+
+        @include media-breakpoint-up(xl) {
+            display: block;
+            width: 70%;
+            height: 100%;
+            background-image: linear-gradient(to bottom, rgba(52, 24, 69, 0.7), rgba(52, 24, 69, 0.3)), url('/assets/images/login.jpg');
+            background-color: rgba(#000, 0.3);
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
+        }
     }
 
     .login_form {
-        width: 30%;
+        width: 100%;
         display: flex;
         justify-content: center;
         align-items: center;
         flex-direction: column;
-        border-left: 10px solid $primary;
+
         height: 100%;
+
+        @include media-breakpoint-up(xl) {
+            width: 30%;
+            border-left: 10px solid $primary;
+        }
 
         .logo_icon {
             max-width: 75px;
