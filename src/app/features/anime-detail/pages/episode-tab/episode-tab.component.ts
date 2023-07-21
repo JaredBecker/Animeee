@@ -16,6 +16,7 @@ import { EpisodeModalComponent } from '@shared/components/episode-modal/episode-
 export class EpisodeTabComponent implements OnInit, OnDestroy {
     public episodes: any[] = [];
     public is_loading: boolean = true;
+    public type?: string;
 
     private anime_subscription?: Subscription;
 
@@ -29,11 +30,20 @@ export class EpisodeTabComponent implements OnInit, OnDestroy {
         this.anime_subscription = this.animeDetailService.getCurrentAnime()
             .pipe(
                 filter(anime => anime !== null),
-                switchMap((anime: any) => this.animeService.getEpisodes(anime.id))
+                switchMap((anime: any) => {
+                    if (anime.type === 'manga') {
+                        this.type = 'chapters';
+                        return this.animeService.getChapters(anime.id);
+                    }
+
+                    this.type = 'episodes';
+                    return this.animeService.getEpisodes(anime.id)
+                })
             )
             .subscribe({
                 next: (episode_res: any) => {
                     if (episode_res.data.length > 0) {
+                        console.log(episode_res.data);
                         this.episodes = episode_res.data;
                     }
 

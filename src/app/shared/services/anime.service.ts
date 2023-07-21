@@ -184,6 +184,10 @@ export class AnimeService {
         return this.http.get<Response>(`${this.api}/episodes?filter[mediaType]=Anime&filter[media_id]=${anime_id}&page[limit]=20&sort=number`);
     }
 
+    public getChapters(manga_id: number): Observable<Response> {
+        return this.http.get<Response>(`${this.api}/chapters?&filter[manga_id]=${manga_id}&page[limit]=20&sort=number`);
+    }
+
     /**
      * Get franchise info for an anime
      *
