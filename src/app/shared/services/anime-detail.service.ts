@@ -17,6 +17,7 @@ export class AnimeDetailService {
 
     private view_characters: EventEmitter<undefined> = new EventEmitter();
     private $reaction_subject: BehaviorSubject<Observable<Response>> = new BehaviorSubject<Observable<Response>>(of({} as Response));
+    private $anime_subject: BehaviorSubject<Observable<any | null>> = new BehaviorSubject<Observable<any>>(of(null));
 
     constructor(
         private animeService: AnimeService,
@@ -62,6 +63,7 @@ export class AnimeDetailService {
      * @param anime Anime response from API call
      */
     public setCurrentAnime(anime: any): void {
+        this.$anime_subject.next(anime);
         this.anime = anime;
     }
 
@@ -71,7 +73,7 @@ export class AnimeDetailService {
      * @returns The currently selected anime
      */
     public getCurrentAnime(): any {
-        return this.anime;
+        return this.$anime_subject.asObservable();
     }
 
     /**
@@ -98,11 +100,11 @@ export class AnimeDetailService {
      *
      * @param type Reaction type
      */
-    public setReactionType(type: ReactionType): void {
+    public setReactionType(media_type: 'Anime' | 'Manga', type: ReactionType): void {
         this.reaction_type = type;
 
         this.$reaction_subject.next(
-            this.animeService.getReactions(this.anime.id, this.reaction_type, 10)
+            this.animeService.getReactions(this.anime.id, media_type ,this.reaction_type, 20)
         )
     }
 
