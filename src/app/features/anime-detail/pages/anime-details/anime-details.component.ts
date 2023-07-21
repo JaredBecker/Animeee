@@ -8,7 +8,7 @@ import { AnimeDetail } from 'src/app/shared/models/anime-detail.interface';
 import { AnimeDetailService } from 'src/app/shared/services/anime-detail.service';
 import { Response } from '@shared/models/response.interface';
 import { AnimeService } from '@shared/services/anime.service';
-import { environment } from 'src/environments/environment.development';
+import { environment } from 'src/environments/environment';
 
 @Component({
     selector: 'app-anime-details',
