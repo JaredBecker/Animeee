@@ -74,6 +74,10 @@ main {
     background-color: rgba($secondary, 0.85);
 }
 
+footer {
+    box-shadow: var(--box-shadow);
+}
+
 // This needs some work. Look at a later stage (Pfft like that will happen (⊙_⊙;) )
 .gradient_border {
     --borderWidth: 10px;

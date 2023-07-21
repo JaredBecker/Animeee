@@ -184,6 +184,13 @@ export class AnimeService {
         return this.http.get<Response>(`${this.api}/episodes?filter[mediaType]=Anime&filter[media_id]=${anime_id}&page[limit]=20&sort=number`);
     }
 
+    /**
+     * Get the first 20 episodes for a manga
+     *
+     * @param manga_id The ID of the manga to get chapters for
+     *
+     * @returns Chapter stream
+     */
     public getChapters(manga_id: number): Observable<Response> {
         return this.http.get<Response>(`${this.api}/chapters?&filter[manga_id]=${manga_id}&page[limit]=20&sort=number`);
     }
@@ -191,12 +198,12 @@ export class AnimeService {
     /**
      * Get franchise info for an anime
      *
-     * @param anime_id ID of the anime
+     * @param id ID of the anime
      *
      * @returns Franchise stream
      */
-    public getFranchise(anime_id: number): Observable<Response> {
-        return this.http.get<Response>(`${this.api}/media-relationships?filter[source_id]=${anime_id}&filter[source_type]=Anime&include=destination&page[limit]=20&sort=role`)
+    public getFranchise(id: number, type: 'Anime' | 'Manga'): Observable<Response> {
+        return this.http.get<Response>(`${this.api}/media-relationships?filter[source_id]=${id}&filter[source_type]=${type}&include=destination&page[limit]=20&sort=role`)
     }
 
     /**

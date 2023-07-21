@@ -36,7 +36,6 @@ export class CharacterTabComponent implements OnInit, OnDestroy {
             )
             .subscribe({
                 next: (characters_res: any) => {
-                    console.log(characters_res);
                     if (characters_res.included) {
                         this.characters = characters_res.included;
                     }
