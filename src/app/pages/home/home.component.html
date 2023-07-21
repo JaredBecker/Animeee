@@ -1,24 +1,45 @@
 <app-navbar></app-navbar>
 
 <main>
-    <div class="container py-5 monty">
+    <div class="container py-3 monty">
         <div class="row">
-            <div class="col-12 col-lg-9">
+            <div class="col-12 col-xl-9">
                 <app-intro></app-intro>
-                <app-slider title="Trending This Week" [$anime_stream]="trending" search_url="trending"></app-slider>
-                <app-slider title="Top Airing Anime" [$anime_stream]="topAiring" search_url="top-airing"></app-slider>
-                <app-slider title="Top Upcoming Anime" [$anime_stream]="topUpcoming" search_url="upcoming"></app-slider>
-                <app-slider title="Highest Rated Anime" [$anime_stream]="highestRating" search_url="highest-rated"></app-slider>
-                <app-slider title="Most Popular Anime" [$anime_stream]="mostPopular" search_url="most-popular"></app-slider>
+                <!-- TODO: Find a better way to change where the menu is displayed -->
+                <div class="d-block d-xl-none">
+                    <div ngbAccordion>
+                        <div ngbAccordionItem>
+                            <h2 ngbAccordionHeader>
+                                <button ngbAccordionButton>Category Menu</button>
+                            </h2>
+                            <div ngbAccordionCollapse>
+                                <div ngbAccordionBody>
+                                    <ng-container *ngTemplateOutlet="menu"></ng-container>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <app-slider title="Trending This Week" [$anime_stream]="trending" search_url="trending" />
+                <app-slider title="Top Airing Anime" [$anime_stream]="topAiring" search_url="top-airing" />
+                <app-slider title="Top Upcoming Anime" [$anime_stream]="topUpcoming" search_url="upcoming" />
+                <app-slider title="Highest Rated Anime" [$anime_stream]="highestRating" search_url="highest-rated" />
+                <app-slider title="Most Popular Anime" [$anime_stream]="mostPopular" search_url="most-popular" />
             </div>
-            <div class="col-12 col-lg-3">
-                <app-card [is_sticky]="true">
-                    <h3 class="oswald fw-bold text-uppercase">Categories</h3>
-                    <app-category-list></app-category-list>
-                </app-card>
+            <div class="col-12 col-xl-3">
+                <div class="d-none d-xl-block sticky_card">
+                    <ng-container *ngTemplateOutlet="menu"></ng-container>
+                </div>
             </div>
         </div>
     </div>
 </main>
+
+<ng-template #menu>
+    <app-card>
+        <h3 class="oswald fw-bold text-uppercase">Categories</h3>
+        <app-category-list></app-category-list>
+    </app-card>
+</ng-template>
 
 <app-footer></app-footer>

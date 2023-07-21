@@ -54,6 +54,11 @@ main {
     border-radius: 0.75rem;
     box-shadow: var(--box-shadow);
 
+    &[data-bs-popper] {
+        left: unset;
+        right: 0;
+    }
+
     .dropdown-item {
         border-radius: 0.5rem;
 
@@ -62,6 +67,11 @@ main {
             color: #fff;
         }
     }
+}
+
+.accordion-button[aria-expanded=true] {
+    font-weight: bold;
+    color: $primary;
 }
 
 .modal-content {

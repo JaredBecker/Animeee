@@ -4,11 +4,16 @@
 </ng-container>
 
 <ng-template #slider>
+    <!--
+        default - 2
+        sm - 3
+        lg - 4
+     -->
     <section class="slider_section">
         <h3 class="oswald fw-bold text_gradient slider_title">{{ title }}</h3>
         <swiper-container
             initial-slide="0"
-            slides-per-view="4"
+            slides-per-view="2"
             autoplay="true"
             autoplay-delay="2000"
             autoplay-pause-on-mouse-enter="true"
