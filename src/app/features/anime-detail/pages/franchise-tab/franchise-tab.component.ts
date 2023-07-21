@@ -1,7 +1,7 @@
 import { ActivatedRoute, Router } from '@angular/router';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 
-import { Subscription, switchMap } from 'rxjs';
+import { Subscription, of, switchMap } from 'rxjs';
 
 import { AnimeDetailService } from '@shared/services/anime-detail.service';
 import { AnimeService } from '@shared/services/anime.service';
@@ -14,6 +14,7 @@ import { AnimeService } from '@shared/services/anime.service';
 export class FranchiseTabComponent implements OnInit, OnDestroy {
     public franchises: any[] = [];
     public is_loading: boolean = true;
+    public type?: 'anime' | 'manga';
 
     private franchises_subscription?: Subscription;
     private route_subscription?: Subscription;
@@ -35,27 +36,41 @@ export class FranchiseTabComponent implements OnInit, OnDestroy {
             .pipe(
                 switchMap((params) => {
                     this.is_loading = true;
+                    const manga_name = params.get('manga-name');
                     const anime_name = params.get('anime-name') ?? '';
 
-                    return this.animeService.getAnime(anime_name)
+                    if (manga_name) {
+                        this.type = 'manga';
+                        return this.animeService.getManga(manga_name);
+                    }
+
+                    this.type = 'anime';
+                    return this.animeService.getAnime(anime_name);
                 }),
                 switchMap((anime_details) => {
-                    if (anime_details.data.length === 0) {
-                        // No resource fround in API
+                    if (anime_details?.data.length === 0) {
+                        // No resource found in API
                         this.router.navigateByUrl('/not-found');
                     }
 
                     const anime = anime_details.data[0];
+                    const type = anime.type === 'anime' ? 'Anime' : 'Manga';
                     this.animeDetailService.setCurrentAnime(anime);
 
-                    return this.animeService.getFranchise(anime.id);
+                    return this.animeService.getFranchise(anime.id, type);
                 })
             )
             .subscribe({
                 next: (franchise_res) => {
+                    console.log(franchise_res.included);
+
                     if (franchise_res.included) {
-                        // Check that the 2 arrays are the same length to join data
-                        if (franchise_res.included.length === franchise_res.data.length) {
+                        /**
+                         * Check that the 2 arrays are the same length to join data but this is only
+                         * required for animes. Manga's have all the data in them. Another reason
+                         * this API is ass
+                         */
+                        if (this.type === 'anime' && franchise_res.included.length === franchise_res.data.length) {
                             const len: number = franchise_res.included.length;
                             const shows: any[] = [];
 
