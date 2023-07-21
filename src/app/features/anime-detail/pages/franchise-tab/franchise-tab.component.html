@@ -10,28 +10,57 @@
 <ng-container *ngIf="!is_loading && franchises.length > 0">
     <h5 class="oswald fw-bold text-uppercase">Franchises</h5>
     <div class="row" id="character_summary">
-        <div class="col-6 col-md-4 mb-3" *ngFor="let franchise of franchises">
-            <a [routerLink]="['/anime', franchise.attributes.slug]" class="franchise_card">
-                <h6 class="ribbon date fw-bold oswald" *ngIf="franchise.attributes.startDate">
-                    {{ franchise.attributes.startDate | date: 'y' }}
-                </h6>
-                <div class="franchise_card_img">
-                    <img *ngIf="!franchise.attributes.posterImage" src="/assets/images/no-image.png" class="img-fluid" alt="No image for the resource" />
-                    <img
-                        *ngIf="franchise.attributes.posterImage"
-                        [src]="franchise.attributes.posterImage.medium ? franchise.attributes.posterImage.medium : franchise.attributes.posterImage.original"
-                        class="img-fluid" [alt]="franchise.attributes.canonicalTitle"
-                    />
-                </div>
-                <div class="franchise_card_content">
-                    <div class="franchise_card_content_name">
-                        {{ franchise.attributes.canonicalTitle }}
+        <ng-container *ngIf="type && type === 'anime';else manga">
+            <div class="col-6 col-md-4 mb-3" *ngFor="let franchise of franchises">
+                <!-- This if needs to be here because sometimes manga's are linked to anime franchises -->
+                <a [routerLink]="['/', franchise.type === 'anime' ? 'anime' : 'manga', franchise.attributes.slug]" class="franchise_card">
+                    <h6 class="ribbon date fw-bold oswald" *ngIf="franchise.attributes.startDate">
+                        {{ franchise.attributes.startDate | date: 'y' }}
+                    </h6>
+                    <div class="franchise_card_img">
+                        <img *ngIf="!franchise.attributes.posterImage" src="/assets/images/no-image.png" class="img-fluid" alt="No image for the resource" />
+                        <img
+                            *ngIf="franchise.attributes.posterImage"
+                            [src]="franchise.attributes.posterImage.medium ? franchise.attributes.posterImage.medium : franchise.attributes.posterImage.original"
+                            class="img-fluid" [alt]="franchise.attributes.canonicalTitle"
+                        />
                     </div>
-                    <div class="franchise_card_content_type">
-                        {{ franchise.showInfo.attributes.role }}
+                    <div class="franchise_card_content">
+                        <div class="franchise_card_content_name">
+                            {{ franchise.attributes.canonicalTitle }}
+                        </div>
+                        <div class="franchise_card_content_type">
+                            {{ franchise.showInfo.attributes.role }}
+                        </div>
                     </div>
-                </div>
-            </a>
-        </div>
+                </a>
+            </div>
+        </ng-container>
+
+        <ng-template #manga>
+            <div class="col-6 col-md-4 mb-3" *ngFor="let franchise of franchises">
+                <a [routerLink]="['/', franchise.type === 'anime' ? 'anime' : 'manga', franchise.attributes.slug]" class="franchise_card">
+                    <h6 class="ribbon date fw-bold oswald" *ngIf="franchise.attributes.startDate">
+                        {{ franchise.attributes.startDate | date: 'y' }}
+                    </h6>
+                    <div class="franchise_card_img">
+                        <img *ngIf="!franchise.attributes.posterImage" src="/assets/images/no-image.png" class="img-fluid" alt="No image for the resource" />
+                        <img
+                            *ngIf="franchise.attributes.posterImage"
+                            [src]="franchise.attributes.posterImage.medium ? franchise.attributes.posterImage.medium : franchise.attributes.posterImage.original"
+                            class="img-fluid" [alt]="franchise.attributes.canonicalTitle"
+                        />
+                    </div>
+                    <div class="franchise_card_content">
+                        <div class="franchise_card_content_name">
+                            {{ franchise.attributes.canonicalTitle }}
+                        </div>
+                        <div class="franchise_card_content_type">
+                            {{ franchise.attributes.mangaType ? franchise.attributes.mangaType : franchise.attributes.showType }}
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </ng-template>
     </div>
 </ng-container>

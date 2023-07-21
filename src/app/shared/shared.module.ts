@@ -13,6 +13,7 @@ import { PageLoaderComponent } from './components/page-loader/page-loader.compon
 import { CharacterModalComponent } from './components/character-modal/character-modal.component';
 import { TopShadowDirective } from './directives/top-shadow.directive';
 import { EpisodeModalComponent } from './components/episode-modal/episode-modal.component';
+import { FooterComponent } from './components/footer/footer.component';
 
 @NgModule({
     declarations: [
@@ -24,6 +25,7 @@ import { EpisodeModalComponent } from './components/episode-modal/episode-modal.
         CharacterModalComponent,
         TopShadowDirective,
         EpisodeModalComponent,
+        FooterComponent,
     ],
     imports: [
         CommonModule,
@@ -42,6 +44,7 @@ import { EpisodeModalComponent } from './components/episode-modal/episode-modal.
         FormsModule,
         ReactiveFormsModule,
         CharacterModalComponent,
+        FooterComponent,
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })

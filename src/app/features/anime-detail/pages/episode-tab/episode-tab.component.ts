@@ -43,7 +43,6 @@ export class EpisodeTabComponent implements OnInit, OnDestroy {
             .subscribe({
                 next: (episode_res: any) => {
                     if (episode_res.data.length > 0) {
-                        console.log(episode_res.data);
                         this.episodes = episode_res.data;
                     }
 
