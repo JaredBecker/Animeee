@@ -19,7 +19,7 @@ export class AnimeDetailsComponent implements OnInit, OnDestroy {
     public is_loading: boolean = true;
     public anime_details: AnimeDetail[] = [];
     public characters?: any[];
-
+    public type: string = 'anime';
     public url?: SafeHtml;
 
     private route_subscription?: Subscription;
@@ -41,8 +41,10 @@ export class AnimeDetailsComponent implements OnInit, OnDestroy {
 
                     // Need to chain these switchMaps because the anime ID is needed to get the characters
                     if (anime_name) {
+                        this.type = 'anime';
                         return this.handleAnimeLoad(anime_name);
                     } else if (manga_name) {
+                        this.type = 'manga';
                         return this.handleMangaLoad(manga_name);
                     }
 
@@ -60,7 +62,7 @@ export class AnimeDetailsComponent implements OnInit, OnDestroy {
                      * From testing I notice you end up her when the API had no result for an anime
                      * it gives to you in the franchise section.
                      */
-                    this.router.navigateByUrl('/not-found')
+                    //this.router.navigateByUrl('/not-found')
                     console.error('Failed to get selected anime', err);
                     this.is_loading = false;
                 }
@@ -112,7 +114,6 @@ export class AnimeDetailsComponent implements OnInit, OnDestroy {
                     this.anime = anime_details.data[0];
                     this.anime.type = 'anime';
                     this.animeDetailService.setCurrentAnime(this.anime);
-
                     /**
                      * Need to set reaction type here so the stream can get
                      * setup so when it's actually used its available. I
@@ -142,20 +143,10 @@ export class AnimeDetailsComponent implements OnInit, OnDestroy {
     private handleMangaLoad(manga_name: string) {
         return this.animeService.getManga(manga_name).pipe(
             switchMap((manga_details) => {
-
-                console.log(manga_details);
-
                 if (manga_details.data.length > 0) {
                     this.anime = manga_details.data[0];
                     this.anime.type = 'manga';
                     this.animeDetailService.setCurrentAnime(this.anime);
-
-                    /**
-                     * Need to set reaction type here so the stream can get
-                     * setup so when it's actually used its available. I
-                     * Don't like this fix but I can't seem to get it to
-                     * work any other way so it's staying like this for now
-                     */
                     this.animeDetailService.setReactionType('Manga', 'popular');
 
                     this.buildDetailsList('manga');

@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 
-import { Subscription } from 'rxjs';
+import { Subscription, filter, switchMap } from 'rxjs';
 
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
@@ -17,7 +17,7 @@ export class CharacterTabComponent implements OnInit, OnDestroy {
     public is_loading: boolean = true;
     public characters: any[] = [];
 
-    private character_subscription?: Subscription;
+    private anime_subscription?: Subscription;
 
     constructor(
         private animeService: AnimeService,
@@ -26,28 +26,32 @@ export class CharacterTabComponent implements OnInit, OnDestroy {
     ) { }
 
     public ngOnInit(): void {
-        const anime = this.animeDetailService.getCurrentAnime();
-
-        if (anime) {
-            this.character_subscription = this.animeService.getCharacterInfo(anime.id, anime.type, -1)
-                .subscribe({
-                    next: (characters_res) => {
-                        if (characters_res.included) {
-                            this.characters = characters_res.included;
-                        }
-
-                        this.is_loading = false;
-                    },
-                    error: (err) => {
-                        console.error('Error fetching characters', err);
-                        this.is_loading = false;
-                    }
+        this.anime_subscription = this.animeDetailService.getCurrentAnime()
+            .pipe(
+                filter((anime) => anime !== null),
+                switchMap((anime: any) => {
+                    const type = anime.type === 'anime' ? 'Anime' : 'Manga';
+                    return this.animeService.getCharacterInfo(anime.id, type, -1)
                 })
-        }
+            )
+            .subscribe({
+                next: (characters_res: any) => {
+                    console.log(characters_res);
+                    if (characters_res.included) {
+                        this.characters = characters_res.included;
+                    }
+
+                    this.is_loading = false;
+                },
+                error: (err: any) => {
+                    console.error('Error fetching characters', err);
+                    this.is_loading = false;
+                }
+            })
     }
 
     public ngOnDestroy(): void {
-        this.character_subscription?.unsubscribe();
+        this.anime_subscription?.unsubscribe();
     }
 
     public onSelectCharacter(character: any): void {

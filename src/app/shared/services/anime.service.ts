@@ -136,7 +136,7 @@ export class AnimeService {
     public getManga(manga_name: string): Observable<Response> {
         const url = `${this.api}/manga?fields[categories]=slug,title&filter[slug]=${manga_name}&include=categories`;
         const error = 'No anime with the provided name could be found.';
-        const $stream = this.checkAnimeStream(manga_name, url, error);
+        const $stream = this.checkMangaStream(manga_name, url, error);
 
         return $stream;
     }
@@ -168,7 +168,8 @@ export class AnimeService {
      */
     public getReactions(id: number, type: 'Anime' | 'Manga', sort: 'popular' | 'recent', count: number): Observable<Response> {
         const sort_option = sort === 'popular' ? '-upVotesCount' : '-createdAt';
-        const id_type = type === 'Anime' ? 'animeId' : 'mangaId'
+        const id_type = type === 'Anime' ? 'animeId' : 'mangaId';
+
         return this.http.get<Response>(`${this.api}/media-reactions?filter[${id_type}]=${id}&include=user&page[limit]=${count}&sort=${sort_option}`);
     }
 
