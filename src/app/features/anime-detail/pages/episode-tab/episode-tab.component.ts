@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 
-import { Subscription } from 'rxjs';
+import { Subscription, filter, switchMap } from 'rxjs';
 
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
@@ -16,8 +16,9 @@ import { EpisodeModalComponent } from '@shared/components/episode-modal/episode-
 export class EpisodeTabComponent implements OnInit, OnDestroy {
     public episodes: any[] = [];
     public is_loading: boolean = true;
+    public type?: string;
 
-    private episode_subscription?: Subscription;
+    private anime_subscription?: Subscription;
 
     constructor(
         private animeService: AnimeService,
@@ -26,28 +27,37 @@ export class EpisodeTabComponent implements OnInit, OnDestroy {
     ) { }
 
     public ngOnInit(): void {
-        const anime = this.animeDetailService.getCurrentAnime();
+        this.anime_subscription = this.animeDetailService.getCurrentAnime()
+            .pipe(
+                filter(anime => anime !== null),
+                switchMap((anime: any) => {
+                    if (anime.type === 'manga') {
+                        this.type = 'chapters';
+                        return this.animeService.getChapters(anime.id);
+                    }
 
-        if (anime) {
-            this.episode_subscription = this.animeService.getEpisodes(anime.id)
+                    this.type = 'episodes';
+                    return this.animeService.getEpisodes(anime.id)
+                })
+            )
             .subscribe({
-                next: (episode_res) => {
+                next: (episode_res: any) => {
                     if (episode_res.data.length > 0) {
+                        console.log(episode_res.data);
                         this.episodes = episode_res.data;
                     }
 
                     this.is_loading = false;
                 },
-                error: (err) => {
+                error: (err: any) => {
                     console.error('Error fetching episode stream', err);
                     this.is_loading = false;
                 }
-            })
-        }
+            });
     }
 
     public ngOnDestroy(): void {
-        this.episode_subscription?.unsubscribe();
+        this.anime_subscription?.unsubscribe();
     }
 
     public onSelectEpisode(episode: any) {

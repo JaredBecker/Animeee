@@ -10,7 +10,14 @@ It's build using the following:
  - Angular & SCSS - Front-end
  - Firebase - Backend
 
-# How do I preview the project?
+# Site is now live!
+
+I've launched the site but there is still tons of bugs and the site is not yet mobile responsive. If you would like to check out the current state of it you can
+click [HERE](https://animeee.jaredbecker.co.za/)
+
+If you find any bugs or strange behaviors feel free to open up an issue and let me know so I can get to fixing it!😁
+
+# How do I run the project on my machine?
 
  1. Download or  clone the **Master** repo
  2. Run `npm i` to install all dependencies
