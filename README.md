@@ -12,7 +12,7 @@ It's build using the following:
 
 # Site is now live!
 
-I've launched the site but there is still tons of bugs and the site is not yet mobile responsive. If you would like to check out the current state of it you can
+I've launched the site but there is still tons of bugs. If you would like to check out the current state of it you can
 click [HERE](https://animeee.jaredbecker.co.za/)
 
 If you find any bugs or strange behaviors feel free to open up an issue and let me know so I can get to fixing it!😁
