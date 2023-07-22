@@ -1,0 +1,22 @@
+#not_found_wrapper {
+    height: calc(100vh - 155px);
+
+    .not_found {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: center;
+
+        &_img {
+            max-width: 250px;
+        }
+
+        @include media-breakpoint-up(sm) {
+            flex-wrap: nowrap;
+
+            .not_found_img {
+                max-width: 400px;
+            }
+        }
+    }
+}
