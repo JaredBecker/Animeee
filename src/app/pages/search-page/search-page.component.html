@@ -28,6 +28,7 @@
                             </div>
                         </button>
                     </div>
+
                     <!-- TODO: Find a better way to change where the menu is displayed -->
                     <div class="d-block d-xl-none mt-3">
                         <div ngbAccordion>
@@ -45,11 +46,14 @@
                     </div>
                 </div>
                 <div class="results_wrapper">
+
+                    <!-- Main Loader -->
                     <ng-container *ngIf="is_loading">
                         <div class="d-flex justify-content-center">
                             <app-loader></app-loader>
                         </div>
                     </ng-container>
+
                     <!-- No Results -->
                     <ng-container *ngIf="!is_loading && animes.length === 0">
                         <div class="no_results d-flex align-items-center justify-content-center">
@@ -62,6 +66,7 @@
                             </div>
                         </div>
                     </ng-container>
+
                     <!-- Main Listing -->
                     <ng-container *ngIf="!is_loading && animes.length > 0">
                         <div class="row" >
@@ -70,6 +75,7 @@
                             </div>
                         </div>
                     </ng-container>
+
                     <!-- More results button -->
                     <div *ngIf="more_results_url && !loading_more" class="text-center">
                         <button type="button" class="btn btn-primary text-white monty rounded-pill px-4" (click)="onLoadMore()">
@@ -77,6 +83,7 @@
                         </button>
                     </div>
 
+                    <!-- Loader for more results -->
                     <ng-container *ngIf="loading_more">
                         <div class="d-flex justify-content-center">
                             <app-loader></app-loader>

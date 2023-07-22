@@ -65,24 +65,7 @@ export class SearchPageComponent implements OnInit, OnDestroy {
                 }
             })
 
-        this.more_results_subscription = this.animeService.getMoreResultsStream()
-            .pipe(
-                switchMap(stream => stream)
-            )
-            .subscribe({
-                next: (next_results) => {
-                   if (next_results.data.length > 0) {
-                        this.animes.push(...next_results.data);
-                        this.loading_more = false;
-                        this.more_results_url = next_results?.links?.next && next_results.links.next;
-                   }
-                },
-                error: (err) => {
-                    this.loading_more = false;
-                    console.error('Failed to load more results', err);
-                }
-            })
-
+        // Subscription for getting route information
         const url_info = combineLatest([
             this.activatedRoute.queryParamMap,
             this.activatedRoute.paramMap,
@@ -139,12 +122,14 @@ export class SearchPageComponent implements OnInit, OnDestroy {
                     this.is_loading = false;
                     console.error('Error getting params on search page', err);
                 },
-            })
+            });
 
+        // Subscription for listening to search input
         this.search_input_subscription = this.search_input.valueChanges
             .pipe(
                 debounceTime(350),
                 distinctUntilChanged(),
+                tap(() => this.is_loading = true),
                 map(value => value),
             )
             .subscribe({
@@ -153,6 +138,25 @@ export class SearchPageComponent implements OnInit, OnDestroy {
                         this.search_phrase = value;
                         this.router.navigate(['/search', this.search_phrase]);
                     }
+                }
+            })
+
+        // Subscription for loading more results
+        this.more_results_subscription = this.animeService.getMoreResultsStream()
+            .pipe(
+                switchMap(stream => stream)
+            )
+            .subscribe({
+                next: (next_results) => {
+                    if (next_results.data.length > 0) {
+                        this.animes.push(...next_results.data);
+                        this.more_results_url = next_results?.links?.next && next_results.links.next;
+                        this.loading_more = false;
+                    }
+                },
+                error: (err) => {
+                    this.loading_more = false;
+                    console.error('Failed to load more results', err);
                 }
             })
     }
