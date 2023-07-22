@@ -74,6 +74,12 @@ main {
     color: $primary;
 }
 
+.nav-tabs.nav {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    overflow-y: hidden;
+}
+
 .modal-content {
     border-radius: 1rem;
     border: 10px ridge $primary;
