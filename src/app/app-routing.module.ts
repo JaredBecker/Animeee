@@ -20,12 +20,10 @@ const routes: Routes = [
     },
     {
         path: 'anime/:anime-name',
-        pathMatch: 'full',
         loadChildren: () => import('@features/anime-detail/anime-detail.module').then(m => m.AnimeDetailModule)
     },
     {
         path: 'manga/:manga-name',
-        pathMatch: 'full',
         loadChildren: () => import('@features/anime-detail/anime-detail.module').then(m => m.AnimeDetailModule)
     },
     { path: 'anime', component: HomeComponent },
