@@ -13,7 +13,8 @@
         </section>
         <div class="container monty pt-3 ">
             <div class="row">
-                <div class="col-12 col-sm-6 col-lg-3 order-0">
+                <!-- Anime image and controls -->
+                <div class="col-12 col-sm-6 col-xl-3 order-0">
                     <div class="sticky_side_block">
                         <div class="anime_poster position-relative">
                             <div class="ribbon fw-bold oswald">{{ anime.attributes.startDate | date: 'y' }}</div>
@@ -26,10 +27,14 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-12 col-lg-6 pt-3 pt-lg-0 order-2 order-lg-1">
+
+                <!-- Anime details -->
+                <div class="col-12 col-xl-6 pt-3 pt-xl-0 order-2 order-xl-1">
                     <app-tab-menu [type]="type" />
                 </div>
-                <div class="col-12 col-sm-6 col-lg-3 order-1 order-lg-2 pt-3 pt-sm-0">
+
+                <!-- Extra info and youtube link -->
+                <div class="col-12 col-sm-6 col-xl-3 order-1 order-xl-2 pt-3 pt-sm-0">
                     <div class="sticky_side_block">
                         <iframe
                             *ngIf="url"
