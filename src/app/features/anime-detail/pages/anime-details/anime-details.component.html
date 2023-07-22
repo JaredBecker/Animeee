@@ -8,12 +8,12 @@
     </ng-container>
 
     <ng-template #view>
-        <section class="cover_img" [ngStyle]="{backgroundImage: 'url(' + getCoverImage() + ')'}">
+        <section class="cover_img d-none d-lg-block" [ngStyle]="{backgroundImage: 'url(' + getCoverImage() + ')'}">
             <div class="cover_img_overlay"></div>
         </section>
-        <div class="container monty">
+        <div class="container monty pt-3 ">
             <div class="row">
-                <div class="col-12 col-lg-3">
+                <div class="col-12 col-sm-6 col-lg-3 order-0">
                     <div class="sticky_side_block">
                         <div class="anime_poster position-relative">
                             <div class="ribbon fw-bold oswald">{{ anime.attributes.startDate | date: 'y' }}</div>
@@ -26,10 +26,10 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-12 col-lg-6">
+                <div class="col-12 col-lg-6 pt-3 pt-lg-0 order-2 order-lg-1">
                     <app-tab-menu [type]="type" />
                 </div>
-                <div class="col-12 col-lg-3">
+                <div class="col-12 col-sm-6 col-lg-3 order-1 order-lg-2 pt-3 pt-sm-0">
                     <div class="sticky_side_block">
                         <iframe
                             *ngIf="url"
