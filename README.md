@@ -17,6 +17,11 @@ click [HERE](https://animeee.jaredbecker.co.za/)
 
 If you find any bugs or strange behaviors feel free to open up an issue and let me know so I can get to fixing it!😁
 
+Know bugs:
+ - Search page shows no results then pops in results
+ - Trying to navigate to any other page other than the home as your first navigation gives you not found. If anyone knows why this happens or how I can fix it, it would be greatly appreciated
+ - Filtering by users on the search page returns anime but this is because users are not implemented yet so if users is selected I default to anime. So not a bug but can be a weird behavior if you are unaware of it
+
 # How do I run the project on my machine?
 
  1. Download or  clone the **Master** repo
