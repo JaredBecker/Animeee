@@ -9,14 +9,14 @@
             {{ anime.attributes.titles.en ? anime.attributes.titles.en : anime.attributes.titles.en_jp }}
         </h4>
         <!-- Make this color changed based on the rating. Green good red bad -->
-        <div class="d-flex justify-content-between align-items-center">
+        <div class="d-flex justify-content-between align-items-center flex-wrap">
             <p class="text-primary fw-bold m-0" *ngIf="anime.attributes.averageRating">{{ anime.attributes.averageRating }}% Community Approval</p>
             <div class="ratings">
-                <div>
+                <div *ngIf="anime.attributes.ratingRank">
                     <i class="fa-solid fa-star me-2" style="color: #f39c12;"></i>
                     <span class="fw-bold me-2">Rating:</span> # {{ anime.attributes.ratingRank }}
                 </div>
-                <div>
+                <div *ngIf="anime.attributes.popularityRank">
                     <i class="fa-solid fa-heart me-2" style="color: #e74c3c;"></i>
                     <span class="fw-bold me-2">Popularity:</span> # {{ anime.attributes.popularityRank }}
                 </div>

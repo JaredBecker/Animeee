@@ -78,6 +78,16 @@ main {
     flex-wrap: nowrap;
     overflow-x: auto;
     overflow-y: hidden;
+
+    .nav-link {
+        border-radius: 0.5rem 0.5rem 0 0;
+
+        &.active {
+            background-color: $primary;
+            color: #fff;
+            border-color: $primary;
+        }
+    }
 }
 
 .modal-content {
