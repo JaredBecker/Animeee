@@ -15,6 +15,7 @@ import { EpisodeModalComponent } from '@shared/components/episode-modal/episode-
 })
 export class EpisodeTabComponent implements OnInit, OnDestroy {
     public episodes: any[] = [];
+    public placeholders: any[] = new Array(10);
     public is_loading: boolean = true;
     public type?: string;
 
