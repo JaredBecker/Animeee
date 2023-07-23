@@ -37,7 +37,8 @@
                                 </h2>
                                 <div ngbAccordionCollapse>
                                     <div ngbAccordionBody>
-                                        <ng-container *ngTemplateOutlet="menu"></ng-container>
+                                        <h3 class="oswald fw-bold text-uppercase">Categories</h3>
+                                        <app-category-list [show_type_links]="true"></app-category-list>
                                     </div>
                                 </div>
                             </div>
@@ -87,18 +88,14 @@
             </div>
             <div class="col-12 col-xl-3">
                 <div class="d-none d-xl-block sticky_card">
-                    <ng-container *ngTemplateOutlet="menu"></ng-container>
+                    <app-card>
+                        <h3 class="oswald fw-bold text-uppercase">Categories</h3>
+                        <app-category-list [show_type_links]="true"></app-category-list>
+                    </app-card>
                 </div>
             </div>
         </div>
     </div>
 </main>
-
-<ng-template #menu>
-    <app-card>
-        <h3 class="oswald fw-bold text-uppercase">Categories</h3>
-        <app-category-list [show_type_links]="true"></app-category-list>
-    </app-card>
-</ng-template>
 
 <app-footer></app-footer>
