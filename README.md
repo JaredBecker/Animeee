@@ -18,7 +18,6 @@ click [HERE](https://animeee.jaredbecker.co.za/)
 If you find any bugs or strange behaviors feel free to open up an issue and let me know so I can get to fixing it!😁
 
 Know bugs:
- - Search page shows no results then pops in results
  - Filtering by users on the search page returns anime but this is because users are not implemented yet so if users is selected I default to anime. So not a bug but can be a weird behavior if you are unaware of it
 
 # How do I run the project on my machine?

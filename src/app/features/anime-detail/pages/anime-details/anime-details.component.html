@@ -17,10 +17,20 @@
                 <div class="col-12 col-sm-6 col-xl-3 order-0">
                     <div class="sticky_side_block p-2 p-sm-0">
                         <div class="anime_poster position-relative">
-                            <div class="ribbon fw-bold oswald">{{ anime.attributes.startDate | date: 'y' }}</div>
+                            <div *ngIf="anime.attributes.startDate && anime.attributes.startDate !== ''" class="ribbon fw-bold oswald">
+                                {{ anime.attributes.startDate | date: 'y' }}
+                            </div>
                             <img class="img-fluid" [src]="anime.attributes.posterImage.large" [alt]="anime.attributes.titles.en_jp">
                         </div>
                         <div class="d-flex flex-column gap-2">
+                            <a
+                                *ngIf="type === 'anime'"
+                                [href]="'https://aniwatch.to/search?keyword=' + anime.attributes.slug"
+                                target="_blank"
+                                class="btn btn-dark rounded-pill d-block fw-bold"
+                            >
+                                Find on<img src="/assets/images/aniwatch.png" class="ms-2" style="max-width: 60px;" alt="AniWatch logo" />
+                            </a>
                             <button type="button" (click)="onClick()" class="btn btn-primary text-white rounded-pill">Completed</button>
                             <button type="button" (click)="onClick()" class="btn btn-secondary text-white rounded-pill">Want to watch</button>
                             <button type="button" (click)="onClick()" class="btn btn-info text-white rounded-pill">Started watching</button>

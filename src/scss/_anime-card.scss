@@ -83,3 +83,40 @@
         width: 100%;
     }
 }
+
+// Tons of media queries to make sure loader card is always the same size as the cards that will replace them
+.anime_card_placeholder {
+    height: 233px;
+
+    @media (min-width: 400px) {
+        height: 256px;
+    }
+
+    @media (min-width: 450px) {
+        height: 292px;
+    }
+
+    @media (min-width: 500px) {
+        height: 327px;
+    }
+
+    @media (min-width: 550px) {
+        height: 363px;
+    }
+
+    @media (min-width: 600px) {
+        height: 230px;
+    }
+
+    @media (min-width: 800px) {
+        height: 315px;
+    }
+
+    @media (min-width: 1200px) {
+        height: 280px;
+    }
+
+    @media (min-width: 1400px) {
+        height: 327px;
+    }
+}
