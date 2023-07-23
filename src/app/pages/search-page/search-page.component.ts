@@ -22,6 +22,7 @@ import { AnimeSortType } from '@shared/models/anime-sort-type.interface';
 })
 export class SearchPageComponent implements OnInit, OnDestroy {
     public animes: any[] = [];
+    public placeholders: any[] = new Array(20);
     public search_phrase?: string;
     public is_loading: boolean = true;
     public loading_more: boolean = false;

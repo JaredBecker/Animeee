@@ -1,15 +1,18 @@
-<ng-container *ngIf="is_loading">
-    <app-loader />
-</ng-container>
 
-<ng-container *ngIf="!is_loading && episodes.length === 0;">
-    <h5 class="fw-bold oswald">Episodes</h5>
-    <p>Oh no... It seems like there is no info here yet...</p>
-</ng-container>
 
-<ng-container *ngIf="!is_loading && episodes.length > 0;">
-    <h5 class="fw-bold oswald text-uppercase">Episodes</h5>
-    <div class="row">
+
+
+<h5 class="fw-bold oswald text-uppercase">Episodes</h5>
+<div class="row">
+    <ng-container *ngIf="is_loading">
+        <div *ngFor="let placeholder of placeholders" class="placeholder-glow episode_card_placeholder col-6 col-lg-4 mb-4">
+            <div class="ratio ratio-4x3">
+                <div class="placeholder h-100 w-100 rounded"></div>
+            </div>
+        </div>
+    </ng-container>
+
+    <ng-container *ngIf="!is_loading && episodes.length > 0;">
         <ng-container *ngIf="type && type === 'episodes';else chapters">
             <div class="col-6 col-lg-4 mb-4" *ngFor="let episode of episodes">
                 <a role="button" (click)="onSelectEpisode(episode)" class="episode_card">
@@ -27,6 +30,7 @@
                 </a>
             </div>
         </ng-container>
+
         <ng-template #chapters>
             <div class="col-6 col-lg-4 mb-4" *ngFor="let episode of episodes">
                 <div class="episode_card">
@@ -37,5 +41,12 @@
                 </div>
             </div>
         </ng-template>
-    </div>
+    </ng-container>
+
+    <ng-container *ngIf="!is_loading && episodes.length === 0;">
+        <h5 class="fw-bold oswald">Episodes</h5>
+        <p>Oh no... It seems like there is no info here yet...</p>
+    </ng-container>
+</div>
+<ng-container >
 </ng-container>
