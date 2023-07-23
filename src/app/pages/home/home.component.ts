@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Title } from '@angular/platform-browser';
 
 import { Observable } from 'rxjs';
 
@@ -11,57 +12,6 @@ import { Response } from '@shared/models/response.interface';
     styleUrls: ['./home.component.scss']
 })
 export class HomeComponent implements OnInit {
-
-    public categories: string[] = [
-        'Some Category',
-        'Some Category',
-        'Some Category',
-        'Some Category',
-        'Some Category',
-        'Some Category',
-        'Some Category',
-        'Some Category',
-        'Some Category',
-        'Some Category',
-        'Some Category',
-        'Some Category',
-        'Some Category',
-        'Some Category',
-        'Some Category',
-        'Some Category',
-        'Some Category',
-        'Some Category',
-        'Some Category',
-        'Some Category',
-        'Some Category',
-        'Some Category',
-        'Some Category',
-        'Some Category',
-        'Some Category',
-        'Some Category',
-        'Some Category',
-        'Some Category',
-        'Some Category',
-        'Some Category',
-        'Some Category',
-        'Some Category',
-        'Some Category',
-        'Some Category',
-        'Some Category',
-        'Some Category',
-        'Some Category',
-        'Some Category',
-        'Some Category',
-        'Some Category',
-        'Some Category',
-        'Some Category',
-        'Some Category',
-        'Some Category',
-        'Some Category',
-        'Some Category',
-        'Some Category',
-    ]
-
     private $trending_anime?: Observable<Response>;
     private $top_airing_anime?: Observable<Response>;
     private $highest_rating_anime?: Observable<Response>;
@@ -89,10 +39,12 @@ export class HomeComponent implements OnInit {
     }
 
     constructor(
-        private animeService: AnimeService
+        private animeService: AnimeService,
+        private titleService: Title,
     ) { }
 
-    ngOnInit(): void {
+    public ngOnInit(): void {
+        this.titleService.setTitle('Animeee | Home');
         this.$trending_anime = this.animeService.getTrendingAnime();
         this.$top_airing_anime = this.animeService.getTopAiringAnime();
         this.$highest_rating_anime = this.animeService.getHighestRatedAnime();

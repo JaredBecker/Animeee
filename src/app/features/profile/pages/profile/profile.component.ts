@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Title } from '@angular/platform-browser';
+
 import { AuthService } from '@shared/services/auth.service';
 
 @Component({
@@ -9,7 +11,12 @@ import { AuthService } from '@shared/services/auth.service';
 export class ProfileComponent implements OnInit {
     public user: any;
 
-    constructor(private authService: AuthService) { }
+    constructor(
+        private authService: AuthService,
+        private titleService: Title,
+    ) {
+        this.titleService.setTitle(`Animeee | Profile`);
+    }
 
     public ngOnInit(): void {
         this.user = this.authService.getUserInfo();
