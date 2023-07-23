@@ -3,6 +3,13 @@
     border-radius: 1rem;
     position: relative;
 
+    .btn-close {
+        position: absolute;
+        left: 0.75rem;
+        top: 0.75rem;
+        border-radius: 50%;
+    }
+
     // Complete over kill but GOD DAM it looks sick AF
     .fav_btn {
         position: absolute;
@@ -48,7 +55,7 @@
         gap: 1.25rem;
         align-items: end;
         border-bottom: 1px solid #ccc;
-        padding-bottom: 1rem;
+        padding: 1rem 0;
 
         img {
             --size: 125px;

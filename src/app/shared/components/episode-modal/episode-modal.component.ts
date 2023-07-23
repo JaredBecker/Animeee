@@ -1,6 +1,8 @@
 import { Component, Input, OnInit, inject } from '@angular/core';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+
 @Component({
     selector: 'app-episode-modal',
     templateUrl: './episode-modal.component.html',
@@ -14,6 +16,10 @@ export class EpisodeModalComponent implements OnInit {
 
     private sanitizer: DomSanitizer = inject(DomSanitizer);
 
+    constructor(private modalService: NgbModal) {
+
+    }
+
     public ngOnInit(): void {
         if (this.episode.attributes.description)
         this.description = this.sanitizer.bypassSecurityTrustHtml(this.episode.attributes.description);
@@ -22,5 +28,9 @@ export class EpisodeModalComponent implements OnInit {
     // TODO: Fix this loading. Its causing a weird jump when the image loads
     public onLoad(): void {
         this.loading_image = false;
+    }
+
+    public closeModal() {
+        this.modalService.dismissAll();
     }
 }

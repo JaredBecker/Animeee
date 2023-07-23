@@ -1,7 +1,16 @@
 .episode_modal {
 
+    .btn-close {
+        position: absolute;
+        left: 0.75rem;
+        top: 0.75rem;
+        border-radius: 50%;
+        z-index: 10;
+    }
+
     &_header {
         border-bottom: 1px solid #ccc;
+        padding-top: 1rem;
 
         &_img {
             border-radius: 0.75rem;
