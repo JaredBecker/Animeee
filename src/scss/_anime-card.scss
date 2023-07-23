@@ -1,11 +1,13 @@
 .anime_card {
     transition: all 0.3s ease-in-out;
     position: relative;
+    opacity: 1;
 
     &:hover {
         cursor: pointer;
 
-        img {
+        img, .anime_card_title {
+            opacity: 0;
             transform: rotateY(180deg);
         }
 
@@ -62,5 +64,22 @@
                 -webkit-line-clamp: 9;
             }
         }
+    }
+
+    &_title {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        display: block;
+        line-height: 20px;
+        font-weight: bold;
+        padding: 0.5rem;
+        background: linear-gradient(to bottom, transparent 0%, $secondary 20%);
+        color: #fff;
+        border-radius: 0 0 0.5rem 0.5rem;
+        transition: all 0.3s ease-in-out;
+        position: absolute;
+        bottom: -8px;
+        width: 100%;
     }
 }
