@@ -123,13 +123,11 @@ export class SearchPageComponent implements OnInit, OnDestroy {
 
                         if (query_data.value && query_data.value !== '') {
                             this.search_phrase = query_data.value;
-                            this.setSearchPhrase(query_data.value)
+                            this.setSearchPhrase(query_data.value);
 
                             if (this.current_search_type === 'search') {
                                 this.search_input.setValue(this.search_phrase);
                             }
-
-                            this.is_loading = false;
                         }
                     } else {
                         this.is_loading = false;

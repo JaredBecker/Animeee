@@ -62,8 +62,6 @@ export class FranchiseTabComponent implements OnInit, OnDestroy {
             )
             .subscribe({
                 next: (franchise_res) => {
-                    console.log(franchise_res.included);
-
                     if (franchise_res.included) {
                         /**
                          * Check that the 2 arrays are the same length to join data but this is only
