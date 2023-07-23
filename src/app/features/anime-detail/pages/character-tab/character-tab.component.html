@@ -1,26 +1,30 @@
-<ng-container *ngIf="is_loading">
-    <app-loader />
-</ng-container>
 
-<ng-container *ngIf="!is_loading && characters.length === 0">
-    <h5 class="oswald fw-bold text-uppercase">Characters</h5>
-    <p >Oh no... There doesn't seem to be any character info</p>
-</ng-container>
+
+
 
 <!-- Doing ngIf like this because if I use an else on the template above this title show up for a split second and an it looks janky -->
-<ng-container *ngIf="!is_loading && characters.length > 0;">
-    <h5 class="oswald fw-bold text-uppercase">Characters</h5>
-    <div class="row" id="character_summary">
-        <div class="col-6 col-md-4 col-lg-3 mb-3" *ngFor="let character of characters">
-            <a role="button" (click)="onSelectCharacter(character)" class="character_card">
-                <div class="character_card_img">
-                    <img *ngIf="!character.attributes.image" src="/assets/images/no-image.png" class="img-fluid" alt="No image for the resource" />
-                    <img *ngIf="character.attributes.image" [src]="character.attributes.image.original" class="img-fluid" [alt]="character.attributes.name" />
-                </div>
-                <div class="character_card_name">
-                    {{ character.attributes.name }}
-                </div>
-            </a>
+<h5 class="oswald fw-bold text-uppercase">Characters</h5>
+<div class="row" id="character_summary">
+    <ng-container *ngIf="is_loading">
+        <div *ngFor="let placeholder of placeholders" class="placeholder-glow character_card_placeholder col-6 col-md-4 col-lg-3 mb-3">
+            <div class="placeholder h-100 w-100 rounded"></div>
         </div>
+    </ng-container>
+
+    <div class="col-6 col-md-4 col-lg-3 mb-3" *ngFor="let character of characters">
+        <a role="button" (click)="onSelectCharacter(character)" class="character_card">
+            <div class="character_card_img">
+                <img *ngIf="!character.attributes.image" src="/assets/images/no-image.png" class="img-fluid" alt="No image for the resource" />
+                <img *ngIf="character.attributes.image" [src]="character.attributes.image.original" class="img-fluid" [alt]="character.attributes.name" />
+            </div>
+            <div class="character_card_name">
+                {{ character.attributes.name }}
+            </div>
+        </a>
     </div>
-</ng-container>
+
+    <ng-container *ngIf="!is_loading && characters.length === 0">
+        <h5 class="oswald fw-bold text-uppercase">Characters</h5>
+        <p >Oh no... There doesn't seem to be any character info</p>
+    </ng-container>
+</div>

@@ -16,6 +16,7 @@ import { CharacterModalComponent } from '@shared/components/character-modal/char
 export class CharacterTabComponent implements OnInit, OnDestroy {
     public is_loading: boolean = true;
     public characters: any[] = [];
+    public placeholders: any[] = new Array(10);
 
     private anime_subscription?: Subscription;
 
