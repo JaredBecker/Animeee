@@ -1,21 +1,28 @@
-<ng-container *ngIf="is_loading;else slider">
-    <!-- TODO: change this out for a placeholder slider -->
-    <app-loader />
-</ng-container>
+<!-- <ng-container *ngIf="is_loading;else slider">
 
-<ng-template #slider>
-    <section class="slider_section">
-        <h3 class="oswald fw-bold text_gradient slider_title">{{ title }}</h3>
-        <swiper-container
-            initial-slide="0"
-            slides-per-view="2"
-            autoplay="true"
-            autoplay-delay="2000"
-            autoplay-pause-on-mouse-enter="true"
-            autoplay-disable-on-interaction="true"
-            space-between="15"
-            appSwiperConfig
-        >
+    <app-loader />
+</ng-container> -->
+
+<section class="slider_section">
+    <h3 class="oswald fw-bold text_gradient slider_title">{{ title }}</h3>
+    <swiper-container
+        initial-slide="0"
+        slides-per-view="2"
+        autoplay="true"
+        autoplay-delay="2000"
+        autoplay-pause-on-mouse-enter="true"
+        autoplay-disable-on-interaction="true"
+        space-between="15"
+        appSwiperConfig
+    >
+        <ng-container *ngIf="is_loading; else anime_slide">
+            <swiper-slide *ngFor="let placeholder of placeholders">
+                <div class="placeholder-glow anime_card_placeholder">
+                    <div class="placeholder h-100 w-100 rounded"></div>
+                </div>
+            </swiper-slide>
+        </ng-container>
+        <ng-template #anime_slide>
             <swiper-slide *ngFor="let anime of animes">
                 <!--
                     Not sure why I can't use a component inside here
@@ -51,12 +58,13 @@
                     </h6>
                 </div>
             </swiper-slide>
-        </swiper-container>
-        <div class="d-flex justify-content-end">
-            <a routerLink="/search" [queryParams]="{'type': search_url}" class="view_more">
-                View More
-                <i class="fa-solid fa-arrow-right ms-2"></i>
-            </a>
-        </div>
-    </section>
-</ng-template>
+        </ng-template>
+    </swiper-container>
+    <div class="d-flex justify-content-end">
+        <a routerLink="/search" [queryParams]="{'type': search_url}" class="view_more">
+            View More
+            <i class="fa-solid fa-arrow-right ms-2"></i>
+        </a>
+    </div>
+</section>
+
