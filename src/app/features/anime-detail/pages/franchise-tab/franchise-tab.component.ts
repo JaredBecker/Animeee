@@ -13,6 +13,7 @@ import { AnimeService } from '@shared/services/anime.service';
 })
 export class FranchiseTabComponent implements OnInit, OnDestroy {
     public franchises: any[] = [];
+    public placeholders: any[] = new Array(10);
     public is_loading: boolean = true;
     public type?: 'anime' | 'manga';
 

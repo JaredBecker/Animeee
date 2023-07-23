@@ -1,15 +1,16 @@
-<ng-container *ngIf="is_loading">
-    <app-loader />
-</ng-container>
 
-<ng-container *ngIf="!is_loading && franchises.length === 0">
-    <h5 class="oswald fw-bold text-uppercase">Franchises</h5>
-    <p >Oh no... Seems like there is nothing here yet</p>
-</ng-container>
 
-<ng-container *ngIf="!is_loading && franchises.length > 0">
-    <h5 class="oswald fw-bold text-uppercase">Franchises</h5>
-    <div class="row" id="character_summary">
+
+
+<h5 class="oswald fw-bold text-uppercase">Franchises</h5>
+<div class="row" id="character_summary">
+    <ng-container *ngIf="is_loading">
+        <div *ngFor="let placeholder of placeholders" class="placeholder-glow franchise_card_placeholder col-6 col-md-4 mb-3">
+            <div class="placeholder h-100 w-100 rounded"></div>
+        </div>
+    </ng-container>
+
+    <ng-container *ngIf="!is_loading && franchises.length > 0">
         <ng-container *ngIf="type && type === 'anime';else manga">
             <div class="col-6 col-md-4 mb-3" *ngFor="let franchise of franchises">
                 <div class="p-2 p-sm-0">
@@ -66,5 +67,12 @@
                 </div>
             </div>
         </ng-template>
-    </div>
+    </ng-container>
+
+    <ng-container *ngIf="!is_loading && franchises.length === 0">
+        <h5 class="oswald fw-bold text-uppercase">Franchises</h5>
+        <p >Oh no... Seems like there is nothing here yet</p>
+    </ng-container>
+</div>
+<ng-container >
 </ng-container>
