@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
+import { DomSanitizer, SafeHtml, Title } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { Observable, Subscription, of, switchMap } from 'rxjs';
@@ -31,6 +31,7 @@ export class AnimeDetailsComponent implements OnInit, OnDestroy {
         private animeService: AnimeService,
         private activatedRoute: ActivatedRoute,
         private router: Router,
+        private titleService: Title,
     ) { }
 
     public ngOnInit(): void {
@@ -56,6 +57,7 @@ export class AnimeDetailsComponent implements OnInit, OnDestroy {
             .subscribe({
                 next: (character_info) => {
                     this.animeDetailService.setCharacterInfo(character_info.included);
+                    this.titleService.setTitle(`Animeee | ${this.anime.attributes.titles.en ? this.anime.attributes.titles.en : this.anime.attributes.titles.en_jp}`);
                     this.is_loading = false;
                 },
                 error: (err) => {

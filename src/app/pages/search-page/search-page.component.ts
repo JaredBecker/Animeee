@@ -1,6 +1,7 @@
-import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormControl } from '@angular/forms';
+import { Title } from '@angular/platform-browser';
 
 import {
     Subscription,
@@ -9,7 +10,6 @@ import {
     distinctUntilChanged,
     map,
     switchMap,
-    tap
 } from 'rxjs';
 
 import { AnimeService } from '@shared/services/anime.service';
@@ -40,6 +40,7 @@ export class SearchPageComponent implements OnInit, OnDestroy {
         private router: Router,
         private activatedRoute: ActivatedRoute,
         private animeService: AnimeService,
+        private titleService: Title
     ) { }
 
     public ngOnInit(): void {
@@ -124,6 +125,7 @@ export class SearchPageComponent implements OnInit, OnDestroy {
 
                         if (query_data.value && query_data.value !== '') {
                             this.search_phrase = query_data.value;
+                            this.titleService.setTitle(`Animeee | ${this.search_phrase.toLocaleUpperCase()}`);
                             this.setSearchPhrase(query_data.value);
 
                             if (this.current_search_type === 'search') {
