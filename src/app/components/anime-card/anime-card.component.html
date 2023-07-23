@@ -20,4 +20,7 @@
         <p class="desc">{{ anime.attributes.description }}</p>
         <button type="button" class="btn btn-primary btn-sm text-white rounded-pill w-100 mt-auto mb-2">View</button>
     </div>
+    <h6 class="anime_card_title oswald">
+        {{ anime.attributes.titles.en ? anime.attributes.titles.en : anime.attributes.titles.en_jp }}
+    </h6>
 </div>
