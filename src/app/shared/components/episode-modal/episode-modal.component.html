@@ -1,4 +1,5 @@
 <div class="episode_modal monty p-3">
+    <button type="button" class="btn-close" aria-label="Close" (click)="closeModal()"></button>
     <div class="episode_modal_header" *ngIf="episode.attributes.thumbnail">
         <div class="episode_modal_header_img">
             <div [ngClass]="{'d-none': !loading_image}" class="placeholder-glow w-100" style="height: 250px;">
