@@ -9,6 +9,9 @@ import { AngularFireAuthModule } from '@angular/fire/compat/auth';
 import { AngularFireStorageModule } from '@angular/fire/compat/storage';
 import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
 
+// Google Analytics
+import { NgxGoogleAnalyticsModule, NgxGoogleAnalyticsRouterModule  } from 'ngx-google-analytics';
+
 // Routes
 import { AppRoutingModule } from './app-routing.module';
 
@@ -48,6 +51,8 @@ import { AnimeCardComponent } from './components/anime-card/anime-card.component
         AngularFireAuthModule,
         AngularFirestoreModule,
         AngularFireStorageModule,
+        NgxGoogleAnalyticsModule.forRoot(environment.ga_id),
+        NgxGoogleAnalyticsRouterModule,
     ],
     providers: [],
     bootstrap: [AppComponent],
