@@ -1,5 +1,8 @@
 /* You can add global styles to this file, and also import other style files */
 
+/* Import toaster styles */
+@import 'ngx-toastr/toastr';
+
 $primary: #ec2367;
 $secondary: #341845;
 $info: #6600a4;
@@ -22,6 +25,29 @@ main {
 
 .monty {
     font-family: 'Montserrat', sans-serif;
+}
+
+.toast-container {
+    position: fixed;
+
+    & .ngx-toastr {
+        border-radius: 0.5rem;
+        box-shadow: unset;
+        transition: all 0.2s ease-in-out;
+        font-family: 'Montserrat', sans-serif;
+
+        &:hover {
+            box-shadow: 0 0 5px 0px rgba(0,0,0,0.5);
+        }
+    }
+}
+
+.toast-success {
+    background-color: $primary;
+}
+
+.toast-error {
+    background-color: #FC2947;
 }
 
 .text_gradient {

@@ -11,6 +11,7 @@ import {
     map
 } from 'rxjs';
 import * as FirebaseAuth from 'firebase/auth';
+import { ToastrService } from 'ngx-toastr';
 
 import { PageLoaderService } from './page-loader.service';
 
@@ -24,6 +25,7 @@ export class AuthService {
         private router: Router,
         private angularFireAuth: AngularFireAuth,
         private pageLoaderService: PageLoaderService,
+        private toastr: ToastrService,
 
     ) {
         // Store firebase auth stream
@@ -88,10 +90,17 @@ export class AuthService {
             .signInWithEmailAndPassword(email, password)
             .then(result => {
                 this.router.navigateByUrl('/');
+                this.toastr.success('Welcome back!', 'Logged In!', {
+                    positionClass: 'toast-bottom-right',
+                    progressBar: true,
+                });
             })
             .catch((error) => {
-                window.alert(error.message);
                 this.pageLoaderService.setLoadingState(false);
+                this.toastr.error('Please check email/password and try again.', 'Incorrect Details', {
+                    positionClass: 'toast-bottom-right',
+                    progressBar: true,
+                });
             });
     }
 
@@ -125,14 +134,22 @@ export class AuthService {
      *
      * @returns void
      */
-    public forgotPassword(passwordResetEmail: string) {
+    public forgotPassword(passwordResetEmail: string): Promise<void> {
         return this.angularFireAuth
             .sendPasswordResetEmail(passwordResetEmail)
             .then(() => {
-                window.alert('Password reset email sent, check your inbox.');
+                this.toastr.success('Be sure to check your spam folder if the email isn\'t in your main inbox!', 'Link Sent! 📨', {
+                    positionClass: 'toast-bottom-right',
+                    progressBar: true,
+                    extendedTimeOut: 5000,
+                });
             })
             .catch((error) => {
-                window.alert(error);
+                this.toastr.error('Seems like that email is incorrect or doesn\'t exist. Please check and try again.', 'Something Went Wrong!', {
+                    positionClass: 'toast-bottom-right',
+                    progressBar: true,
+                    extendedTimeOut: 5000,
+                });
             });
     }
 
@@ -145,7 +162,7 @@ export class AuthService {
     }
 
     // Auth logic to run auth providers
-    public authLogin(provider: any) {
+    public authLogin(provider: any): Promise<void> {
         return this.angularFireAuth
             .signInWithPopup(provider)
             .then(() => {
@@ -163,7 +180,12 @@ export class AuthService {
      */
     public signOut(): void {
         this.pageLoaderService.setLoadingState({state: true, title: 'Logging Out'});
-        this.angularFireAuth.signOut()
+        this.angularFireAuth.signOut();
+
+        this.toastr.success('Goodbye for now!', 'Logged Out!', {
+            positionClass: 'toast-bottom-right',
+            progressBar: true,
+        });
 
         // Sign out is so dam fast and I want to show my loader I worked hard on🤣
         setTimeout(() => {

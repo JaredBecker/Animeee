@@ -2,6 +2,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 // Firebase tings
 import { AngularFireModule } from '@angular/fire/compat';
@@ -11,6 +12,10 @@ import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
 
 // Google Analytics
 import { NgxGoogleAnalyticsModule, NgxGoogleAnalyticsRouterModule  } from 'ngx-google-analytics';
+
+// Toaster
+
+import { ToastrModule } from 'ngx-toastr';
 
 // Routes
 import { AppRoutingModule } from './app-routing.module';
@@ -53,6 +58,8 @@ import { AnimeCardComponent } from './components/anime-card/anime-card.component
         AngularFireStorageModule,
         NgxGoogleAnalyticsModule.forRoot(environment.ga_id),
         NgxGoogleAnalyticsRouterModule,
+        ToastrModule.forRoot(),
+        BrowserAnimationsModule,
     ],
     providers: [],
     bootstrap: [AppComponent],
