@@ -12,7 +12,7 @@
             <input type="password" class="form-control" id="passowrd" placeholder="Password" #password required />
         </div>
         <button type="button" class="btn btn-primary text-white w-100 mb-2" (click)="onSignUp(email.value, password.value)">Sign Up</button>
-        <button type="button" class="btn w-100 mb-3 google_btn">
+        <button type="button" class="btn w-100 mb-3 google_btn" (click)="googleSignIn()">
             <img src='https://developers.google.com/identity/images/g-logo.png'>
             Sign Up with Google
         </button>
