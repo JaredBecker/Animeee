@@ -48,8 +48,8 @@ export class AuthService {
      *
      * @returns User info or null
      */
-    public async getUserInfo() {
-        const user = await firstValueFrom(
+    public getUserInfo() {
+        const user = firstValueFrom(
             this.angularFireAuth.user.pipe(
                 map(user => {
                     return user;
@@ -89,11 +89,18 @@ export class AuthService {
         return this.angularFireAuth
             .signInWithEmailAndPassword(email, password)
             .then(result => {
-                this.router.navigateByUrl('/');
-                this.toastr.success('Welcome back!', 'Logged In!', {
-                    positionClass: 'toast-bottom-right',
-                    progressBar: true,
-                });
+                if (result.user?.emailVerified) {
+                    this.router.navigateByUrl('/');
+                    this.toastr.success('Welcome back!', 'Logged In!', {
+                        positionClass: 'toast-bottom-right',
+                        progressBar: true,
+                    });
+                } else {
+                    this.toastr.error('Account Not Verified', 'Please check your email for verification link', {
+                        positionClass: 'toast-bottom-right',
+                        progressBar: true,
+                    });
+                }
             })
             .catch((error) => {
                 this.pageLoaderService.setLoadingState(false);
@@ -119,12 +126,32 @@ export class AuthService {
             .createUserWithEmailAndPassword(email, password)
             .then((result) => {
                 // TODO: figure out how to do email verification for users who don't use Google sign in
-                this.router.navigateByUrl('/');
+
+                const user = result.user;
+                this.sendVerificationEmail(user)
             })
             .catch((error) => {
                 this.pageLoaderService.setLoadingState(false);
                 console.error(error.message);
             });
+    }
+
+    /**
+     * Checks for current users and send them a verify email link
+     *
+     * @returns void
+     */
+    public sendVerificationEmail(user: any) {
+        user.sendEmailVerification().then((res: any) => {
+            this.pageLoaderService.setLoadingState(false);
+            this.router.navigateByUrl('/');
+        },
+        (err: any) => {
+            console.log('something went wrong', err);
+            this.pageLoaderService.setLoadingState(false);
+            this.router.navigateByUrl('/');
+        })
+
     }
 
     /**
@@ -167,11 +194,18 @@ export class AuthService {
             .signInWithPopup(provider)
             .then(() => {
                 this.router.navigateByUrl('/');
+                this.toastr.success('Welcome back!', 'Logged In!', {
+                    positionClass: 'toast-bottom-right',
+                    progressBar: true,
+                });
             })
             .catch((error) => {
-                // Install toaster here for better UI
                 console.error(error);
                 this.pageLoaderService.setLoadingState(false);
+                this.toastr.error('Welcome back!', 'Logged In!', {
+                    positionClass: 'toast-bottom-right',
+                    progressBar: true,
+                });
             });
     }
 
