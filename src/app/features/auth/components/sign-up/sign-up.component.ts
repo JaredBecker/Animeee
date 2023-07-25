@@ -19,4 +19,8 @@ export class SignUpComponent {
     public onSignUp(email: string, password: string) {
         this.authService.signUp(email, password);
     }
+
+    public googleSignIn() {
+        this.authService.googleAuth();
+    }
 }
