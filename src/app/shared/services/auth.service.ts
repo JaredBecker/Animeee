@@ -1,9 +1,6 @@
-import { User } from './../models/user.interface';
-
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
-import { AngularFirestore } from '@angular/fire/compat/firestore';
 
 import {
     Observable,
@@ -14,6 +11,7 @@ import * as FirebaseAuth from 'firebase/auth';
 import { ToastrService } from 'ngx-toastr';
 
 import { PageLoaderService } from './page-loader.service';
+import { UserService } from './user.service';
 
 @Injectable({
     providedIn: 'root',
@@ -26,7 +24,7 @@ export class AuthService {
         private angularFireAuth: AngularFireAuth,
         private pageLoaderService: PageLoaderService,
         private toastr: ToastrService,
-
+        private userService: UserService,
     ) {
         // Store firebase auth stream
         this.$authStream = this.angularFireAuth.user.pipe(
@@ -124,11 +122,10 @@ export class AuthService {
 
         return this.angularFireAuth
             .createUserWithEmailAndPassword(email, password)
-            .then((result) => {
-                // TODO: figure out how to do email verification for users who don't use Google sign in
-
-                const user = result.user;
-                this.sendVerificationEmail(user)
+            .then(result => {
+                console.log(result.user);
+                this.userService.createNewUserRecord(result.user);
+                this.sendVerificationEmail(result.user);
             })
             .catch((error) => {
                 this.pageLoaderService.setLoadingState(false);
@@ -151,7 +148,6 @@ export class AuthService {
             this.pageLoaderService.setLoadingState(false);
             this.router.navigateByUrl('/');
         })
-
     }
 
     /**
@@ -185,15 +181,28 @@ export class AuthService {
      */
     public googleAuth(): void {
         this.pageLoaderService.setLoadingState({state: true, title: 'Logging In'});
-        this.authLogin(new FirebaseAuth.GoogleAuthProvider())
+        this.signInWithProvider(new FirebaseAuth.GoogleAuthProvider())
     }
 
-    // Auth logic to run auth providers
-    public authLogin(provider: any): Promise<void> {
+    /**
+     * Attempts to login user using the provided provider
+     *
+     * @param provider The provider to login with
+     *
+     * @returns void
+     */
+    public signInWithProvider(provider: any): Promise<void> {
         return this.angularFireAuth
             .signInWithPopup(provider)
+            .then((result: any) => this.userService.checkIfUserExists(result.user))
+            .then((res) => {
+                if (!res.user_exists) {
+                    this.userService.createNewUserRecord(res.user);
+                }
+            })
             .then(() => {
                 this.router.navigateByUrl('/');
+                this.pageLoaderService.setLoadingState(false);
                 this.toastr.success('Welcome back!', 'Logged In!', {
                     positionClass: 'toast-bottom-right',
                     progressBar: true,
