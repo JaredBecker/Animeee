@@ -184,12 +184,25 @@ export class AuthService {
         this.signInWithProvider(new FirebaseAuth.GoogleAuthProvider())
     }
 
-    // Auth logic to run auth providers
+    /**
+     * Attempts to login user using the provided provider
+     *
+     * @param provider The provider to login with
+     *
+     * @returns void
+     */
     public signInWithProvider(provider: any): Promise<void> {
         return this.angularFireAuth
             .signInWithPopup(provider)
+            .then((result: any) => this.userService.checkIfUserExists(result.user))
+            .then((res) => {
+                if (!res.user_exists) {
+                    this.userService.createNewUserRecord(res.user);
+                }
+            })
             .then(() => {
                 this.router.navigateByUrl('/');
+                this.pageLoaderService.setLoadingState(false);
                 this.toastr.success('Welcome back!', 'Logged In!', {
                     positionClass: 'toast-bottom-right',
                     progressBar: true,

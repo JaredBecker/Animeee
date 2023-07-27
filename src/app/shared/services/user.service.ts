@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 
 import { User } from '@shared/models/user.interface';
+import { firstValueFrom, map } from 'rxjs';
 
 @Injectable({
     providedIn: 'root'
@@ -27,18 +28,27 @@ export class UserService {
                 user.displayName ?? user.email.split('@')[0],
                 user.photoUrl ?? '',
                 user.emailVerified,
-                [],[],[],[],[],[]
+                [], [], [], [], [], []
             );
 
             this.angularFirestore.collection('users').doc(user.uid).set(new_user.asObject())
-                .then(result => {
-                    console.log(result);
-                    console.log('user inserted check db');
-                })
                 .catch(err => {
                     console.log(err);
-                    console.log('da tings not working fam');
+
                 })
         }
+    }
+
+    public async checkIfUserExists(user: any) {
+        const user_exists = await firstValueFrom(
+            this.angularFirestore.collection('users')
+                .doc(user.uid)
+                .get()
+                .pipe(
+                    map((doc) => doc.exists)
+                )
+        )
+
+        return { user, user_exists }
     }
 }
