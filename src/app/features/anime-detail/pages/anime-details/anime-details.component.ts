@@ -9,6 +9,7 @@ import { AnimeDetailService } from 'src/app/shared/services/anime-detail.service
 import { Response } from '@shared/models/response.interface';
 import { AnimeService } from '@shared/services/anime.service';
 import { environment } from 'src/environments/environment';
+import { UserService } from '@shared/services/user.service';
 
 @Component({
     selector: 'app-anime-details',
@@ -18,6 +19,7 @@ import { environment } from 'src/environments/environment';
 export class AnimeDetailsComponent implements OnInit, OnDestroy {
     public anime?: any;
     public is_loading: boolean = true;
+    public completed_loading: boolean = false;
     public anime_details: AnimeDetail[] = [];
     public characters?: any[];
     public type: string = 'anime';
@@ -32,6 +34,7 @@ export class AnimeDetailsComponent implements OnInit, OnDestroy {
         private activatedRoute: ActivatedRoute,
         private router: Router,
         private titleService: Title,
+        private userService: UserService,
     ) { }
 
     public ngOnInit(): void {
@@ -142,6 +145,13 @@ export class AnimeDetailsComponent implements OnInit, OnDestroy {
                 return this.animeService.getCharacterInfo(this.anime.id, 'Anime')
             })
         );
+    }
+
+    public onAddToComplete() {
+        this.completed_loading = true;
+        this.userService.addToComplete(this.anime)
+            .then(res => this.completed_loading = false)
+            .catch(() => this.completed_loading = false);
     }
 
     private handleMangaLoad(manga_name: string) {

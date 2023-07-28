@@ -4,11 +4,11 @@ export class User {
     public username: string;
     public profile_picture: string = '';
     public email_verified: boolean = false;
-    public completed: number[] = [];
-    public on_hold: number[] = [];
-    public want_to_watch: number[] = [];
-    public currently_watching: number[] = [];
-    public favorite_characters: number[] = [];
+    public completed: any[] = [];
+    public on_hold: any[] = [];
+    public want_to_watch: any[] = [];
+    public currently_watching: any[] = [];
+    public favorite_characters: any[] = [];
     public friend_list: string[] = [];
 
     constructor(
@@ -17,11 +17,11 @@ export class User {
         username: string,
         profile_picture: string,
         email_verified: boolean,
-        completed: number[],
-        on_hold: number[],
-        want_to_watch: number[],
-        currently_watching: number[],
-        favorite_characters: number[],
+        completed: any[],
+        on_hold: any[],
+        want_to_watch: any[],
+        currently_watching: any[],
+        favorite_characters: any[],
         friend_list: string[],
     ) {
         this.uid = uid;
