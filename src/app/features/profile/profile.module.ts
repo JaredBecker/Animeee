@@ -6,10 +6,12 @@ import { SharedModule } from '@shared/shared.module';
 import { ProfileRoutingModule } from './profile.routing.module';
 
 import { ProfileComponent } from './pages/profile/profile.component';
+import { CompletedComponent } from './components/completed/completed.component';
 
 @NgModule({
     declarations: [
-        ProfileComponent
+        ProfileComponent,
+        CompletedComponent
     ],
     imports: [
         CommonModule,
