@@ -11,7 +11,7 @@ import { CompletedComponent } from './components/completed/completed.component';
 @NgModule({
     declarations: [
         ProfileComponent,
-        CompletedComponent
+        CompletedComponent,
     ],
     imports: [
         CommonModule,

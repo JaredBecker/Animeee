@@ -11,9 +11,10 @@ import { NavbarComponent } from './components/navbar/navbar.component';
 import { LoaderComponent } from './components/loader/loader.component';
 import { PageLoaderComponent } from './components/page-loader/page-loader.component';
 import { CharacterModalComponent } from './components/character-modal/character-modal.component';
-import { TopShadowDirective } from './directives/top-shadow.directive';
+import { AnimeCardComponent } from './components/anime-card/anime-card.component';
 import { EpisodeModalComponent } from './components/episode-modal/episode-modal.component';
 import { FooterComponent } from './components/footer/footer.component';
+import { TopShadowDirective } from './directives/top-shadow.directive';
 import { SwiperConfigDirective } from './directives/swiper-config.directive';
 
 @NgModule({
@@ -28,6 +29,7 @@ import { SwiperConfigDirective } from './directives/swiper-config.directive';
         EpisodeModalComponent,
         FooterComponent,
         SwiperConfigDirective,
+        AnimeCardComponent
     ],
     imports: [
         CommonModule,
@@ -47,6 +49,7 @@ import { SwiperConfigDirective } from './directives/swiper-config.directive';
         ReactiveFormsModule,
         CharacterModalComponent,
         FooterComponent,
+        AnimeCardComponent,
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
