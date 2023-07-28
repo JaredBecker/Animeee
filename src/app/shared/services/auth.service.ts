@@ -89,23 +89,14 @@ export class AuthService {
             .then(result => {
                 if (result.user?.emailVerified) {
                     this.router.navigateByUrl('/');
-                    this.toastr.success('Welcome back!', 'Logged In!', {
-                        positionClass: 'toast-bottom-right',
-                        progressBar: true,
-                    });
+                    this.toastr.success('Welcome back!', 'Logged In!');
                 } else {
-                    this.toastr.error('Account Not Verified', 'Please check your email for verification link', {
-                        positionClass: 'toast-bottom-right',
-                        progressBar: true,
-                    });
+                    this.toastr.error('Account Not Verified', 'Please check your email for verification link');
                 }
             })
             .catch((error) => {
                 this.pageLoaderService.setLoadingState(false);
-                this.toastr.error('Please check email/password and try again.', 'Incorrect Details', {
-                    positionClass: 'toast-bottom-right',
-                    progressBar: true,
-                });
+                this.toastr.error('Please check email/password and try again.', 'Incorrect Details');
             });
     }
 
@@ -161,18 +152,10 @@ export class AuthService {
         return this.angularFireAuth
             .sendPasswordResetEmail(passwordResetEmail)
             .then(() => {
-                this.toastr.success('Be sure to check your spam folder if the email isn\'t in your main inbox!', 'Link Sent! 📨', {
-                    positionClass: 'toast-bottom-right',
-                    progressBar: true,
-                    extendedTimeOut: 5000,
-                });
+                this.toastr.success('Be sure to check your spam folder if the email isn\'t in your main inbox!', 'Link Sent! 📨');
             })
             .catch((error) => {
-                this.toastr.error('Seems like that email is incorrect or doesn\'t exist. Please check and try again.', 'Something Went Wrong!', {
-                    positionClass: 'toast-bottom-right',
-                    progressBar: true,
-                    extendedTimeOut: 5000,
-                });
+                this.toastr.error('Seems like that email is incorrect or doesn\'t exist. Please check and try again.', 'Something Went Wrong!');
             });
     }
 
@@ -203,18 +186,12 @@ export class AuthService {
             .then(() => {
                 this.router.navigateByUrl('/');
                 this.pageLoaderService.setLoadingState(false);
-                this.toastr.success('Welcome back!', 'Logged In!', {
-                    positionClass: 'toast-bottom-right',
-                    progressBar: true,
-                });
+                this.toastr.success('Welcome back!', 'Logged In!');
             })
             .catch((error) => {
                 console.error(error);
                 this.pageLoaderService.setLoadingState(false);
-                this.toastr.error('Welcome back!', 'Logged In!', {
-                    positionClass: 'toast-bottom-right',
-                    progressBar: true,
-                });
+                this.toastr.error('Welcome back!', 'Logged In!');
             });
     }
 
@@ -225,10 +202,7 @@ export class AuthService {
         this.pageLoaderService.setLoadingState({state: true, title: 'Logging Out'});
         this.angularFireAuth.signOut();
 
-        this.toastr.success('Goodbye for now!', 'Logged Out!', {
-            positionClass: 'toast-bottom-right',
-            progressBar: true,
-        });
+        this.toastr.success('Goodbye for now!', 'Logged Out!');
 
         // Sign out is so dam fast and I want to show my loader I worked hard on🤣
         setTimeout(() => {
