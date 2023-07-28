@@ -150,7 +150,7 @@ export class AnimeDetailsComponent implements OnInit, OnDestroy {
     public onAddToComplete() {
         this.completed_loading = true;
         this.userService.addToComplete(this.anime)
-            .then(res => this.completed_loading = false)
+            .then(() => this.completed_loading = false)
             .catch(() => this.completed_loading = false);
     }
 

@@ -4,10 +4,11 @@ export class User {
     public username: string;
     public profile_picture: string = '';
     public email_verified: boolean = false;
-    public completed: any[] = [];
-    public on_hold: any[] = [];
-    public want_to_watch: any[] = [];
-    public currently_watching: any[] = [];
+    public anime_list: any[] = [];
+    public completed: number[] = [];
+    public on_hold: number[] = [];
+    public want_to_watch: number[] = [];
+    public currently_watching: number[] = [];
     public favorite_characters: any[] = [];
     public friend_list: string[] = [];
 
@@ -17,10 +18,11 @@ export class User {
         username: string,
         profile_picture: string,
         email_verified: boolean,
-        completed: any[],
-        on_hold: any[],
-        want_to_watch: any[],
-        currently_watching: any[],
+        anime_list: any[],
+        completed: number[],
+        on_hold: number[],
+        want_to_watch: number[],
+        currently_watching: number[],
         favorite_characters: any[],
         friend_list: string[],
     ) {
@@ -29,6 +31,7 @@ export class User {
         this.username = username;
         this.profile_picture = profile_picture;
         this.email_verified = email_verified;
+        this.anime_list = anime_list;
         this.completed = completed;
         this.on_hold = on_hold;
         this.want_to_watch = want_to_watch;
@@ -49,6 +52,7 @@ export class User {
             username: this.username,
             profile_picture: this.profile_picture,
             email_verified: this.email_verified,
+            anime_list: this.anime_list,
             completed: this.completed,
             on_hold: this.on_hold,
             want_to_watch: this.want_to_watch,

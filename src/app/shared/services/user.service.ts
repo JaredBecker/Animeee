@@ -50,7 +50,7 @@ export class UserService {
                 user.displayName ?? user.email.split('@')[0],
                 user.photoUrl ?? '',
                 user.emailVerified,
-                [], [], [], [], [], []
+                [], [], [], [], [], [], []
             );
 
             this.angularFirestore.collection('users').doc(user.uid).set(new_user.asObject())
@@ -90,30 +90,39 @@ export class UserService {
     public async addToComplete(anime: any): Promise<void> {
         const user = await this.getUserInfo();
 
+        // Get rid of properties not needed
+        delete anime.links;
+        delete anime.relationships;
+
         if (user?.uid) {
             const record: User | undefined = await firstValueFrom(
                 this.angularFirestore.collection('users').doc<User>(user.uid).valueChanges()
             );
 
             if (record) {
-                const not_already_selected = record.completed.every(el => el['id'] !== anime.id);
+                let found = false;
+                for(let i = 0; i < record.anime_list.length; i++) {
+                    const el = record.anime_list[i];
 
-                if (not_already_selected) {
-                    // Get rid of properties not needed
-                    delete anime.links;
-                    delete anime.relationships;
-
-                    record.completed.push(anime);
-                    this.angularFirestore.collection('users').doc(user.uid).set(record);
-                    this.toastr.success('The anime has been added to your completed list!', 'Anime Added');
-                } else {
-                    this.toastr.error('This anime is already added to your completed list', 'Already In Complete');
+                    if (el.id === anime.id) {
+                        el.watch_type = 'completed';
+                        found = true;
+                        break;
+                    }
                 }
+
+                if (found) {
+                    this.toastr.success('The anime watch state has been updated to completed!', 'Anime Watch State Updated');
+                } else {
+                    anime.watch_type = 'completed';
+                    record.anime_list.push(anime);
+                    this.toastr.success('The anime has been added to your completed list!', 'Anime Completed');
+                }
+
+                this.angularFirestore.collection('users').doc(user.uid).set(record);
 
                 return;
             }
-
-            this.toastr.success('The anime has been added to your completed list!', 'Anime Added');
 
             return;
         }
