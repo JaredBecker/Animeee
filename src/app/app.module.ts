@@ -58,7 +58,11 @@ import { AnimeCardComponent } from './components/anime-card/anime-card.component
         AngularFireStorageModule,
         NgxGoogleAnalyticsModule.forRoot(environment.ga_id),
         NgxGoogleAnalyticsRouterModule,
-        ToastrModule.forRoot(),
+        ToastrModule.forRoot({
+            positionClass: 'toast-bottom-right',
+            progressBar: true,
+            extendedTimeOut: 5000,
+        }),
         BrowserAnimationsModule,
     ],
     providers: [],

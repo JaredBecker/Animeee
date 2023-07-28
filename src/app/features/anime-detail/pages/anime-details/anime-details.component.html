@@ -31,7 +31,17 @@
                             >
                                 Find on<img src="/assets/images/aniwatch.png" class="ms-2" style="max-width: 60px;" alt="AniWatch logo" />
                             </a>
-                            <button type="button" (click)="onClick()" class="btn btn-primary text-white rounded-pill">Completed</button>
+                            <button
+                                type="button"
+                                (click)="onAddToComplete()"
+                                [disabled]="completed_loading"
+                                class="btn btn-primary text-white rounded-pill d-flex justify-content-center align-items-center"
+                            >
+                                <span *ngIf="!completed_loading">Completed</span>
+                                <div *ngIf="completed_loading" class="spinner-border text-light btn-loader" role="status">
+                                    <span class="visually-hidden">Loading...</span>
+                                </div>
+                            </button>
                             <button type="button" (click)="onClick()" class="btn btn-secondary text-white rounded-pill">Want to watch</button>
                             <button type="button" (click)="onClick()" class="btn btn-info text-white rounded-pill">Started watching</button>
                         </div>
