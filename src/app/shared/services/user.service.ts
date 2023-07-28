@@ -6,7 +6,6 @@ import { firstValueFrom, map } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
 
 import { User } from '@shared/models/user.interface';
-import * as firebase from "firebase/app";
 
 @Injectable({
     providedIn: 'root'
@@ -21,7 +20,7 @@ export class UserService {
     ) { }
 
     /**
-     * Gets the info of the current user
+     * Gets the info of the current user (Firebase info)
      *
      * @returns User info or null
      */
@@ -38,6 +37,29 @@ export class UserService {
     }
 
     /**
+     * Get the info for the user profile stored in firestore database
+     *
+     * @returns User
+     */
+    public async getUserProfileInfo(): Promise<User | undefined> {
+        if (this.user) {
+            return this.user;
+        }
+
+        const user = await this.getUserInfo();
+
+        if (user) {
+            const profile_info = await firstValueFrom(
+                this.angularFirestore.collection('users').doc<User>(user.uid).valueChanges()
+            );
+
+            return profile_info;
+        }
+
+        return undefined;
+    }
+
+    /**
      * Takes a user response from firebase and create a document inside user collection
      *
      * @param user User response from signing up / logging in
@@ -50,14 +72,10 @@ export class UserService {
                 user.displayName ?? user.email.split('@')[0],
                 user.photoUrl ?? '',
                 user.emailVerified,
-                [], [], [], [], [], [], []
+                [], [], []
             );
 
-            this.angularFirestore.collection('users').doc(user.uid).set(new_user.asObject())
-                .catch(err => {
-                    console.log(err);
-
-                })
+            this.angularFirestore.collection('users').doc(user.uid).set(new_user.asObject());
         }
     }
 
@@ -119,6 +137,7 @@ export class UserService {
                     this.toastr.success('The anime has been added to your completed list!', 'Anime Completed');
                 }
 
+                this.user = record;
                 this.angularFirestore.collection('users').doc(user.uid).set(record);
 
                 return;

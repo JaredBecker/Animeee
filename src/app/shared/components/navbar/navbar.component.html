@@ -25,7 +25,7 @@
                 </a>
                 <div ngbDropdownMenu aria-labelledby="profile">
                     <a routerLink="/auth/sign-in" ngbDropdownItem *ngIf="!isAuthenticated">Sign In</a>
-                    <a routerLink="/profile" ngbDropdownItem *ngIf="isAuthenticated">Profile</a>
+                    <a routerLink="/profile/completed" ngbDropdownItem *ngIf="isAuthenticated">Profile</a>
                     <a role="button" (click)="onLogout()" ngbDropdownItem  *ngIf="isAuthenticated">Sign Out</a>
                 </div>
             </div>
