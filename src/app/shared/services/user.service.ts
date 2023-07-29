@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 
-import { firstValueFrom, map } from 'rxjs';
+import { BehaviorSubject, Observable, Subject, firstValueFrom, map, shareReplay } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
 
 import { User } from '@shared/models/user.interface';
@@ -12,12 +12,25 @@ import { User } from '@shared/models/user.interface';
 })
 export class UserService {
     private user?: User;
+    private $user_stream: BehaviorSubject<User | undefined> = new BehaviorSubject<User | undefined>(undefined);
 
     constructor(
         private angularFirestore: AngularFirestore,
         private angularFireAuth: AngularFireAuth,
         private toastr: ToastrService,
-    ) { }
+    ) {
+        this.getUserInfo()
+            .then((user) => {
+                if (user) {
+                    firstValueFrom(this.angularFirestore.collection('users').doc<User>(user.uid).valueChanges())
+                        .then((user_profile) => {
+                            if (user_profile) {
+                                this.$user_stream.next(user_profile);
+                            }
+                        })
+                }
+            });
+    }
 
     /**
      * Gets the info of the current user (Firebase info)
@@ -37,15 +50,22 @@ export class UserService {
     }
 
     /**
+     * Gets the current user stream
+     *
+     * @returns User stream
+     */
+    public getUserStream(): Observable<User | undefined> {
+        return this.$user_stream.asObservable().pipe(
+            shareReplay(1)
+        );
+    }
+
+    /**
      * Get the info for the user profile stored in firestore database
      *
      * @returns User
      */
     public async getUserProfileInfo(): Promise<User | undefined> {
-        if (this.user) {
-            return this.user;
-        }
-
         const user = await this.getUserInfo();
 
         if (user) {
@@ -119,7 +139,7 @@ export class UserService {
 
             if (record) {
                 let found = false;
-                for(let i = 0; i < record.anime_list.length; i++) {
+                for (let i = 0; i < record.anime_list.length; i++) {
                     const el = record.anime_list[i];
 
                     if (el.id === anime.id) {
@@ -137,10 +157,31 @@ export class UserService {
                     this.toastr.success('The anime has been added to your completed list!', 'Anime Completed');
                 }
 
-                this.user = record;
+                this.$user_stream.next(record);
                 this.angularFirestore.collection('users').doc(user.uid).set(record);
 
                 return;
+            }
+
+            return;
+        }
+
+        this.toastr.error('This action could not be completed because no account could be found.', 'No Account found');
+    }
+
+    public async removeAnime(anime_id: string) {
+        const user = await this.getUserInfo();
+
+        if (user?.uid) {
+            const record: User | undefined = await firstValueFrom(
+                this.angularFirestore.collection('users').doc<User>(user.uid).valueChanges()
+            );
+
+            if (record) {
+                record.anime_list = record.anime_list.filter(el => el.id !== anime_id);
+                this.$user_stream.next(record);
+                this.angularFirestore.collection('users').doc(user.uid).set(record);
+                this.toastr.success('The anime has been removed from your list!', 'Anime Removed');
             }
 
             return;
