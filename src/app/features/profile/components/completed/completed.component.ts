@@ -1,4 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+
+import { Subscription } from 'rxjs';
+
 import { UserService } from '@shared/services/user.service';
 
 @Component({
@@ -6,9 +9,11 @@ import { UserService } from '@shared/services/user.service';
   templateUrl: './completed.component.html',
   styleUrls: ['./completed.component.scss']
 })
-export class CompletedComponent implements OnInit {
+export class CompletedComponent implements OnInit, OnDestroy {
     public animes: any[] = [];
     public is_loading: boolean = true;
+
+    private user_subscription?: Subscription;
 
     constructor(
         private userService: UserService,
@@ -18,16 +23,32 @@ export class CompletedComponent implements OnInit {
     public ngOnInit(): void {
         this.is_loading = true;
 
-        this.userService.getUserProfileInfo()
-            .then(user_info => {
-                user_info?.anime_list.forEach(anime => {
-                    if (anime.watch_type === 'completed') {
-                        this.animes.push(anime);
-                    }
-                });
+        this.user_subscription = this.userService.getUserStream()
+            .subscribe({
+                next: (user_info) => {
+                    if (user_info) {
+                        this.animes = [];
 
-                this.is_loading = false;
-            })
-            .catch(() => this.is_loading = false);
+                        user_info?.anime_list.forEach(anime => {
+                            if (anime.watch_type === 'completed') {
+                                this.animes.push(anime);
+                            }
+                        });
+                    }
+
+                    this.is_loading = false;
+                },
+                error: () => {
+                    this.is_loading = false;
+                }
+            });
+    }
+
+    public ngOnDestroy(): void {
+        this.user_subscription?.unsubscribe();
+    }
+
+    public onRemoveAnime(anime_id: string) {
+        this.userService.removeAnime(anime_id);
     }
 }

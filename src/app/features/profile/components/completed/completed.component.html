@@ -7,7 +7,7 @@
     <ng-container *ngIf="!is_loading && animes.length > 0">
         <div *ngFor="let anime of animes" class="col-6 col-md-4 col-lg-3 mb-3 position-relative">
             <app-anime-card [anime]="anime" type="anime" />
-            <button class="btn btn-danger btn-sm delete_btn">
+            <button type="button" (click)="onRemoveAnime(anime.id)" class="btn btn-danger btn-sm delete_btn">
                 <i class="fa-solid fa-trash-can me-1"></i>
                 Remove From List
             </button>
