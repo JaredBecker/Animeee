@@ -1,0 +1,13 @@
+.back_to_top {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    height: 40px;
+    width: 40px;
+    border-radius: 50%;
+    font-size: 1rem;
+    z-index: 100;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
