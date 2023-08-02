@@ -1,8 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 
-import { Subscription, filter, switchMap } from 'rxjs';
+import { Subscription } from 'rxjs';
 
-import { AnimeService } from '@shared/services/anime.service';
 import { AnimeDetailService } from '@shared/services/anime-detail.service';
 
 @Component({
@@ -17,39 +16,26 @@ export class RelatedCategoriesComponent implements OnInit, OnDestroy {
     private anime_subscription?: Subscription;
 
     constructor(
-        private animeService: AnimeService,
         private animeDetailService: AnimeDetailService,
     ) { }
 
     public ngOnInit(): void {
-        this.anime_subscription = this.animeDetailService.getCurrentAnime()
-            .pipe(
-                filter(anime => anime !== null),
-                switchMap((anime: any) => {
-                    const url = anime.relationships.categories.links.related;
+        const categories_arr: any = this.animeDetailService.getCategories();
 
-                    return this.animeService.getCategories(url);
-                })
-            )
-            .subscribe({
-                next: (categories: any) => {
-                    this.categories = categories.data;
-                    this.categories = this.categories?.sort((a: any, b: any) => {
-                        if (a.attributes.title < b.attributes.title) {
-                            return -1;
-                        } else if (a.attributes.title > b.attributes.title) {
-                            return 1
-                        } else {
-                            return 0;
-                        }
-                    });
-                    this.is_loading = false;
-                },
-                error: (err: any) => {
-                    this.is_loading = false;
-                    console.error('Error fetching related categories', err);
+        if (categories_arr) {
+            this.categories = categories_arr;
+            this.categories = this.categories?.sort((a: any, b: any) => {
+                if (a.attributes.title < b.attributes.title) {
+                    return -1;
+                } else if (a.attributes.title > b.attributes.title) {
+                    return 1
+                } else {
+                    return 0;
                 }
-            })
+            });
+        }
+
+        this.is_loading = false;
     }
 
     public ngOnDestroy(): void {

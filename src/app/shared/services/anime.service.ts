@@ -99,19 +99,6 @@ export class AnimeService {
     }
 
     /**
-     * Used to get the categories of an anime
-     *
-     * @param url The URL provided in the anime response under "relationships -> categories -> links -> related"
-     *
-     * @returns Stream of categories for the provided URL
-     */
-    public getCategories(url: string): Observable<Response> {
-        return this.http.get<Response>(url).pipe(
-            map((categories) => categories)
-        )
-    }
-
-    /**
      * Gets anime info for the requested name
      *
      * @param anime_name The slug for the anime
