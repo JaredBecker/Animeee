@@ -1,7 +1,7 @@
 <ng-container *ngIf="is_loading">
     <app-loader />
 </ng-container>
-<ng-container *ngIf="!is_loading && categories.length > 0; else no_results">
+<ng-container *ngIf="!is_loading && categories && categories.length > 0">
     <h5 class="oswald fw-bold text-uppercase">Related Categories</h5>
     <div class="d-flex gap-2 flex-wrap">
         <a
@@ -14,4 +14,3 @@
         </a>
     </div>
 </ng-container>
-<ng-template #no_results></ng-template>
