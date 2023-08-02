@@ -126,47 +126,23 @@ export class UserService {
      * @returns void
      */
     public async addToComplete(anime: any): Promise<void> {
-        const user = await this.getUserInfo();
+        const found = await this.updateWatchState(anime, 'completed');
 
-        // Get rid of properties not needed
-        delete anime.links;
-        delete anime.relationships;
-
-        if (user?.uid) {
-            const record: User | undefined = await firstValueFrom(
-                this.angularFirestore.collection('users').doc<User>(user.uid).valueChanges()
-            );
-
-            if (record) {
-                let found = false;
-                for (let i = 0; i < record.anime_list.length; i++) {
-                    const el = record.anime_list[i];
-
-                    if (el.id === anime.id) {
-                        el.watch_type = 'completed';
-                        found = true;
-                        break;
-                    }
-                }
-
-                if (found) {
-                    this.toastr.success('The anime watch state has been updated to completed!', 'Anime Watch State Updated');
-                } else {
-                    anime.watch_type = 'completed';
-                    record.anime_list.push(anime);
-                    this.toastr.success('The anime has been added to your completed list!', 'Anime Completed');
-                }
-
-                this.$user_stream.next(record);
-                this.angularFirestore.collection('users').doc(user.uid).set(record);
-
-                return;
-            }
-
-            return;
+        if (found) {
+            this.toastr.success('The anime watch state has been updated to completed!', 'Anime Watch State Updated');
+        } else {
+            this.toastr.success('The anime has been added to your completed list!', 'Anime Completed');
         }
+    }
 
-        this.toastr.error('This action could not be completed because no account could be found.', 'No Account found');
+    public async addToWantToWatch(anime: any): Promise<void> {
+        const found = await this.updateWatchState(anime, 'want_to_watch');
+
+        if (found) {
+            this.toastr.success('The anime watch state has been updated to want to watch!', 'Anime Watch State Updated');
+        } else {
+            this.toastr.success('The anime has been added to your want to watch list!', 'Want To Watch Anime');
+        }
     }
 
     public async removeAnime(anime_id: string) {
@@ -188,5 +164,54 @@ export class UserService {
         }
 
         this.toastr.error('This action could not be completed because no account could be found.', 'No Account found');
+    }
+
+    /**
+     * Update the user record and sets the selected animes watch state to the provided state
+     *
+     * @param record User record from the firestore DB
+     * @param anime_id ID of the anime to update
+     * @param watch_state The watch state to update to
+     *
+     * @return Boolean indicating if the anime was found and updated
+     */
+    public async updateWatchState(anime: any, watch_state: string) {
+        const user = await this.getUserInfo();
+
+        // Get rid of properties not needed
+        delete anime.links;
+        delete anime.relationships;
+
+        if (user?.uid) {
+            const record: User | undefined = await firstValueFrom(
+                this.angularFirestore.collection('users').doc<User>(user.uid).valueChanges()
+            );
+
+            if (record) {
+                let found = false;
+                for (let i = 0; i < record.anime_list.length; i++) {
+                    const el = record.anime_list[i];
+
+                    if (el.id === anime.id) {
+                        el.watch_type = watch_state;
+                        found = true;
+                        break;
+                    }
+                }
+
+                this.$user_stream.next(record);
+                this.angularFirestore.collection('users').doc(user.uid).set(record);
+
+                return found;
+            } else {
+                this.toastr.error('This action could not be completed because no user details could be found in the database.', 'No User Found');
+
+                return false;
+            }
+        }
+
+        this.toastr.error('This action could not be completed because no account could be found.', 'No Account found');
+
+        return false;
     }
 }

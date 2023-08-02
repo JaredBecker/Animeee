@@ -20,6 +20,7 @@ export class AnimeDetailsComponent implements OnInit, OnDestroy {
     public anime?: any;
     public is_loading: boolean = true;
     public completed_loading: boolean = false;
+    public want_to_watch_loading: boolean = false;
     public anime_details: AnimeDetail[] = [];
     public characters?: any[];
     public type: string = 'anime';
@@ -91,20 +92,20 @@ export class AnimeDetailsComponent implements OnInit, OnDestroy {
         const details: AnimeDetail[] = [];
         const anime = this.anime.attributes;
 
-        if (anime.titles.en) details.push({title: 'English', value: anime.titles.en});
-        if (anime.titles.ja_jp) details.push({title: 'Japanese', value: anime.titles.ja_jp});
-        if (anime.titles.en_jp) details.push({title: 'Romaji', value: anime.titles.en_jp});
-        if (anime.showType) details.push({title: 'Type', value: anime.showType});
-        if (anime.episodeCount) details.push({title: 'Episodes', value: anime.episodeCount});
-        if (anime.chapterCount) details.push({title: 'Chapters', value: anime.chapterCount});
-        if (anime.status) details.push({title: 'Status', value: anime.status});
+        if (anime.titles.en) details.push({ title: 'English', value: anime.titles.en });
+        if (anime.titles.ja_jp) details.push({ title: 'Japanese', value: anime.titles.ja_jp });
+        if (anime.titles.en_jp) details.push({ title: 'Romaji', value: anime.titles.en_jp });
+        if (anime.showType) details.push({ title: 'Type', value: anime.showType });
+        if (anime.episodeCount) details.push({ title: 'Episodes', value: anime.episodeCount });
+        if (anime.chapterCount) details.push({ title: 'Chapters', value: anime.chapterCount });
+        if (anime.status) details.push({ title: 'Status', value: anime.status });
         if (anime.startDate && anime.endDate) {
-            details.push({title: type === 'anime' ? 'Aired' : 'Published' , value: `${anime.startDate} to ${anime.endDate}`})
+            details.push({ title: type === 'anime' ? 'Aired' : 'Published', value: `${anime.startDate} to ${anime.endDate}` })
         } else if (anime.startDate) {
-            details.push({title: type === 'anime' ? 'Aired' : 'Published', value: `${anime.startDate}`})
+            details.push({ title: type === 'anime' ? 'Aired' : 'Published', value: `${anime.startDate}` })
         }
-        if (anime.ageRatingGuide) details.push({title: 'Rating', value: anime.ageRatingGuide});
-        if (anime.nsfw && anime.nsfw !== null) details.push({title: 'NSFW', value: anime.nsfw});
+        if (anime.ageRatingGuide) details.push({ title: 'Rating', value: anime.ageRatingGuide });
+        if (anime.nsfw && anime.nsfw !== null) details.push({ title: 'NSFW', value: anime.nsfw });
 
         this.anime_details = details;
     }
@@ -152,6 +153,13 @@ export class AnimeDetailsComponent implements OnInit, OnDestroy {
         this.userService.addToComplete(this.anime)
             .then(() => this.completed_loading = false)
             .catch(() => this.completed_loading = false);
+    }
+
+    public onAddToWantToWatch() {
+        this.want_to_watch_loading = true;
+        this.userService.addToWantToWatch(this.anime)
+            .then(() => this.want_to_watch_loading = false)
+            .catch(() => this.want_to_watch_loading = false);
     }
 
     private handleMangaLoad(manga_name: string) {
