@@ -1,6 +1,6 @@
 import { EventEmitter, Injectable } from '@angular/core';
 
-import { BehaviorSubject, Observable, Subject, of } from 'rxjs';
+import { BehaviorSubject, Observable, of } from 'rxjs';
 
 import { AnimeService } from './anime.service';
 import { Response } from '@shared/models/response.interface';

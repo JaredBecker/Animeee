@@ -42,7 +42,17 @@
                                     <span class="visually-hidden">Loading...</span>
                                 </div>
                             </button>
-                            <button type="button" (click)="onClick()" class="btn btn-secondary text-white rounded-pill">Want to watch</button>
+                            <button
+                                type="button"
+                                (click)="onAddToWantToWatch()"
+                                [disabled]="want_to_watch_loading"
+                                class="btn btn-secondary text-white rounded-pill"
+                            >
+                                <span *ngIf="!want_to_watch_loading">Want to watch</span>
+                                <div *ngIf="want_to_watch_loading" class="spinner-border text-light btn-loader" role="status">
+                                    <span class="visually-hidden">Loading...</span>
+                                </div>
+                            </button>
                             <button type="button" (click)="onClick()" class="btn btn-info text-white rounded-pill">Started watching</button>
                         </div>
                     </div>
