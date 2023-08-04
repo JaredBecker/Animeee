@@ -18,13 +18,18 @@ import { UserService } from '@shared/services/user.service';
 })
 export class AnimeDetailsComponent implements OnInit, OnDestroy {
     public anime?: any;
-    public is_loading: boolean = true;
-    public completed_loading: boolean = false;
-    public want_to_watch_loading: boolean = false;
     public anime_details: AnimeDetail[] = [];
     public characters?: any[];
     public type: string = 'anime';
     public url?: SafeHtml;
+
+    public is_loading: boolean = true;
+    public completed_loading: boolean = false;
+    public want_to_watch_loading: boolean = false;
+    public started_watching_loading: boolean = false;
+    public on_hold_loading: boolean = false;
+    public must_watch_loading: boolean = false;
+
 
     private route_subscription?: Subscription;
 
@@ -160,6 +165,24 @@ export class AnimeDetailsComponent implements OnInit, OnDestroy {
         this.userService.addToWantToWatch(this.anime)
             .then(() => this.want_to_watch_loading = false)
             .catch(() => this.want_to_watch_loading = false);
+    }
+
+    public onStartedWatching() {
+        this.started_watching_loading = true;
+        this.userService.addToWatching(this.anime)
+            .then(() => this.started_watching_loading = false)
+            .catch(() => this.started_watching_loading = false);
+    }
+
+    public onHold() {
+        this.on_hold_loading = true;
+        this.userService.addToOnHold(this.anime)
+            .then(() => this.on_hold_loading = false)
+            .catch(() => this.on_hold_loading = false);
+    }
+
+    public onMustWatch() {
+        alert('this logic needs to still be added');
     }
 
     private handleMangaLoad(manga_name: string) {

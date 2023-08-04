@@ -135,6 +135,13 @@ export class UserService {
         }
     }
 
+    /**
+     * Add anime to user want to watch list
+     *
+     * @param anime Anime details to add
+     *
+     * @return void
+     */
     public async addToWantToWatch(anime: any): Promise<void> {
         const found = await this.updateWatchState(anime, 'want_to_watch');
 
@@ -142,6 +149,40 @@ export class UserService {
             this.toastr.success('The anime watch state has been updated to want to watch!', 'Anime Watch State Updated');
         } else {
             this.toastr.success('The anime has been added to your want to watch list!', 'Want To Watch Anime');
+        }
+    }
+
+    /**
+     * Add anime to user watching list
+     *
+     * @param anime Anime details to add
+     *
+     * @return void
+     */
+    public async addToWatching(anime: any): Promise<void> {
+        const found = await this.updateWatchState(anime, 'currently_watching');
+
+        if (found) {
+            this.toastr.success('The anime watch state has been updated to watching!', 'Anime Watch State Updated');
+        } else {
+            this.toastr.success('The anime has been added to your watching list!', 'Watching Anime');
+        }
+    }
+
+    /**
+     * Add anime to user on hold list
+     *
+     * @param anime Anime details to add
+     *
+     * @return void
+     */
+    public async addToOnHold(anime: any): Promise<void> {
+        const found = await this.updateWatchState(anime, 'on_hold');
+
+        if (found) {
+            this.toastr.success('The anime watch state has been updated to on hold!', 'Anime Watch State Updated');
+        } else {
+            this.toastr.success('The anime has been added to your on hold list!', 'Anime On Hold');
         }
     }
 
@@ -197,6 +238,10 @@ export class UserService {
                         found = true;
                         break;
                     }
+                }
+
+                if (!found) {
+                    record.anime_list.push(anime);
                 }
 
                 this.$user_stream.next(record);
