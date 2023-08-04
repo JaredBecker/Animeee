@@ -84,6 +84,15 @@
     }
 }
 
+.delete_btn {
+    padding: 0.2rem;
+    width: 100%;
+    margin-top: 0.25rem;
+    font-size: 0.8rem;
+    font-weight: bold;
+    border-radius: 0.5rem;
+}
+
 // Tons of media queries to make sure loader card is always the same size as the cards that will replace them
 .anime_card_placeholder {
     height: 233px;

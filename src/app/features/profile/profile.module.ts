@@ -7,11 +7,18 @@ import { ProfileRoutingModule } from './profile.routing.module';
 
 import { ProfileComponent } from './pages/profile/profile.component';
 import { CompletedComponent } from './components/completed/completed.component';
+import { OnHoldComponent } from './components/on-hold/on-hold.component';
+import { WantToWatchComponent } from './components/want-to-watch/want-to-watch.component';
+import { CurrentlyWatchingComponent } from './components/currently-watching/currently-watching.component';
 
 @NgModule({
     declarations: [
         ProfileComponent,
         CompletedComponent,
+        OnHoldComponent,
+        WantToWatchComponent,
+        CurrentlyWatchingComponent,
+
     ],
     imports: [
         CommonModule,

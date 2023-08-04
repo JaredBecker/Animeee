@@ -76,8 +76,14 @@ main {
 }
 
 .btn-loader {
-    height: 24px;
-    width: 24px;
+    height: 16px;
+    width: 16px;
+}
+
+.btn-outline-primary:hover,
+.btn-outline-primary:active,
+.btn-outline-primary:focus {
+    color: #fff;
 }
 
 .dropdown-menu {

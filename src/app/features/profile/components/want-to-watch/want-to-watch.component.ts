@@ -5,11 +5,11 @@ import { Subscription } from 'rxjs';
 import { UserService } from '@shared/services/user.service';
 
 @Component({
-  selector: 'app-completed',
-  templateUrl: './completed.component.html',
-  styleUrls: ['./completed.component.scss']
+  selector: 'app-want-to-watch',
+  templateUrl: './want-to-watch.component.html',
+  styleUrls: ['./want-to-watch.component.scss']
 })
-export class CompletedComponent implements OnInit, OnDestroy {
+export class WantToWatchComponent implements OnInit, OnDestroy {
     public animes: any[] = [];
     public is_loading: boolean = true;
 
@@ -29,7 +29,7 @@ export class CompletedComponent implements OnInit, OnDestroy {
                         this.animes = [];
 
                         user_info?.anime_list.forEach(anime => {
-                            if (anime.watch_type === 'completed') {
+                            if (anime.watch_type === 'want_to_watch') {
                                 this.animes.push(anime);
                             }
                         });
