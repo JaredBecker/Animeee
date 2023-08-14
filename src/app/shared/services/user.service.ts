@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 
-import { BehaviorSubject, Observable, Subject, firstValueFrom, map, shareReplay } from 'rxjs';
+import { BehaviorSubject, Observable, firstValueFrom, map, shareReplay } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
 
 import { User } from '@shared/models/user.interface';
@@ -11,7 +11,6 @@ import { User } from '@shared/models/user.interface';
     providedIn: 'root'
 })
 export class UserService {
-    private user?: User;
     private $user_stream: BehaviorSubject<User | undefined> = new BehaviorSubject<User | undefined>(undefined);
 
     constructor(
@@ -186,7 +185,31 @@ export class UserService {
         }
     }
 
-    public async removeAnime(anime_id: string) {
+    /**
+     * Adds anime to must watch list
+     *
+     * @param anime The anime to add
+     *
+     * @returns void
+     */
+    public async addToMustWatch(anime: any): Promise<void> {
+        const found = await this.updateWatchState(anime, '', true);
+
+        if (found) {
+            this.toastr.success('The anime has been updated to must watch!', 'Update to Must Watch');
+        } else {
+            this.toastr.success('The anime has been added to your on must watch list!', 'Added To Must Watch');
+        }
+    }
+
+    /**
+     * Remove an anime from users anime list
+     *
+     * @param anime_id ID of the anime to remove
+     *
+     * @returns void
+     */
+    public async removeAnime(anime_id: string): Promise<void> {
         const user = await this.getUserInfo();
 
         if (user?.uid) {
@@ -216,7 +239,7 @@ export class UserService {
      *
      * @return Boolean indicating if the anime was found and updated
      */
-    public async updateWatchState(anime: any, watch_state: string) {
+    public async updateWatchState(anime: any, watch_state: string, must_watch: boolean = false) {
         const user = await this.getUserInfo();
 
         // Get rid of properties not needed
@@ -234,13 +257,19 @@ export class UserService {
                     const el = record.anime_list[i];
 
                     if (el.id === anime.id) {
-                        el.watch_type = watch_state;
+                        if (must_watch) {
+                            el.must_watch = must_watch;
+                        } else {
+                            el.watch_type = watch_state;
+                        }
+
                         found = true;
                         break;
                     }
                 }
 
                 if (!found) {
+                    anime.must_watch = must_watch;
                     record.anime_list.push(anime);
                 }
 
