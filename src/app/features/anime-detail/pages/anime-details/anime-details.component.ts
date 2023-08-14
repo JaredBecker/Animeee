@@ -182,7 +182,10 @@ export class AnimeDetailsComponent implements OnInit, OnDestroy {
     }
 
     public onMustWatch() {
-        alert('this logic needs to still be added');
+        this.must_watch_loading = true;
+        this.userService.addToMustWatch(this.anime)
+            .then(() => this.must_watch_loading = false)
+            .catch(() => this.must_watch_loading = false);
     }
 
     private handleMangaLoad(manga_name: string) {

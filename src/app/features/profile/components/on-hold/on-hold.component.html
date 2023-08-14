@@ -13,4 +13,15 @@
             </button>
         </div>
     </ng-container>
+    <ng-container *ngIf="!is_loading && animes.length === 0">
+        <div class="d-flex flex-column align-items-center justify-content-center">
+            <img src="/assets/images/no-results.png" style="max-width: 250px; border-radius: 50%;" alt="No results">
+            <div class="text-center">
+                <h3 class="fw-bold oswald text-primary">No Animes yet...</h3>
+                <h5 class="fw-bold monty">
+                    Try adding some!
+                </h5>
+            </div>
+        </div>
+    </ng-container>
 </div>

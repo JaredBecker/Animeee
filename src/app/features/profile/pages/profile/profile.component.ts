@@ -18,6 +18,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
     public on_hold: number = 0;
     public want_to_watch: number = 0;
     public currently_watching: number = 0;
+    public must_watch: number = 0;
 
     private user_subscription?: Subscription;
 
@@ -51,6 +52,10 @@ export class ProfileComponent implements OnInit, OnDestroy {
 
                             if (anime.watch_type === 'currently_watching') {
                                 this.currently_watching++;
+                            }
+
+                            if (anime.must_watch) {
+                                this.must_watch++;
                             }
                         })
                     }
