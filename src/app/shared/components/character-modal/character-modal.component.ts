@@ -3,6 +3,8 @@ import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
+import { UserService } from '@shared/services/user.service';
+
 @Component({
     selector: 'app-character-modal',
     templateUrl: './character-modal.component.html',
@@ -15,6 +17,7 @@ export class CharacterModalComponent implements OnInit {
     constructor(
         private sanitizer: DomSanitizer,
         private modalService: NgbModal,
+        private userService: UserService,
     ) { }
 
     public ngOnInit(): void {
@@ -23,6 +26,12 @@ export class CharacterModalComponent implements OnInit {
         // This is here to handle HTML entities in the description like &gt;
         if (desc && desc !== '') {
             this.description = this.sanitizer.bypassSecurityTrustHtml(this.character.attributes.description);
+        }
+    }
+
+    public onAddToFavorites() {
+        if (this.character) {
+            this.userService.addFavoriteCharacter(this.character);
         }
     }
 

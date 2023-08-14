@@ -203,6 +203,23 @@ export class UserService {
     }
 
     /**
+     * Adds a character to users favorite character list
+     *
+     * @param character The character to be added
+     *
+     * @returns void
+     */
+    public async addFavoriteCharacter(character: any): Promise<void> {
+        const found = await this.updateCharacterList(character);
+
+        if (found) {
+            this.toastr.success('Seems you\'ve already added this one.', 'Already in Favorites');
+        } else {
+            this.toastr.success('The character has been added to your favorites list!', 'Character Added');
+        }
+    }
+
+    /**
      * Remove an anime from users anime list
      *
      * @param anime_id ID of the anime to remove
@@ -275,6 +292,48 @@ export class UserService {
 
                     anime.must_watch = must_watch;
                     record.anime_list.push(anime);
+                }
+
+                this.$user_stream.next(record);
+                this.angularFirestore.collection('users').doc(user.uid).set(record);
+
+                return found;
+            } else {
+                this.toastr.error('This action could not be completed because no user details could be found in the database.', 'No User Found');
+
+                return false;
+            }
+        }
+
+        this.toastr.error('This action could not be completed because no account could be found.', 'No Account found');
+
+        return false;
+    }
+
+    public async updateCharacterList(character: any) {
+        const user = await this.getUserInfo();
+
+        delete character.links;
+        delete character.relationships;
+
+        if (user?.uid) {
+            const record: User | undefined = await firstValueFrom(
+                this.angularFirestore.collection('users').doc<User>(user.uid).valueChanges()
+            );
+
+            if (record) {
+                let found = false;
+                for (let i = 0; i < record.favorite_characters.length; i++) {
+                    const el = record.favorite_characters[i];
+
+                    if (el.id === character.id) {
+                        found = true;
+                        break;
+                    }
+                }
+
+                if (!found) {
+                    record.favorite_characters.push(character);
                 }
 
                 this.$user_stream.next(record);
