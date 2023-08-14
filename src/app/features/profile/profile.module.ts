@@ -10,6 +10,7 @@ import { CompletedComponent } from './components/completed/completed.component';
 import { OnHoldComponent } from './components/on-hold/on-hold.component';
 import { WantToWatchComponent } from './components/want-to-watch/want-to-watch.component';
 import { CurrentlyWatchingComponent } from './components/currently-watching/currently-watching.component';
+import { MustWatchComponent } from './components/must-watch/must-watch.component';
 
 @NgModule({
     declarations: [
@@ -18,7 +19,7 @@ import { CurrentlyWatchingComponent } from './components/currently-watching/curr
         OnHoldComponent,
         WantToWatchComponent,
         CurrentlyWatchingComponent,
-
+        MustWatchComponent
     ],
     imports: [
         CommonModule,
