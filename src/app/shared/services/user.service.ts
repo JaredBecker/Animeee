@@ -269,6 +269,10 @@ export class UserService {
                 }
 
                 if (!found) {
+                    if (watch_state !== '') {
+                        anime.watch_type = watch_state;
+                    }
+
                     anime.must_watch = must_watch;
                     record.anime_list.push(anime);
                 }
