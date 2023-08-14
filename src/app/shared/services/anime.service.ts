@@ -1,9 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Observable, Subject, shareReplay, throwError } from 'rxjs';
+
 import { AnimeSortType, AnimeSortTypeURL } from '@shared/models/anime-sort-type.interface';
 import { Response } from '@shared/models/response.interface';
-
-import { Observable, Subject, map, shareReplay, throwError } from 'rxjs';
 
 @Injectable({
     providedIn: 'root'

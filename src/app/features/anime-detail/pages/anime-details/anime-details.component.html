@@ -22,7 +22,8 @@
                             </div>
                             <img class="img-fluid" [src]="anime.attributes.posterImage.large" [alt]="anime.attributes.titles.en_jp">
                         </div>
-                        <div class="d-flex flex-column gap-2">
+                        <!-- Controls -->
+                        <div class="d-flex flex-column gap-2" *ngIf="is_logged_in && type === 'anime'">
                             <a
                                 *ngIf="type === 'anime'"
                                 [href]="'https://aniwatch.to/search?keyword=' + anime.attributes.slug"

@@ -10,6 +10,7 @@ import { Response } from '@shared/models/response.interface';
 import { AnimeService } from '@shared/services/anime.service';
 import { environment } from 'src/environments/environment';
 import { UserService } from '@shared/services/user.service';
+import { AuthService } from '@shared/services/auth.service';
 
 @Component({
     selector: 'app-anime-details',
@@ -23,6 +24,7 @@ export class AnimeDetailsComponent implements OnInit, OnDestroy {
     public type: string = 'anime';
     public url?: SafeHtml;
 
+    public is_logged_in: boolean = false;
     public is_loading: boolean = true;
     public completed_loading: boolean = false;
     public want_to_watch_loading: boolean = false;
@@ -32,6 +34,7 @@ export class AnimeDetailsComponent implements OnInit, OnDestroy {
 
 
     private route_subscription?: Subscription;
+    private auth_subscription?: Subscription;
 
     constructor(
         private sanitizer: DomSanitizer,
@@ -41,9 +44,14 @@ export class AnimeDetailsComponent implements OnInit, OnDestroy {
         private router: Router,
         private titleService: Title,
         private userService: UserService,
+        private authService: AuthService,
     ) { }
 
     public ngOnInit(): void {
+        this.auth_subscription = this.authService.getAuthStream().subscribe({
+            next: (auth_state) => this.is_logged_in = auth_state,
+        });
+
         this.route_subscription = this.activatedRoute.paramMap
             .pipe(
                 switchMap((params) => {
@@ -74,7 +82,7 @@ export class AnimeDetailsComponent implements OnInit, OnDestroy {
                      * From testing I notice you end up her when the API had no result for an anime
                      * it gives to you in the franchise section.
                      */
-                    //this.router.navigateByUrl('/not-found')
+                    this.router.navigateByUrl('/not-found');
                     console.error('Failed to get selected anime', err);
                     this.is_loading = false;
                 }
@@ -83,6 +91,7 @@ export class AnimeDetailsComponent implements OnInit, OnDestroy {
 
     public ngOnDestroy(): void {
         this.route_subscription?.unsubscribe();
+        this.auth_subscription?.unsubscribe();
     }
 
     public getCoverImage(): string {
