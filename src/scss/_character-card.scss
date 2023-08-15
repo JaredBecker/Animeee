@@ -1,0 +1,39 @@
+.character_card {
+    border: 1px solid #ccc;
+    border-radius: 0.5rem;
+    text-decoration: none;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+
+    & img {
+        border-radius: 0.5rem 0.5rem 0 0;
+        height: 203px; // Fixed height to try an make everything look uniform because API images could be tiny
+        width: 100%;
+    }
+
+    &:hover {
+        .character_card_name {
+            color: #fff;
+            background-color: $primary;
+        }
+    }
+
+    &_name {
+        display: block;
+        padding: 0.5rem;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+        text-align: center;
+        color: #1f1f1f;
+        font-size: 0.85rem;
+        border-radius: 0 0 0.5rem 0.5rem;
+        transition: all 0.2s ease-in-out;
+    }
+}
+
+.character_card_placeholder {
+    height: 240px;
+}
+

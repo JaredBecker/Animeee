@@ -17,6 +17,7 @@ import { FooterComponent } from './components/footer/footer.component';
 import { TopShadowDirective } from './directives/top-shadow.directive';
 import { SwiperConfigDirective } from './directives/swiper-config.directive';
 import { ScrollToTopDirective } from './directives/scroll-to-top.directive';
+import { CharacterCardComponent } from './components/character-card/character-card.component';
 
 @NgModule({
     declarations: [
@@ -32,6 +33,7 @@ import { ScrollToTopDirective } from './directives/scroll-to-top.directive';
         SwiperConfigDirective,
         AnimeCardComponent,
         ScrollToTopDirective,
+        CharacterCardComponent,
     ],
     imports: [
         CommonModule,
@@ -53,6 +55,7 @@ import { ScrollToTopDirective } from './directives/scroll-to-top.directive';
         FooterComponent,
         AnimeCardComponent,
         ScrollToTopDirective,
+        CharacterCardComponent
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
