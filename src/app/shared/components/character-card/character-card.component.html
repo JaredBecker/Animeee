@@ -1,0 +1,18 @@
+<a role="button" (click)="onSelectCharacter()" class="character_card">
+    <div class="character_card_img">
+        <img *ngIf="!character.attributes.image" src="/assets/images/no-image.png" class="img-fluid" alt="No image for the resource" />
+        <img *ngIf="character.attributes.image" [src]="character.attributes.image.original" class="img-fluid" [alt]="character.attributes.name">
+    </div>
+    <div class="character_card_name">
+        {{ character.attributes.name }}
+    </div>
+</a>
+<button
+    *ngIf="show_remove_btn"
+    (click)="onRemoveCharacter()"
+    type="button"
+    class="btn btn-danger btn-sm delete_btn"
+>
+    <i class="fa-solid fa-trash-can me-1"></i>
+    Remove Character
+</button>

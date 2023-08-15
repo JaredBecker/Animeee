@@ -1,10 +1,12 @@
 <h1 class="oswald text_gradient mt-3 mt-lg-0">Currently Watching</h1>
 <p class="monty">Below you can find a list of all animes you are currently watching</p>
-<div class="row">
-    <ng-container *ngIf="is_loading">
-        <app-loader></app-loader>
-    </ng-container>
-    <ng-container *ngIf="!is_loading && animes.length > 0">
+
+<ng-container *ngIf="is_loading">
+    <app-loader></app-loader>
+</ng-container>
+
+<ng-container *ngIf="!is_loading && animes.length > 0">
+    <div class="row">
         <div *ngFor="let anime of animes" class="col-6 col-md-4 col-lg-3 mb-3 position-relative">
             <app-anime-card [anime]="anime" type="anime" />
             <button type="button" (click)="onRemoveAnime(anime.id)" class="btn btn-danger btn-sm delete_btn">
@@ -12,16 +14,17 @@
                 Remove From List
             </button>
         </div>
-    </ng-container>
-    <ng-container *ngIf="!is_loading && animes.length === 0">
-        <div class="d-flex flex-column align-items-center justify-content-center">
-            <img src="/assets/images/no-results.png" style="max-width: 250px; border-radius: 50%;" alt="No results">
-            <div class="text-center">
-                <h3 class="fw-bold oswald text-primary">No Animes yet...</h3>
-                <h5 class="fw-bold monty">
-                    Try adding some!
-                </h5>
-            </div>
+    </div>
+</ng-container>
+
+<ng-container *ngIf="!is_loading && animes.length === 0">
+    <div class="d-flex flex-column align-items-center justify-content-center">
+        <img src="/assets/images/no-results.png" style="max-width: 250px; border-radius: 50%;" alt="No results">
+        <div class="text-center">
+            <h3 class="fw-bold oswald text-primary">No Animes yet...</h3>
+            <h5 class="fw-bold monty">
+                Try adding some!
+            </h5>
         </div>
-    </ng-container>
-</div>
+    </div>
+</ng-container>
