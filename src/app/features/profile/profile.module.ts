@@ -11,6 +11,7 @@ import { OnHoldComponent } from './components/on-hold/on-hold.component';
 import { WantToWatchComponent } from './components/want-to-watch/want-to-watch.component';
 import { CurrentlyWatchingComponent } from './components/currently-watching/currently-watching.component';
 import { MustWatchComponent } from './components/must-watch/must-watch.component';
+import { FavoriteCharactersComponent } from './components/favorite-characters/favorite-characters.component';
 
 @NgModule({
     declarations: [
@@ -19,7 +20,8 @@ import { MustWatchComponent } from './components/must-watch/must-watch.component
         OnHoldComponent,
         WantToWatchComponent,
         CurrentlyWatchingComponent,
-        MustWatchComponent
+        MustWatchComponent,
+        FavoriteCharactersComponent,
     ],
     imports: [
         CommonModule,
