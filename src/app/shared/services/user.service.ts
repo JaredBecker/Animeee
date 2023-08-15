@@ -248,6 +248,34 @@ export class UserService {
     }
 
     /**
+     * Remove a character from users favorite character list
+     *
+     * @param character_id ID of the character to remove
+     *
+     * @returns void
+     */
+    public async removeFavoriteCharacter(character_id: string): Promise<void> {
+        const user = await this.getUserInfo();
+
+        if (user?.uid) {
+            const record: User | undefined = await firstValueFrom(
+                this.angularFirestore.collection('users').doc<User>(user.uid).valueChanges()
+            );
+
+            if (record) {
+                record.favorite_characters = record.favorite_characters.filter(el => el.id !== character_id);
+                this.$user_stream.next(record);
+                this.angularFirestore.collection('users').doc(user.uid).set(record);
+                this.toastr.success('The character has been removed from your list!', 'Character Removed');
+            }
+
+            return;
+        }
+
+        this.toastr.error('This action could not be completed because no account could be found.', 'No Account found');
+    }
+
+    /**
      * Update the user record and sets the selected animes watch state to the provided state
      *
      * @param record User record from the firestore DB
