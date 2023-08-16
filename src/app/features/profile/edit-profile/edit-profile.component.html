@@ -1,0 +1,40 @@
+<h1 class="oswald text_gradient mt-3 mt-lg-0">[[You Name]] Profile</h1>
+<p class="monty">Below you can update the details of your profile</p>
+
+<form [formGroup]="profile_form" (ngSubmit)="onSubmit()">
+    <div class="preview d-flex justify-content-center mb-3">
+        <img
+            *ngIf="img_preview && img_preview !== null"
+            [src]="img_preview"
+            alt="Profile picture preview"
+            class="img-fluid rounded"
+        />
+        <div *ngIf="!img_preview" class="preview_placeholder">
+            Profile Picture Preview
+        </div>
+    </div>
+    <div class="mb-3">
+        <div class="input-group">
+            <input
+                #profile_pic_input
+                type="file"
+                accept="image/png, image/jpeg, image/jpg, image/gif"
+                (change)="onUploadProfileImage($event)"
+                class="form-control"
+            />
+            <button type="button" class="btn btn-primary text-white" (click)="removeSelectedImage()">Clear</button>
+        </div>
+    </div>
+
+    <div class="mb-3">
+        <label for="email" class="form-label">Email address</label>
+        <input type="email" formControlName="email" class="form-control" id="email" aria-describedby="email_help">
+        <div id="email_help" class="form-text">We'll never share your email with anyone else.</div>
+    </div>
+    <div class="mb-3">
+        <label for="username" class="form-label">Username</label>
+        <input type="text" formControlName="username" class="form-control" id="username" aria-describedby="username_help">
+        <div id="email_help" class="form-text">Must be more than 3 and less than 25.</div>
+    </div>
+    <button class="btn btn-primary rounded-pill text-white">Save Changes</button>
+</form>
