@@ -10,6 +10,7 @@ import { WantToWatchComponent } from './components/want-to-watch/want-to-watch.c
 import { CurrentlyWatchingComponent } from './components/currently-watching/currently-watching.component';
 import { MustWatchComponent } from './components/must-watch/must-watch.component';
 import { FavoriteCharactersComponent } from './components/favorite-characters/favorite-characters.component';
+import { EditProfileComponent } from './edit-profile/edit-profile.component';
 
 const routes: Routes = [
     {
@@ -41,6 +42,10 @@ const routes: Routes = [
             {
                 path: 'favorite-characters',
                 component: FavoriteCharactersComponent
+            },
+            {
+                path: 'edit',
+                component: EditProfileComponent
             },
         ]
     },

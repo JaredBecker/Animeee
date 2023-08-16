@@ -1,3 +1,4 @@
+import { EditProfileComponent } from './edit-profile/edit-profile.component';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
@@ -22,6 +23,7 @@ import { FavoriteCharactersComponent } from './components/favorite-characters/fa
         CurrentlyWatchingComponent,
         MustWatchComponent,
         FavoriteCharactersComponent,
+        EditProfileComponent
     ],
     imports: [
         CommonModule,
