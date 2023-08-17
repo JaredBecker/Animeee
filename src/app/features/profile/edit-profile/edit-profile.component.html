@@ -1,4 +1,4 @@
-<h1 class="oswald text_gradient mt-3 mt-lg-0">[[You Name]] Profile</h1>
+<h1 class="oswald text_gradient mt-3 mt-lg-0">{{ user?.username }}</h1>
 <p class="monty">Below you can update the details of your profile</p>
 
 <form [formGroup]="profile_form" (ngSubmit)="onSubmit()">
@@ -26,11 +26,6 @@
         </div>
     </div>
 
-    <div class="mb-3">
-        <label for="email" class="form-label">Email address</label>
-        <input type="email" formControlName="email" class="form-control" id="email" aria-describedby="email_help">
-        <div id="email_help" class="form-text">We'll never share your email with anyone else.</div>
-    </div>
     <div class="mb-3">
         <label for="username" class="form-label">Username</label>
         <input type="text" formControlName="username" class="form-control" id="username" aria-describedby="username_help">

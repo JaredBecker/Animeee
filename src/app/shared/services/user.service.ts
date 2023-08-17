@@ -100,6 +100,7 @@ export class UserService {
 
     /**
      * Checks if a users email exists in the database
+     *
      * @param user The user response from sign up or login
      *
      * @returns Obj of user details and boolean for user_exists
@@ -273,6 +274,29 @@ export class UserService {
         }
 
         this.toastr.error('This action could not be completed because no account could be found.', 'No Account found');
+    }
+
+    public async updateUserInfo(uid: string, username: string) {
+        if (!uid) {
+            return
+        }
+
+        const record: User | undefined = await firstValueFrom(
+            this.angularFirestore.collection('users').doc<User>(uid).valueChanges()
+        );
+
+        if (record) {
+            if (username !== '') {
+                record.username = username;
+            }
+
+            this.$user_stream.next(record);
+            this.angularFirestore.collection('users').doc(uid).set(record);
+
+            this.toastr.success('Your account info has been updated!', 'Profile Updated');
+        } else {
+            this.toastr.error('This action could not be completed because no user details could be found in the database.', 'No User Found');
+        }
     }
 
     /**
