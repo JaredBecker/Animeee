@@ -39,7 +39,7 @@ export class EditProfileComponent implements OnInit, OnDestroy {
                     this.username.setValue(this.user.username);
                 }
             },
-            error: (err) => console.log('Error loading user info', err)
+            error: (err) => console.error('Error loading user info', err)
         })
     }
 
