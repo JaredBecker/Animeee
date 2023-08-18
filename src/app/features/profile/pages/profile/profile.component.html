@@ -7,13 +7,16 @@
                 <app-card [is_sticky]="true">
                     <div class="profile monty">
                         <div class="profile_img">
-                            <img src="/assets/images/profile.jpg" alt="Profile Picture">
+                            <img [src]="'/assets/images/profile/' + user?.profile_picture" alt="Profile Picture">
                         </div>
                         <h4 class="profile_name oswald">Jared Becker</h4>
-                        <button type="button" class="btn btn-primary btn-sm text-white rounded-pill ">
+                        <a
+                            routerLink="/profile/edit"
+                            class="btn btn-primary btn-sm text-white rounded-pill"
+                        >
                             Edit Profile
                             <i class="fa-solid fa-pencil ms-2"></i>
-                        </button>
+                        </a>
                         <ul class="profile_stats mt-3">
                             <li class="profile_stats_item">
                                 <a
@@ -89,7 +92,7 @@
                                     class="profile_stats_item_link"
                                 >
                                     <span>Friend List</span>
-                                    <span>0</span>
+                                    <span>{{ friend_list }}</span>
                                 </a>
                             </li>
                         </ul>

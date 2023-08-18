@@ -99,3 +99,18 @@
 .profile_content {
     min-height: calc(100vh - 96px);
 }
+
+.profile_pic_select {
+    cursor: pointer;
+    display: block;
+
+    &.selected {
+        border: 5px solid $primary;
+        border-radius: 0.7rem;
+    }
+
+    img {
+        border-radius: 0.5rem;
+        max-width: 100%;
+    }
+}
