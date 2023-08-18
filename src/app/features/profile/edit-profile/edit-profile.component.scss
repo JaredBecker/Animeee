@@ -1,16 +1,1 @@
-.preview {
-    img {
-        max-width: 250px;
-    }
 
-    &_placeholder {
-        height: 250px;
-        width: 250px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        background-color: #ccc;
-        color: #000;
-        border-radius: 50%;
-    }
-}
