@@ -50,7 +50,6 @@ export class UserService {
                             if (user?.emailVerified) {
                                 record.email_verified = user.emailVerified;
                                 this.angularFirestore.collection('users').doc(user.uid).set(record);
-                                console.log('done updating info');
                             }
                         }
                     }
@@ -120,7 +119,6 @@ export class UserService {
                 [], [], []
             );
 
-            console.log(new_user);
             this.angularFirestore.collection('users').doc(user.uid).set(new_user.asObject());
         }
     }
@@ -318,8 +316,6 @@ export class UserService {
         const record: User | undefined = await firstValueFrom(
             this.angularFirestore.collection('users').doc<User>(user.uid).valueChanges()
         );
-
-        console.log(record);
 
         if (record) {
             if (user.username !== '') {

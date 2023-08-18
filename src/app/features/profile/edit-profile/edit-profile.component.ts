@@ -31,7 +31,6 @@ export class EditProfileComponent implements OnInit, OnDestroy {
     ) { }
 
     public ngOnInit(): void {
-        console.log('edit profile calling this shit');
         this.user_subscription = this.userService.getUserStream().subscribe({
             next: (user: User | undefined) => {
                 if (user) {
@@ -40,7 +39,7 @@ export class EditProfileComponent implements OnInit, OnDestroy {
                     this.username.setValue(this.user.username);
                 }
             },
-            error: (err) => console.log('Error loading user info', err)
+            error: (err) => console.error('Error loading user info', err)
         })
     }
 

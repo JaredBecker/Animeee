@@ -34,8 +34,6 @@ export class AuthService {
         // Store firebase auth stream
         this.$authStream = this.angularFireAuth.user.pipe(
             tap(async (user) => {
-                console.log(user);
-
                 if (user) {
                     firstValueFrom(
                         this.angularFirestore.collection('users').doc<User>(user.uid).valueChanges()
@@ -110,7 +108,6 @@ export class AuthService {
         return this.angularFireAuth
             .signInWithEmailAndPassword(email, password)
             .then(result => {
-                console.log(result);
                 if (result.user?.emailVerified) {
                     this.router.navigateByUrl('/');
                     this.toastr.success('Welcome back!', 'Logged In!');
@@ -168,7 +165,7 @@ export class AuthService {
             this.router.navigateByUrl('/');
         },
         (err: any) => {
-            console.log('something went wrong', err);
+            console.error('something went wrong', err);
             this.pageLoaderService.setLoadingState(false);
             this.router.navigateByUrl('/');
         })
