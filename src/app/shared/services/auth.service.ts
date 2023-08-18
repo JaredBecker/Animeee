@@ -119,8 +119,12 @@ export class AuthService {
                 this.sendVerificationEmail(result.user);
             })
             .catch((error) => {
+                let output = error.message;
+                output = output.replace('Firebase: ', '');
+                output = output.replace('(auth/email-already-in-use).', '');
+
+                this.toastr.error(output, 'Error Signing Up');
                 this.pageLoaderService.setLoadingState(false);
-                console.error(error.message);
             });
     }
 
