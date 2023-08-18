@@ -20,6 +20,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
     public currently_watching: number = 0;
     public must_watch: number = 0;
     public favorite_characters: number = 0;
+    public friend_list: number = 0;
 
     private user_subscription?: Subscription;
 
@@ -61,6 +62,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
                         });
 
                         this.favorite_characters = user_info.favorite_characters.length;
+                        this.friend_list = user_info.friend_list.length;
                     }
                 }
             });
