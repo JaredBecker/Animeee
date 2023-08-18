@@ -276,22 +276,26 @@ export class UserService {
         this.toastr.error('This action could not be completed because no account could be found.', 'No Account found');
     }
 
-    public async updateUserInfo(uid: string, username: string) {
-        if (!uid) {
+    public async updateUserInfo(user: User) {
+        if (!user.uid) {
             return
         }
 
         const record: User | undefined = await firstValueFrom(
-            this.angularFirestore.collection('users').doc<User>(uid).valueChanges()
+            this.angularFirestore.collection('users').doc<User>(user.uid).valueChanges()
         );
 
         if (record) {
-            if (username !== '') {
-                record.username = username;
+            if (user.username !== '') {
+                record.username = user.username;
+            }
+
+            if (user.profile_picture !== '') {
+                record.profile_picture = user.profile_picture;
             }
 
             this.$user_stream.next(record);
-            this.angularFirestore.collection('users').doc(uid).set(record);
+            this.angularFirestore.collection('users').doc(user.uid).set(record);
 
             this.toastr.success('Your account info has been updated!', 'Profile Updated');
         } else {

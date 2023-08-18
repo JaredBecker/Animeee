@@ -1,35 +1,48 @@
 <h1 class="oswald text_gradient mt-3 mt-lg-0">{{ user?.username }}</h1>
 <p class="monty">Below you can update the details of your profile</p>
 
-<form [formGroup]="profile_form" (ngSubmit)="onSubmit()">
-    <div class="preview d-flex justify-content-center mb-3">
-        <img
-            *ngIf="img_preview && img_preview !== null"
-            [src]="img_preview"
-            alt="Profile picture preview"
-            class="img-fluid rounded"
-        />
-        <div *ngIf="!img_preview" class="preview_placeholder">
-            Profile Picture Preview
+<div class="mb-3">
+    <ng-container *ngIf="user?.email_verified">
+        <div class="alert alert-success p-2" role="alert">
+            <i class="fa-regular fa-square-check me-2"></i>
+            <span class="monty">Email Verified</span>
         </div>
-    </div>
-    <div class="mb-3">
-        <div class="input-group">
-            <input
-                #profile_pic_input
-                type="file"
-                accept="image/png, image/jpeg, image/jpg, image/gif"
-                (change)="onUploadProfileImage($event)"
-                class="form-control"
-            />
-            <button type="button" class="btn btn-primary text-white" (click)="removeSelectedImage()">Clear</button>
+    </ng-container>
+    <ng-container *ngIf="!user?.email_verified">
+        <div class="alert alert-warning p-2" role="alert">
+            <i class="fa-regular fa-rectangle-xmark me-2"></i>
+            <span class="monty">Email Not Verified</span>
         </div>
-    </div>
+    </ng-container>
+</div>
+<div class="mb-3">
+    <label for="username" class="form-label">Username</label>
+    <input type="text" [formControl]="username" class="form-control" id="username" aria-describedby="username_help">
+    <div id="email_help" class="form-text">Must be more than 3 and less than 25.</div>
+</div>
 
-    <div class="mb-3">
-        <label for="username" class="form-label">Username</label>
-        <input type="text" formControlName="username" class="form-control" id="username" aria-describedby="username_help">
-        <div id="email_help" class="form-text">Must be more than 3 and less than 25.</div>
+<h5 class="oswald fw-bold text-uppercase">Select Profile Picture</h5>
+<div class="row mb-3">
+    <div class="col-6 col-sm-4 col-lg-3 col-xl-2 d-flex justify-content-center mb-3" *ngFor="let pic of profile_pic_arr; let i = index">
+        <a
+            class="profile_pic_select"
+            [ngClass]="{'selected': i + 1 + '.jpg' === profile_pic}"
+            (click)="onSelectProfilePic(i)"
+            appProfileImageSelect
+        >
+            <img
+                [src]="'/assets/images/profile/' + (i + 1) + '.jpg'"
+                alt="Profile picture option"
+            />
+        </a>
     </div>
-    <button class="btn btn-primary rounded-pill text-white">Save Changes</button>
-</form>
+</div>
+
+<button
+    type="button"
+    (click)="onSubmit()"
+    class="btn btn-primary rounded-pill text-white"
+>
+    Save Changes
+</button>
+

@@ -7,7 +7,7 @@
                 <app-card [is_sticky]="true">
                     <div class="profile monty">
                         <div class="profile_img">
-                            <img src="/assets/images/profile.jpg" alt="Profile Picture">
+                            <img [src]="'/assets/images/profile/' + user?.profile_picture" alt="Profile Picture">
                         </div>
                         <h4 class="profile_name oswald">Jared Becker</h4>
                         <a
@@ -92,7 +92,7 @@
                                     class="profile_stats_item_link"
                                 >
                                     <span>Friend List</span>
-                                    <span>0</span>
+                                    <span>{{ friend_list }}</span>
                                 </a>
                             </li>
                         </ul>

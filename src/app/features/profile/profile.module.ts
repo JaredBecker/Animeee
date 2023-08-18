@@ -13,6 +13,7 @@ import { WantToWatchComponent } from './components/want-to-watch/want-to-watch.c
 import { CurrentlyWatchingComponent } from './components/currently-watching/currently-watching.component';
 import { MustWatchComponent } from './components/must-watch/must-watch.component';
 import { FavoriteCharactersComponent } from './components/favorite-characters/favorite-characters.component';
+import { ProfileImageSelectDirective } from './directives/profile-image-select.directive';
 
 @NgModule({
     declarations: [
@@ -23,7 +24,8 @@ import { FavoriteCharactersComponent } from './components/favorite-characters/fa
         CurrentlyWatchingComponent,
         MustWatchComponent,
         FavoriteCharactersComponent,
-        EditProfileComponent
+        EditProfileComponent,
+        ProfileImageSelectDirective,
     ],
     imports: [
         CommonModule,
