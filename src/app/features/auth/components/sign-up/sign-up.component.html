@@ -4,14 +4,14 @@
     </div>
     <h1 class="oswald fw-bold text-center text-uppercase text_gradient mb-3">Sign Up</h1>
 
-    <form [formGroup]="sign_up_form" class="monty">
+    <form [formGroup]="sign_up_form" (ngSubmit)="onSignUp()" class="monty">
         <div class="mb-3">
             <input type="email" formControlName="email" class="form-control" id="email" placeholder="Email" />
         </div>
         <div class="mb-3">
             <input type="password" formControlName="password" class="form-control" id="passowrd" placeholder="Password" />
         </div>
-        <button type="submit" class="btn btn-primary text-white w-100 mb-2" (click)="onSignUp()">Sign Up</button>
+        <button type="submit" class="btn btn-primary text-white w-100 mb-2">Sign Up</button>
         <button type="button" class="btn w-100 mb-3 google_btn" (click)="googleSignIn()">
             <img src='https://developers.google.com/identity/images/g-logo.png'>
             Sign Up with Google

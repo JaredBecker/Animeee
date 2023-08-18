@@ -1,17 +1,21 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
+import { AngularFirestore } from '@angular/fire/compat/firestore';
 
 import {
     Observable,
     firstValueFrom,
-    map
+    map,
+    tap
 } from 'rxjs';
+
 import * as FirebaseAuth from 'firebase/auth';
 import { ToastrService } from 'ngx-toastr';
 
 import { PageLoaderService } from './page-loader.service';
 import { UserService } from './user.service';
+import { User } from '@shared/models/user.interface';
 
 @Injectable({
     providedIn: 'root',
@@ -22,12 +26,31 @@ export class AuthService {
     constructor(
         private router: Router,
         private angularFireAuth: AngularFireAuth,
+        private angularFirestore: AngularFirestore,
         private pageLoaderService: PageLoaderService,
         private toastr: ToastrService,
         private userService: UserService,
     ) {
         // Store firebase auth stream
         this.$authStream = this.angularFireAuth.user.pipe(
+            tap(async (user) => {
+                console.log(user);
+
+                if (user) {
+                    firstValueFrom(
+                        this.angularFirestore.collection('users').doc<User>(user.uid).valueChanges()
+                    ).then(
+                        (record) => {
+                            if (record) {
+                                record.email_verified = user.emailVerified;
+                                this.angularFirestore.collection('users').doc(user.uid).set(record);
+                            }
+                        }
+                    )
+                }
+
+                return user;
+            }),
             map(user => user ? true : false)
         );
     }
@@ -87,11 +110,15 @@ export class AuthService {
         return this.angularFireAuth
             .signInWithEmailAndPassword(email, password)
             .then(result => {
+                console.log(result);
                 if (result.user?.emailVerified) {
                     this.router.navigateByUrl('/');
                     this.toastr.success('Welcome back!', 'Logged In!');
                 } else {
-                    this.toastr.error('Account Not Verified', 'Please check your email for verification link');
+                    this.toastr.error('Please check your email for verification link! Be sure to check spam folder as well!', 'Account Not Verified', {
+                        timeOut: 0,
+                    });
+                    this.pageLoaderService.setLoadingState(false);
                 }
             })
             .catch((error) => {
@@ -114,9 +141,11 @@ export class AuthService {
         return this.angularFireAuth
             .createUserWithEmailAndPassword(email, password)
             .then(result => {
-                console.log(result.user);
                 this.userService.createNewUserRecord(result.user);
                 this.sendVerificationEmail(result.user);
+                this.toastr.success('Please note you need to verify your email before you will be able to login again!', 'Account Created!', {
+                    timeOut: 0,
+                });
             })
             .catch((error) => {
                 let output = error.message;

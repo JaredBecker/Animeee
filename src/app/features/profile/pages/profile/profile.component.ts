@@ -35,6 +35,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
         this.user_subscription = this.userService.getUserStream()
             .subscribe({
                 next: (user_info) => {
+                    console.log(user_info);
                     if (user_info) {
                         this.resetAnimeCounts();
                         this.user = user_info;

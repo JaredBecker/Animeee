@@ -26,9 +26,6 @@ export class SignUpComponent {
     }
 
     public onSignUp() {
-
-        console.log(this.sign_up_form);
-
         if (this.sign_up_form.status === 'VALID') {
             const email = this.sign_up_form.controls.email.value;
             const password = this.sign_up_form.controls.password.value;
