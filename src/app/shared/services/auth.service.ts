@@ -21,7 +21,7 @@ import { User } from '@shared/models/user.interface';
     providedIn: 'root',
 })
 export class AuthService {
-    private $authStream: Observable<boolean>;
+    // private $authStream: Observable<boolean>;
 
     constructor(
         private router: Router,
@@ -32,25 +32,25 @@ export class AuthService {
         private userService: UserService,
     ) {
         // Store firebase auth stream
-        this.$authStream = this.angularFireAuth.user.pipe(
-            tap(async (user) => {
-                if (user) {
-                    firstValueFrom(
-                        this.angularFirestore.collection('users').doc<User>(user.uid).valueChanges()
-                    ).then(
-                        (record) => {
-                            if (record) {
-                                record.email_verified = user.emailVerified;
-                                this.angularFirestore.collection('users').doc(user.uid).set(record);
-                            }
-                        }
-                    )
-                }
+        // this.$authStream = this.angularFireAuth.user.pipe(
+        //     tap(async (user) => {
+        //         if (user) {
+        //             firstValueFrom(
+        //                 this.angularFirestore.collection('users').doc<User>(user.uid).valueChanges()
+        //             ).then(
+        //                 (record) => {
+        //                     if (record) {
+        //                         record.email_verified = user.emailVerified;
+        //                         this.angularFirestore.collection('users').doc(user.uid).set(record);
+        //                     }
+        //                 }
+        //             )
+        //         }
 
-                return user;
-            }),
-            map(user => user ? true : false)
-        );
+        //         return user;
+        //     }),
+        //     map(user => user ? true : false)
+        // );
     }
 
     /**
@@ -59,7 +59,12 @@ export class AuthService {
      * @returns Auth stream
      */
     public getAuthStream(): Observable<boolean> {
-        return this.$authStream;
+        return this.angularFireAuth.user.pipe(
+            // tap(async (user) => {
+            //     return await this.checkEmailValidity(user)
+            // }),
+            map(user => user ? true : false),
+        )
     }
 
     /**
@@ -103,12 +108,22 @@ export class AuthService {
      * @returns void
      */
     public signIn(email: string, password: string): Promise<void> {
-        this.pageLoaderService.setLoadingState({state: true, title: 'Logging In'});
+        this.pageLoaderService.setLoadingState({ state: true, title: 'Logging In' });
 
         return this.angularFireAuth
             .signInWithEmailAndPassword(email, password)
-            .then(result => {
+            .then(async (result) => {
                 if (result.user?.emailVerified) {
+                    const firestore_user = await this.userService.getUserProfileInfo();
+
+                    if (firestore_user) {
+                        if (!firestore_user.email_verified) {
+                            firestore_user.email_verified = result.user.emailVerified;
+                        }
+
+                        this.userService.updateUserStream(firestore_user);
+                    }
+
                     this.router.navigateByUrl('/');
                     this.toastr.success('Welcome back!', 'Logged In!');
                 } else {
@@ -133,7 +148,7 @@ export class AuthService {
      * @returns void
      */
     public signUp(email: string, password: string): Promise<void> {
-        this.pageLoaderService.setLoadingState({state: true, title: 'Creating Account'});
+        this.pageLoaderService.setLoadingState({ state: true, title: 'Creating Account' });
 
         return this.angularFireAuth
             .createUserWithEmailAndPassword(email, password)
@@ -164,11 +179,11 @@ export class AuthService {
             this.pageLoaderService.setLoadingState(false);
             this.router.navigateByUrl('/');
         },
-        (err: any) => {
-            console.error('something went wrong', err);
-            this.pageLoaderService.setLoadingState(false);
-            this.router.navigateByUrl('/');
-        })
+            (err: any) => {
+                console.error('something went wrong', err);
+                this.pageLoaderService.setLoadingState(false);
+                this.router.navigateByUrl('/');
+            })
     }
 
     /**
@@ -193,7 +208,7 @@ export class AuthService {
      * Requests login using Google Account
      */
     public googleAuth(): void {
-        this.pageLoaderService.setLoadingState({state: true, title: 'Logging In'});
+        this.pageLoaderService.setLoadingState({ state: true, title: 'Logging In' });
         this.signInWithProvider(new FirebaseAuth.GoogleAuthProvider())
     }
 
@@ -229,7 +244,7 @@ export class AuthService {
      * Signs the current user out
      */
     public signOut(): void {
-        this.pageLoaderService.setLoadingState({state: true, title: 'Logging Out'});
+        this.pageLoaderService.setLoadingState({ state: true, title: 'Logging Out' });
         this.angularFireAuth.signOut();
 
         this.toastr.success('Goodbye for now!', 'Logged Out!');
@@ -245,4 +260,28 @@ export class AuthService {
             }
         }, 500);
     }
+
+    /**
+     * Checks if the users email is valid and updates the database field
+     *
+     * @param user Firebase auth user info
+     *
+     * @returns Firebase auth user
+     */
+    // private checkEmailValidity(user: any) {
+    //     if (user) {
+    //         firstValueFrom(
+    //             this.angularFirestore.collection('users').doc<User>(user.uid).valueChanges()
+    //         ).then(
+    //             (record) => {
+    //                 if (record) {
+    //                     record.email_verified = user.emailVerified;
+    //                     this.angularFirestore.collection('users').doc(user.uid).set(record);
+    //                 }
+    //             }
+    //         )
+    //     }
+
+    //     return user;
+    // }
 }

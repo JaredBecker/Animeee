@@ -31,6 +31,7 @@ export class EditProfileComponent implements OnInit, OnDestroy {
     ) { }
 
     public ngOnInit(): void {
+        console.log('called edit');
         this.user_subscription = this.userService.getUserStream().subscribe({
             next: (user: User | undefined) => {
                 if (user) {
