@@ -40,19 +40,19 @@ export class UserService {
     public getUserInfo() {
         const user = firstValueFrom(
             this.angularFireAuth.user.pipe(
-                map(async (user) => {
-                    const record = await firstValueFrom(
-                        this.angularFirestore.collection('users').doc<User>(user?.uid).valueChanges()
-                    );
+                map((user) => {
+                    // const record = await firstValueFrom(
+                    //     this.angularFirestore.collection('users').doc<User>(user?.uid).valueChanges()
+                    // );
 
-                    if (record) {
-                        if (record && !record?.email_verified) {
-                            if (user?.emailVerified) {
-                                record.email_verified = user.emailVerified;
-                                this.angularFirestore.collection('users').doc(user.uid).set(record);
-                            }
-                        }
-                    }
+                    // if (record) {
+                    //     if (record && !record?.email_verified) {
+                    //         if (user?.emailVerified) {
+                    //             record.email_verified = user.emailVerified;
+                    //             this.angularFirestore.collection('users').doc(user.uid).set(record);
+                    //         }
+                    //     }
+                    // }
 
                     return user;
                 }),
@@ -68,9 +68,7 @@ export class UserService {
      * @returns User stream
      */
     public getUserStream(): Observable<User | undefined> {
-        return this.$user_stream.asObservable().pipe(
-            shareReplay(1)
-        );
+        return this.$user_stream.asObservable();
     }
 
     /**
@@ -120,6 +118,7 @@ export class UserService {
             );
 
             this.angularFirestore.collection('users').doc(user.uid).set(new_user.asObject());
+            this.updateUserStream(new_user);
         }
     }
 
