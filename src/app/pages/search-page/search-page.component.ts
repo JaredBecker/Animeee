@@ -10,10 +10,13 @@ import {
     distinctUntilChanged,
     map,
     switchMap,
+    tap,
 } from 'rxjs';
 
+import { User } from '@shared/models/user.interface';
 import { AnimeService } from '@shared/services/anime.service';
 import { AnimeSortType } from '@shared/models/anime-sort-type.interface';
+import { UserService } from '@shared/services/user.service';
 
 @Component({
     selector: 'app-search-page',
@@ -22,6 +25,7 @@ import { AnimeSortType } from '@shared/models/anime-sort-type.interface';
 })
 export class SearchPageComponent implements OnInit, OnDestroy {
     public animes: any[] = [];
+    public users: User[] = [];
     public placeholders: any[] = new Array(20);
     public search_phrase?: string;
     public is_loading: boolean = true;
@@ -32,7 +36,8 @@ export class SearchPageComponent implements OnInit, OnDestroy {
     public more_results_url?: string;
 
     private search_input_subscription?: Subscription;
-    private search_subscription?: Subscription;
+    private anime_search_subscription?: Subscription;
+    private user_search_subscription?: Subscription;
     private route_subscription?: Subscription;
     private more_results_subscription?: Subscription;
 
@@ -40,7 +45,8 @@ export class SearchPageComponent implements OnInit, OnDestroy {
         private router: Router,
         private activatedRoute: ActivatedRoute,
         private animeService: AnimeService,
-        private titleService: Title
+        private titleService: Title,
+        private userService: UserService
     ) { }
 
     public ngOnInit(): void {
@@ -48,8 +54,9 @@ export class SearchPageComponent implements OnInit, OnDestroy {
          * First listen to search stream then fire off call in subscription below.
          * Needs to be in this order or it doesn't work on load
          */
-        this.search_subscription = this.animeService.getSearchStream()
+        this.anime_search_subscription = this.animeService.getSearchStream()
             .pipe(
+                tap(() => this.users = []),
                 switchMap(stream => stream)
             )
             .subscribe({
@@ -64,6 +71,25 @@ export class SearchPageComponent implements OnInit, OnDestroy {
                 error: (err) => {
                     this.is_loading = false;
                     console.error('Error fetching search results', err);
+                }
+            });
+
+        this.user_search_subscription = this.userService.getUserSearchStream()
+            .pipe(
+                tap(() => {
+                    this.users = [];
+                    this.animes = [];
+                    this.more_results_url = undefined;
+                }),
+            )
+            .subscribe({
+                next: (users) => {
+                    this.users = users;
+                    this.is_loading = false;
+                },
+                error: (err) => {
+                    console.error('Failed to lookup users', err);
+                    this.is_loading = false;
                 }
             })
 
@@ -159,7 +185,8 @@ export class SearchPageComponent implements OnInit, OnDestroy {
     }
 
     public ngOnDestroy(): void {
-        this.search_subscription?.unsubscribe();
+        this.anime_search_subscription?.unsubscribe();
+        this.user_search_subscription?.unsubscribe();
         this.route_subscription?.unsubscribe();
         this.search_input_subscription?.unsubscribe();
         this.more_results_subscription?.unsubscribe();
@@ -187,7 +214,7 @@ export class SearchPageComponent implements OnInit, OnDestroy {
     }
 
     public setSearchPhrase(value: string): void {
-        let type = this.getType();
+        let type = this.getAnimeType();
 
         if (this.current_search_type === 'category') {
             this.animeService.setCategorySearch(this.search_phrase ?? '', type);
@@ -197,7 +224,11 @@ export class SearchPageComponent implements OnInit, OnDestroy {
             this.assertIsAnimeSortType(phrase);
             this.animeService.setTypeSearch(phrase, type);
         } else {
-            this.animeService.setSearchPhrase(value, type);
+            if (this.lookup_type === 'anime' || this.lookup_type === 'manga') {
+                this.animeService.setSearchPhrase(value, type);
+            } else if (this.lookup_type === 'user') {
+                this.userService.searchUsersCollection(value);
+            }
         }
     }
 
@@ -208,10 +239,10 @@ export class SearchPageComponent implements OnInit, OnDestroy {
         }
     }
 
-    private getType(): 'anime' | 'manga' {
+    private getAnimeType(): 'anime' | 'manga' {
         let type: 'anime' | 'manga';
-        // TODO: Add in user lookup
-        if (this.lookup_type === 'user' || this.lookup_type === 'anime') {
+
+        if (this.lookup_type === 'anime') {
             type = 'anime';
         } else {
             type = 'manga';
