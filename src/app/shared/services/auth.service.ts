@@ -1,57 +1,26 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
-import { AngularFirestore } from '@angular/fire/compat/firestore';
 
-import {
-    Observable,
-    firstValueFrom,
-    map,
-    tap
-} from 'rxjs';
+import { Observable, firstValueFrom, map } from 'rxjs';
 
 import * as FirebaseAuth from 'firebase/auth';
 import { ToastrService } from 'ngx-toastr';
 
 import { PageLoaderService } from './page-loader.service';
 import { UserService } from './user.service';
-import { User } from '@shared/models/user.interface';
 
 @Injectable({
     providedIn: 'root',
 })
 export class AuthService {
-    // private $authStream: Observable<boolean>;
-
     constructor(
         private router: Router,
         private angularFireAuth: AngularFireAuth,
-        private angularFirestore: AngularFirestore,
         private pageLoaderService: PageLoaderService,
         private toastr: ToastrService,
         private userService: UserService,
-    ) {
-        // Store firebase auth stream
-        // this.$authStream = this.angularFireAuth.user.pipe(
-        //     tap(async (user) => {
-        //         if (user) {
-        //             firstValueFrom(
-        //                 this.angularFirestore.collection('users').doc<User>(user.uid).valueChanges()
-        //             ).then(
-        //                 (record) => {
-        //                     if (record) {
-        //                         record.email_verified = user.emailVerified;
-        //                         this.angularFirestore.collection('users').doc(user.uid).set(record);
-        //                     }
-        //                 }
-        //             )
-        //         }
-
-        //         return user;
-        //     }),
-        //     map(user => user ? true : false)
-        // );
-    }
+    ) { }
 
     /**
      * Gets the stream tracking the auth state
@@ -60,9 +29,6 @@ export class AuthService {
      */
     public getAuthStream(): Observable<boolean> {
         return this.angularFireAuth.user.pipe(
-            // tap(async (user) => {
-            //     return await this.checkEmailValidity(user)
-            // }),
             map(user => user ? true : false),
         )
     }
@@ -246,6 +212,7 @@ export class AuthService {
     public signOut(): void {
         this.pageLoaderService.setLoadingState({ state: true, title: 'Logging Out' });
         this.angularFireAuth.signOut();
+        this.userService.updateUserStream(undefined);
 
         this.toastr.success('Goodbye for now!', 'Logged Out!');
 
@@ -260,28 +227,4 @@ export class AuthService {
             }
         }, 500);
     }
-
-    /**
-     * Checks if the users email is valid and updates the database field
-     *
-     * @param user Firebase auth user info
-     *
-     * @returns Firebase auth user
-     */
-    // private checkEmailValidity(user: any) {
-    //     if (user) {
-    //         firstValueFrom(
-    //             this.angularFirestore.collection('users').doc<User>(user.uid).valueChanges()
-    //         ).then(
-    //             (record) => {
-    //                 if (record) {
-    //                     record.email_verified = user.emailVerified;
-    //                     this.angularFirestore.collection('users').doc(user.uid).set(record);
-    //                 }
-    //             }
-    //         )
-    //     }
-
-    //     return user;
-    // }
 }

@@ -31,7 +31,6 @@ export class EditProfileComponent implements OnInit, OnDestroy {
     ) { }
 
     public ngOnInit(): void {
-        console.log('called edit');
         this.user_subscription = this.userService.getUserStream().subscribe({
             next: (user: User | undefined) => {
                 if (user) {
@@ -50,6 +49,11 @@ export class EditProfileComponent implements OnInit, OnDestroy {
 
     public onSelectProfilePic(index: number) {
         this.profile_pic = `${index + 1}.jpg`;
+    }
+
+    public checkEmailVerification() {
+        // Hack to get verification check to work because firebase user isn't updated when email verification link is used while logged in... -_-
+        window.location.reload();
     }
 
     public onSubmit() {
