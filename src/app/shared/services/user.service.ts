@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 
-import { BehaviorSubject, Observable, firstValueFrom, map, shareReplay } from 'rxjs';
+import { BehaviorSubject, Observable, firstValueFrom, map } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
 
 import { User } from '@shared/models/user.interface';
@@ -40,22 +40,7 @@ export class UserService {
     public getUserInfo() {
         const user = firstValueFrom(
             this.angularFireAuth.user.pipe(
-                map((user) => {
-                    // const record = await firstValueFrom(
-                    //     this.angularFirestore.collection('users').doc<User>(user?.uid).valueChanges()
-                    // );
-
-                    // if (record) {
-                    //     if (record && !record?.email_verified) {
-                    //         if (user?.emailVerified) {
-                    //             record.email_verified = user.emailVerified;
-                    //             this.angularFirestore.collection('users').doc(user.uid).set(record);
-                    //         }
-                    //     }
-                    // }
-
-                    return user;
-                }),
+                map(user => user)
             )
         );
 
@@ -76,7 +61,7 @@ export class UserService {
      *
      * @param user User info to update the stream with
      */
-    public updateUserStream(user: User): void {
+    public updateUserStream(user: User | undefined): void {
         this.$user_stream.next(user);
     }
 
