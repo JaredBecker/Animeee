@@ -12,6 +12,7 @@ import { User } from '@shared/models/user.interface';
 })
 export class UserService {
     private $user_stream: BehaviorSubject<User | undefined> = new BehaviorSubject<User | undefined>(undefined);
+    private $user_search_results: BehaviorSubject<User[]> = new BehaviorSubject<User[]>([]);
 
     constructor(
         private angularFirestore: AngularFirestore,
@@ -57,12 +58,25 @@ export class UserService {
     }
 
     /**
+     * Get the user search stream
+     *
+     * @returns User search stream
+     */
+    public getUserSearchStream(): Observable<User[]> {
+        return this.$user_search_results.asObservable();
+    }
+
+    /**
      * Updates the user stream with the provided user
      *
      * @param user User info to update the stream with
      */
     public updateUserStream(user: User | undefined): void {
         this.$user_stream.next(user);
+    }
+
+    public updateUserSearchStream(users: User[]) {
+        this.$user_search_results.next(users);
     }
 
     /**
@@ -82,6 +96,31 @@ export class UserService {
         }
 
         return undefined;
+    }
+
+    /**
+     * Looks for users usernames, emails, matching the provided search time
+     *
+     * @param search_value The email or username to look for
+     *
+     * @returns User array
+     */
+    public async searchUsersCollection(search_value: string): Promise<void> {
+        const users = await firstValueFrom(
+            this.angularFirestore.collection<User>('users', (ref) => ref).valueChanges()
+        )
+        .then(users => {
+            const filtered_users = users.filter((user: User) => {
+                const email = user.email.toLowerCase().includes(search_value.toLowerCase());
+                const username = user.username.toLowerCase().includes(search_value.toLowerCase());
+
+                return email || username;
+            });
+
+            return filtered_users;
+        })
+
+        this.updateUserSearchStream(users.length > 0 ? users : []);
     }
 
     /**

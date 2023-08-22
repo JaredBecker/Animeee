@@ -1,4 +1,12 @@
 export class User {
+    /*
+        WATCH TYPES
+        - completed
+        - on_hold
+        - want_to_watch
+        - currently_watching
+    */
+
     public uid: string;
     public email: string;
     public username: string;
@@ -7,11 +15,6 @@ export class User {
     public anime_list: any[] = [];
     public favorite_characters: any[] = [];
     public friend_list: string[] = [];
-
-    // public completed: number[] = [];
-    // public on_hold: number[] = [];
-    // public want_to_watch: number[] = [];
-    // public currently_watching: number[] = [];
 
     constructor(
         uid: string,
