@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 
-import { BehaviorSubject, Observable, firstValueFrom, map, shareReplay } from 'rxjs';
+import { BehaviorSubject, Observable, firstValueFrom, map } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
 
 import { User } from '@shared/models/user.interface';
@@ -19,6 +19,7 @@ export class UserService {
         private toastr: ToastrService,
     ) {
         this.getUserInfo()
+            .then(user => user)
             .then((user) => {
                 if (user) {
                     firstValueFrom(this.angularFirestore.collection('users').doc<User>(user.uid).valueChanges())
@@ -32,16 +33,14 @@ export class UserService {
     }
 
     /**
-     * Gets the info of the current user (Firebase info)
+     * Gets the info of the current user (Firebase info). Also handles setting email verification when fetching data
      *
      * @returns User info or null
      */
     public getUserInfo() {
         const user = firstValueFrom(
             this.angularFireAuth.user.pipe(
-                map(user => {
-                    return user;
-                })
+                map(user => user)
             )
         );
 
@@ -54,9 +53,16 @@ export class UserService {
      * @returns User stream
      */
     public getUserStream(): Observable<User | undefined> {
-        return this.$user_stream.asObservable().pipe(
-            shareReplay(1)
-        );
+        return this.$user_stream.asObservable();
+    }
+
+    /**
+     * Updates the user stream with the provided user
+     *
+     * @param user User info to update the stream with
+     */
+    public updateUserStream(user: User | undefined): void {
+        this.$user_stream.next(user);
     }
 
     /**
@@ -85,16 +91,19 @@ export class UserService {
      */
     public createNewUserRecord(user: any) {
         if (user) {
+            const profile_pic = user.photoUrl !== '' ? `${Math.ceil(Math.random() * 12)}.jpg` : user.photoUrl;
+            const username = user.displayName !== '' ? user.email.split('@')[0] : user.displayName;
             const new_user = new User(
                 user.uid,
                 user.email,
-                user.displayName ?? user.email.split('@')[0],
-                user.photoUrl ?? '',
+                username,
+                profile_pic,
                 user.emailVerified,
                 [], [], []
             );
 
             this.angularFirestore.collection('users').doc(user.uid).set(new_user.asObject());
+            this.updateUserStream(new_user);
         }
     }
 
@@ -276,7 +285,14 @@ export class UserService {
         this.toastr.error('This action could not be completed because no account could be found.', 'No Account found');
     }
 
-    public async updateUserInfo(user: User) {
+    /**
+     * Update user info
+     *
+     * @param user Updated user info to save to firebase
+     *
+     * @returns void
+     */
+    public async updateUserInfo(user: User): Promise<void> {
         if (!user.uid) {
             return
         }

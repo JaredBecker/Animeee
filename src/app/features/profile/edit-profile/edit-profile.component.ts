@@ -39,7 +39,7 @@ export class EditProfileComponent implements OnInit, OnDestroy {
                     this.username.setValue(this.user.username);
                 }
             },
-            error: (err) => console.log('Error loading user info', err)
+            error: (err) => console.error('Error loading user info', err)
         })
     }
 
@@ -49,6 +49,11 @@ export class EditProfileComponent implements OnInit, OnDestroy {
 
     public onSelectProfilePic(index: number) {
         this.profile_pic = `${index + 1}.jpg`;
+    }
+
+    public checkEmailVerification() {
+        // Hack to get verification check to work because firebase user isn't updated when email verification link is used while logged in... -_-
+        window.location.reload();
     }
 
     public onSubmit() {

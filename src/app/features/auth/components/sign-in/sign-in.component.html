@@ -4,25 +4,21 @@
     </div>
     <h1 class="oswald fw-bold text-center text-uppercase text_gradient mb-3">Sign In</h1>
 
-    <div class="monty">
+    <form [formGroup]="sign_in_form" (ngSubmit)="onSignIn()" class="monty">
         <div class="mb-3">
-            <input type="email" class="form-control" id="email" placeholder="Email" #email />
+            <input type="email" formControlName="email" class="form-control" id="email" placeholder="Email" />
         </div>
         <div class="mb-3">
-            <input type="password" class="form-control" id="passowrd" placeholder="Password" #password />
+            <input type="password" formControlName="password" class="form-control" id="passowrd" placeholder="Password" />
         </div>
-        <button
-            type="button"
-            class="btn btn-primary text-white w-100 mb-2"
-            (click)="onSignIn(email.value, password.value)"
-        >
+        <button type="submit" class="btn btn-primary text-white w-100 mb-2">
             Sign In
         </button>
         <button type="button" class="btn w-100 mb-3 google_btn" (click)="googleSignIn()">
             <img src='https://developers.google.com/identity/images/g-logo.png'>
             Sign In with Google
         </button>
-    </div>
+    </form>
     <p class="register_text mb-2">
         Don't have an account? <a routerLink="/auth/sign-up">Sign Up!</a>
     </p>
