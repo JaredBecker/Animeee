@@ -130,7 +130,7 @@ export class UserService {
      */
     public createNewUserRecord(user: any) {
         if (user) {
-            const profile_pic = user.photoUrl !== '' ? `${Math.ceil(Math.random() * 12)}.jpg` : user.photoUrl;
+            const profile_pic = `${Math.ceil(Math.random() * 12)}.jpg`;
             const username = user.displayName !== '' ? user.email.split('@')[0] : user.displayName;
             const new_user = new User(
                 user.uid,
