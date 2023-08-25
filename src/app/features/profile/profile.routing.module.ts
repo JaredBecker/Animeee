@@ -49,6 +49,36 @@ const routes: Routes = [
             },
         ]
     },
+    {
+        path: 'view/:username',
+        component: ProfileComponent,
+        children: [
+            {
+                path: 'completed',
+                component: CompletedComponent
+            },
+            {
+                path: 'on-hold',
+                component: OnHoldComponent
+            },
+            {
+                path: 'want-to-watch',
+                component: WantToWatchComponent
+            },
+            {
+                path: 'currently-watching',
+                component: CurrentlyWatchingComponent
+            },
+            {
+                path: 'must-watch',
+                component: MustWatchComponent
+            },
+            {
+                path: 'favorite-characters',
+                component: FavoriteCharactersComponent
+            },
+        ]
+    }
 ];
 
 @NgModule({
