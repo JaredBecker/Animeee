@@ -115,19 +115,26 @@ export class UserService {
         return undefined;
     }
 
-    public async getViewingProfile(username: string) {
+    /**
+     * Gets the profile info for the account the user is viewing
+     *
+     * @param username The username of the account being viewed
+     */
+    public async getViewingProfile(username: string): Promise<void> {
         const users = await firstValueFrom(
             this.angularFirestore.collection<User>('users', (ref) => ref).valueChanges()
         );
+        console.log(users);
 
         const user = users.filter(user => user.username === username);
 
         if (user.length === 1) {
             this.$viewing_user_stream.next(user[0]);
-        } else {
-            this.router.navigate(['/']);
-            this.toastr.error(`The user with username ${username} could not be found`, 'No User Found');
         }
+        // else {
+        //     this.router.navigate(['/']);
+        //     this.toastr.error(`The user with username ${username} could not be found`, 'No User Found');
+        // }
     }
 
     /**
