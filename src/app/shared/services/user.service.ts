@@ -6,18 +6,21 @@ import { BehaviorSubject, Observable, firstValueFrom, map } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
 
 import { User } from '@shared/models/user.interface';
+import { Router } from '@angular/router';
 
 @Injectable({
     providedIn: 'root'
 })
 export class UserService {
     private $user_stream: BehaviorSubject<User | undefined> = new BehaviorSubject<User | undefined>(undefined);
+    private $viewing_user_stream: BehaviorSubject<User | undefined> = new BehaviorSubject<User | undefined>(undefined);
     private $user_search_results: BehaviorSubject<User[]> = new BehaviorSubject<User[]>([]);
 
     constructor(
         private angularFirestore: AngularFirestore,
         private angularFireAuth: AngularFireAuth,
         private toastr: ToastrService,
+        private router: Router,
     ) {
         this.getUserInfo()
             .then(user => user)
@@ -58,6 +61,15 @@ export class UserService {
     }
 
     /**
+     * Gets the stream for the user profile being viewed
+     *
+     * @returns stream of the user who's profile is being viewed
+     */
+    public getViewUserStream() {
+        return this.$viewing_user_stream.asObservable();
+    }
+
+    /**
      * Get the user search stream
      *
      * @returns User search stream
@@ -75,7 +87,12 @@ export class UserService {
         this.$user_stream.next(user);
     }
 
-    public updateUserSearchStream(users: User[]) {
+    /**
+     * Update the found users stream
+     *
+     * @param users Filtered users
+     */
+    public updateUserSearchStream(users: User[]): void {
         this.$user_search_results.next(users);
     }
 
@@ -96,6 +113,21 @@ export class UserService {
         }
 
         return undefined;
+    }
+
+    public async getViewingProfile(username: string) {
+        const users = await firstValueFrom(
+            this.angularFirestore.collection<User>('users', (ref) => ref).valueChanges()
+        );
+
+        const user = users.filter(user => user.username === username);
+
+        if (user.length === 1) {
+            this.$viewing_user_stream.next(user[0]);
+        } else {
+            this.router.navigate(['/']);
+            this.toastr.error(`The user with username ${username} could not be found`, 'No User Found');
+        }
     }
 
     /**

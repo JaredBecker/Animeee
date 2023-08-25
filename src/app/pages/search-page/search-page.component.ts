@@ -50,6 +50,8 @@ export class SearchPageComponent implements OnInit, OnDestroy {
     ) { }
 
     public ngOnInit(): void {
+        this.lookup_type = sessionStorage.getItem('lookup_type') ?? 'anime';
+
         /**
          * First listen to search stream then fire off call in subscription below.
          * Needs to be in this order or it doesn't work on load
@@ -61,9 +63,12 @@ export class SearchPageComponent implements OnInit, OnDestroy {
             )
             .subscribe({
                 next: (search_results) => {
-                    if (search_results.data.length > 0) {
+                    if (search_results.data.length > 0 && this.lookup_type !== 'user') {
                         this.animes = search_results.data;
                         this.more_results_url = search_results?.links?.next && search_results.links.next;
+                    } else {
+                        this.animes = [];
+                        this.more_results_url = undefined;
                     }
 
                     this.is_loading = false;
@@ -130,10 +135,12 @@ export class SearchPageComponent implements OnInit, OnDestroy {
                     const search_phrase = params.get('search-phrase');
 
                     if (category) {
+                        this.lookup_type === 'user' ? 'anime' : this.lookup_type;
                         return { load: 'category', value: category };
                     }
 
                     if (type) {
+                        this.lookup_type === 'user' ? 'anime' : this.lookup_type;
                         return { load: 'type', value: type };
                     }
 
@@ -178,6 +185,7 @@ export class SearchPageComponent implements OnInit, OnDestroy {
                 next: (value) => {
                     if (value && value !== '') {
                         this.search_phrase = value;
+                        sessionStorage.setItem('lookup_type', this.lookup_type);
                         this.router.navigate(['/search', this.search_phrase]);
                     }
                 }
@@ -194,6 +202,14 @@ export class SearchPageComponent implements OnInit, OnDestroy {
 
     public onUpdateSearchType(type: string): void {
         this.lookup_type = type;
+        sessionStorage.setItem('lookup_type', this.lookup_type);
+
+        // if (this.lookup_type === 'user') {
+        //     this.animes = [];
+        //     this.more_results_url = undefined;
+        // } else {
+        //     this.users = [];
+        // }
 
         if (this.search_phrase && this.search_phrase !== '') {
             this.is_loading = true;
