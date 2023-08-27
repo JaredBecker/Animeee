@@ -16,36 +16,35 @@ const routes: Routes = [
     {
         path: '',
         component: ProfileComponent,
-        canActivate: [AuthGuard],
         canActivateChild: [AuthGuard],
         children: [
             {
                 path: 'completed',
-                component: CompletedComponent
+                component: CompletedComponent,
             },
             {
                 path: 'on-hold',
-                component: OnHoldComponent
+                component: OnHoldComponent,
             },
             {
                 path: 'want-to-watch',
-                component: WantToWatchComponent
+                component: WantToWatchComponent,
             },
             {
                 path: 'currently-watching',
-                component: CurrentlyWatchingComponent
+                component: CurrentlyWatchingComponent,
             },
             {
                 path: 'must-watch',
-                component: MustWatchComponent
+                component: MustWatchComponent,
             },
             {
                 path: 'favorite-characters',
-                component: FavoriteCharactersComponent
+                component: FavoriteCharactersComponent,
             },
             {
                 path: 'edit',
-                component: EditProfileComponent
+                component: EditProfileComponent,
             },
         ]
     },

@@ -27,13 +27,15 @@ export class ProfileComponent implements OnInit, OnDestroy {
     public favorite_characters: number = 0;
     public friend_list: number = 0;
 
-    private user_subscription?: Subscription;
+    // private user_subscription?: Subscription;
     private route_subscription?: Subscription;
 
     constructor(
         private userService: UserService,
         private titleService: Title,
         private activatedRoute: ActivatedRoute,
+        private router: Router,
+        private toastr: ToastrService,
     ) {
         this.titleService.setTitle(`Animeee | Profile`);
     }
@@ -82,11 +84,10 @@ export class ProfileComponent implements OnInit, OnDestroy {
 
                     this.favorite_characters = user.favorite_characters.length;
                     this.friend_list = user.friend_list.length;
+                } else {
+                    this.router.navigateByUrl('/');
+                    this.toastr.error('The user you are looking for could not be found', 'No User Found');
                 }
-                // else {
-                //     this.router.navigateByUrl('/');
-                //     this.toastr.error('The user you are looking for could not be found', 'No User Found');
-                // }
             }
         })
 

@@ -3,7 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 
 import { Subscription, switchMap } from 'rxjs';
 
-import { ToastrService } from 'ngx-toastr';
+// import { ToastrService } from 'ngx-toastr';
 
 import { UserService } from '@shared/services/user.service';
 
@@ -22,7 +22,7 @@ export class CompletedComponent implements OnInit, OnDestroy {
     constructor(
         private userService: UserService,
         private activatedRoute: ActivatedRoute,
-        private toastr: ToastrService,
+        // private toastr: ToastrService,
     ) { }
 
     public ngOnInit(): void {
@@ -33,11 +33,7 @@ export class CompletedComponent implements OnInit, OnDestroy {
             switchMap(async (params) => {
                 const username = params.get('username');
 
-                if (username) {
-                    return this.userService.getViewUserStream();
-                } else {
-                    return this.userService.getUserStream();
-                }
+                return username ? this.userService.getViewUserStream() : this.userService.getUserStream()
             }),
             switchMap(user => user),
         )
