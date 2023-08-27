@@ -15,7 +15,6 @@ const routes: Routes = [
     },
     {
         path: 'profile',
-        canActivateChild: [AuthGuard],
         loadChildren: () => import('@features/profile/profile.module').then(m => m.ProfileModule)
     },
     {
@@ -36,7 +35,9 @@ const routes: Routes = [
 
 @NgModule({
     imports: [
-        RouterModule.forRoot(routes)
+        RouterModule.forRoot(routes, {
+            paramsInheritanceStrategy: 'always'
+        })
     ],
     exports: [RouterModule]
 })

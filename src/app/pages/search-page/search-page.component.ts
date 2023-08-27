@@ -204,13 +204,6 @@ export class SearchPageComponent implements OnInit, OnDestroy {
         this.lookup_type = type;
         sessionStorage.setItem('lookup_type', this.lookup_type);
 
-        // if (this.lookup_type === 'user') {
-        //     this.animes = [];
-        //     this.more_results_url = undefined;
-        // } else {
-        //     this.users = [];
-        // }
-
         if (this.search_phrase && this.search_phrase !== '') {
             this.is_loading = true;
             this.setSearchPhrase(this.search_phrase);

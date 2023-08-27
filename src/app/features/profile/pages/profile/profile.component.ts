@@ -1,8 +1,10 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 
-import { Subscription, map, switchMap } from 'rxjs';
+import { Subscription, switchMap } from 'rxjs';
+
+import { ToastrService } from 'ngx-toastr';
 
 import { UserService } from '@shared/services/user.service';
 import { User } from '@shared/models/user.interface';
@@ -14,6 +16,8 @@ import { User } from '@shared/models/user.interface';
 })
 export class ProfileComponent implements OnInit, OnDestroy {
     public user: User | undefined;
+    public username: string | undefined;
+    public viewing_profile: boolean = false;
 
     public completed: number = 0;
     public on_hold: number = 0;
@@ -23,13 +27,15 @@ export class ProfileComponent implements OnInit, OnDestroy {
     public favorite_characters: number = 0;
     public friend_list: number = 0;
 
-    private user_subscription?: Subscription;
+    // private user_subscription?: Subscription;
     private route_subscription?: Subscription;
 
     constructor(
         private userService: UserService,
         private titleService: Title,
-        private activatedRoute: ActivatedRoute
+        private activatedRoute: ActivatedRoute,
+        private router: Router,
+        private toastr: ToastrService,
     ) {
         this.titleService.setTitle(`Animeee | Profile`);
     }
@@ -78,6 +84,9 @@ export class ProfileComponent implements OnInit, OnDestroy {
 
                     this.favorite_characters = user.favorite_characters.length;
                     this.friend_list = user.friend_list.length;
+                } else {
+                    this.router.navigateByUrl('/');
+                    this.toastr.error('The user you are looking for could not be found', 'No User Found');
                 }
             }
         })
@@ -119,7 +128,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
     }
 
     public ngOnDestroy(): void {
-        this.user_subscription?.unsubscribe();
+        // this.user_subscription?.unsubscribe();
         this.route_subscription?.unsubscribe();
     }
 
