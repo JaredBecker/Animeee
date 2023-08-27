@@ -1,8 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-import { AuthGuard } from '@shared/guards/auth.guard';
-
 import { ProfileComponent } from './pages/profile/profile.component';
 import { CompletedComponent } from './components/completed/completed.component';
 import { OnHoldComponent } from './components/on-hold/on-hold.component';
@@ -16,36 +14,34 @@ const routes: Routes = [
     {
         path: '',
         component: ProfileComponent,
-        canActivate: [AuthGuard],
-        canActivateChild: [AuthGuard],
         children: [
             {
                 path: 'completed',
-                component: CompletedComponent
+                component: CompletedComponent,
             },
             {
                 path: 'on-hold',
-                component: OnHoldComponent
+                component: OnHoldComponent,
             },
             {
                 path: 'want-to-watch',
-                component: WantToWatchComponent
+                component: WantToWatchComponent,
             },
             {
                 path: 'currently-watching',
-                component: CurrentlyWatchingComponent
+                component: CurrentlyWatchingComponent,
             },
             {
                 path: 'must-watch',
-                component: MustWatchComponent
+                component: MustWatchComponent,
             },
             {
                 path: 'favorite-characters',
-                component: FavoriteCharactersComponent
+                component: FavoriteCharactersComponent,
             },
             {
                 path: 'edit',
-                component: EditProfileComponent
+                component: EditProfileComponent,
             },
         ]
     },

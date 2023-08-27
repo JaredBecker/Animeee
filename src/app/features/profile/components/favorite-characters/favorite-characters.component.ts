@@ -1,42 +1,51 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 
-import { Subscription } from 'rxjs';
+import { Subscription, switchMap } from 'rxjs';
 
 import { UserService } from '@shared/services/user.service';
 
 @Component({
-  selector: 'app-favorite-characters',
-  templateUrl: './favorite-characters.component.html',
-  styleUrls: ['./favorite-characters.component.scss']
+    selector: 'app-favorite-characters',
+    templateUrl: './favorite-characters.component.html',
+    styleUrls: ['./favorite-characters.component.scss']
 })
 export class FavoriteCharactersComponent implements OnInit, OnDestroy {
     public favorite_characters: any[] = [];
     public is_loading: boolean = true;
 
-    private user_subscription?: Subscription;
+    private route_subscription?: Subscription;
 
     constructor(
         private userService: UserService,
+        private activatedRoute: ActivatedRoute,
     ) { }
 
     public ngOnInit(): void {
         this.is_loading = true;
 
-        this.user_subscription = this.userService.getUserStream()
-            .subscribe({
-                next: (user_info) => {
-                    if (user_info) {
-                        this.favorite_characters = user_info?.favorite_characters;
+        this.route_subscription = this.activatedRoute.paramMap.pipe(
+            switchMap(async (params) => {
+                const username = params.get('username');
 
-                    }
+                return username ? this.userService.getViewUserStream() : this.userService.getUserStream()
+            }),
+            switchMap(user => user),
+        )
+        .subscribe({
+            next: (user_info) => {
+                if (user_info) {
+                    this.favorite_characters = user_info?.favorite_characters;
 
-                    this.is_loading = false;
-                },
-                error: () => this.is_loading = false,
-            });
+                }
+
+                this.is_loading = false;
+            },
+            error: () => this.is_loading = false,
+        });
     }
 
     public ngOnDestroy(): void {
-        this.user_subscription?.unsubscribe();
+        this.route_subscription?.unsubscribe();
     }
 }

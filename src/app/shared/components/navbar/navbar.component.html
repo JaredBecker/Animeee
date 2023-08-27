@@ -24,9 +24,9 @@
                     <img src="/assets/images/profile.png" alt="Profile Icon">
                 </a>
                 <div ngbDropdownMenu aria-labelledby="profile">
-                    <a routerLink="/auth/sign-in" ngbDropdownItem *ngIf="!isAuthenticated">Sign In</a>
-                    <a routerLink="/profile/completed" ngbDropdownItem *ngIf="isAuthenticated">Profile</a>
-                    <a role="button" (click)="onLogout()" ngbDropdownItem  *ngIf="isAuthenticated">Sign Out</a>
+                    <a routerLink="/auth/sign-in" ngbDropdownItem *ngIf="!is_authenticated">Sign In</a>
+                    <a routerLink="/profile/completed" ngbDropdownItem *ngIf="is_authenticated">Profile</a>
+                    <a role="button" (click)="onLogout()" ngbDropdownItem  *ngIf="is_authenticated">Sign Out</a>
                 </div>
             </div>
         </div>

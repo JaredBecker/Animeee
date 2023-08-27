@@ -115,15 +115,18 @@ export class UserService {
         return undefined;
     }
 
-    public async getViewingProfile(username: string) {
+    /**
+     * Gets the profile info for the account the user is viewing
+     *
+     * @param username The username of the account being viewed
+     */
+    public async getViewingProfile(username: string): Promise<void> {
         const users = await firstValueFrom(
-            this.angularFirestore.collection<User>('users', (ref) => ref).valueChanges()
+            this.angularFirestore.collection<User>('users', (ref) => ref.where('username', '==', username)).valueChanges()
         );
 
-        const user = users.filter(user => user.username === username);
-
-        if (user.length === 1) {
-            this.$viewing_user_stream.next(user[0]);
+        if (users.length === 1) {
+            this.$viewing_user_stream.next(users[0]);
         } else {
             this.router.navigate(['/']);
             this.toastr.error(`The user with username ${username} could not be found`, 'No User Found');
@@ -131,26 +134,33 @@ export class UserService {
     }
 
     /**
-     * Looks for users usernames, emails, matching the provided search time
+     * Looks for users usernames, emails, matching the provided search time and excludes the currently logged in user
      *
      * @param search_value The email or username to look for
      *
      * @returns User array
      */
     public async searchUsersCollection(search_value: string): Promise<void> {
+        const logged_in_user = await firstValueFrom(this.$user_stream);
+
         const users = await firstValueFrom(
-            this.angularFirestore.collection<User>('users', (ref) => ref).valueChanges()
+            this.angularFirestore.collection<User>('users').valueChanges()
         )
-        .then(users => {
+        .then((users) => {
             const filtered_users = users.filter((user: User) => {
+                let current_user = false;
                 const email = user.email.toLowerCase().includes(search_value.toLowerCase());
                 const username = user.username.toLowerCase().includes(search_value.toLowerCase());
 
-                return email || username;
+                if (logged_in_user) {
+                    current_user = user.uid === logged_in_user.uid;;
+                }
+
+                return ((email || username) && !current_user);
             });
 
             return filtered_users;
-        })
+        });
 
         this.updateUserSearchStream(users.length > 0 ? users : []);
     }
