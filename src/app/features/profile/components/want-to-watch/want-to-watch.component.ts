@@ -13,6 +13,7 @@ import { UserService } from '@shared/services/user.service';
 export class WantToWatchComponent implements OnInit, OnDestroy {
     public animes: any[] = [];
     public is_loading: boolean = true;
+    public is_viewing: boolean = false;
 
     private route_subscription?: Subscription;
 
@@ -28,7 +29,15 @@ export class WantToWatchComponent implements OnInit, OnDestroy {
             switchMap(async (params) => {
                 const username = params.get('username');
 
-                return username ? this.userService.getViewUserStream() : this.userService.getUserStream()
+                if (username) {
+                    this.is_viewing = true;
+
+                    return this.userService.getViewUserStream();
+                } else {
+                    this.is_viewing = false;
+
+                    return this.userService.getUserStream();
+                }
             }),
             switchMap(user => user),
         )
