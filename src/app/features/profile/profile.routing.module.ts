@@ -16,7 +16,6 @@ const routes: Routes = [
     {
         path: '',
         component: ProfileComponent,
-        canActivateChild: [AuthGuard],
         children: [
             {
                 path: 'completed',

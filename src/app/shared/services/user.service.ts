@@ -144,10 +144,9 @@ export class UserService {
         const logged_in_user = await firstValueFrom(this.$user_stream);
 
         const users = await firstValueFrom(
-            this.angularFirestore.collection<User>('users', (ref) => ref).valueChanges()
+            this.angularFirestore.collection<User>('users').valueChanges()
         )
         .then((users) => {
-            console.log(users);
             const filtered_users = users.filter((user: User) => {
                 let current_user = false;
                 const email = user.email.toLowerCase().includes(search_value.toLowerCase());
@@ -161,7 +160,7 @@ export class UserService {
             });
 
             return filtered_users;
-        })
+        });
 
         this.updateUserSearchStream(users.length > 0 ? users : []);
     }
