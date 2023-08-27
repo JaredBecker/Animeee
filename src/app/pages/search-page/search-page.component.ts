@@ -105,7 +105,6 @@ export class SearchPageComponent implements OnInit, OnDestroy {
         this.user_search_subscription = this.userService.getUserSearchStream()
             .pipe(
                 tap(() => {
-                    // this.users = [];
                     this.animes = [];
                     this.more_results_url = undefined;
                 }),
