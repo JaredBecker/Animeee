@@ -13,7 +13,7 @@ import { AnimeService } from '@shared/services/anime.service';
     styleUrls: ['./navbar.component.scss']
 })
 export class NavbarComponent implements OnInit, OnDestroy {
-    public isAuthenticated!: boolean;
+    public is_authenticated!: boolean;
     public search = new FormControl('');
 
     private auth_sub?: Subscription;
@@ -30,7 +30,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
                 map(isLoggedIn => isLoggedIn)
             )
             .subscribe({
-                next: (isLoggedIn) => this.isAuthenticated = isLoggedIn,
+                next: (isLoggedIn) => this.is_authenticated = isLoggedIn,
                 error: (err) => console.error('Error in auth stream', err)
             })
     }

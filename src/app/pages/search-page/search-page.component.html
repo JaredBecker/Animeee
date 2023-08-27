@@ -24,7 +24,7 @@
                             <div ngbDropdownMenu aria-labelledby="profile">
                                 <button (click)="onUpdateSearchType('anime')" ngbDropdownItem>Anime</button>
                                 <button (click)="onUpdateSearchType('manga')" ngbDropdownItem>Manga</button>
-                                <button (click)="onUpdateSearchType('user')" ngbDropdownItem>User</button>
+                                <button *ngIf="is_authenticated" (click)="onUpdateSearchType('user')" ngbDropdownItem>User</button>
                             </div>
                         </button>
                     </div>

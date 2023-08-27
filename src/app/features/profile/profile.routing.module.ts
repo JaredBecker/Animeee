@@ -1,8 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-import { AuthGuard } from '@shared/guards/auth.guard';
-
 import { ProfileComponent } from './pages/profile/profile.component';
 import { CompletedComponent } from './components/completed/completed.component';
 import { OnHoldComponent } from './components/on-hold/on-hold.component';
@@ -16,7 +14,6 @@ const routes: Routes = [
     {
         path: '',
         component: ProfileComponent,
-        canActivateChild: [AuthGuard],
         children: [
             {
                 path: 'completed',

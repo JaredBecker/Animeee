@@ -10,92 +10,187 @@
                             <img [src]="'/assets/images/profile/' + user.profile_picture" alt="Profile Picture">
                         </div>
                         <h4 *ngIf="user" class="profile_name oswald">{{ user.username }}</h4>
-                        <a
-                            routerLink="/profile/edit"
-                            class="btn btn-primary btn-sm text-white rounded-pill"
-                        >
-                            Edit Profile
-                            <i class="fa-solid fa-pencil ms-2"></i>
-                        </a>
-                        <ul class="profile_stats mt-3">
-                            <li class="profile_stats_item">
-                                <a
-                                    routerLink="/profile/completed"
-                                    routerLinkActive="active"
-                                    [routerLinkActiveOptions]="{exact: true}"
-                                    class="profile_stats_item_link"
-                                >
-                                    <span>Completed</span>
-                                    <span>{{ completed }}</span>
-                                </a>
-                            </li>
-                            <li class="profile_stats_item">
-                                <a
-                                    routerLink="/profile/on-hold"
-                                    routerLinkActive="active"
-                                    [routerLinkActiveOptions]="{exact: true}"
-                                    class="profile_stats_item_link"
-                                >
-                                    <span>On Hold</span>
-                                    <span>{{ on_hold }}</span>
-                                </a>
-                            </li>
-                            <li class="profile_stats_item">
-                                <a
-                                    routerLink="/profile/want-to-watch"
-                                    routerLinkActive="active"
-                                    [routerLinkActiveOptions]="{exact: true}"
-                                    class="profile_stats_item_link"
-                                >
-                                    <span>Want to watch</span>
-                                    <span>{{ want_to_watch }}</span>
-                                </a>
-                            </li>
-                            <li class="profile_stats_item">
-                                <a
-                                    routerLink="/profile/currently-watching"
-                                    routerLinkActive="active"
-                                    [routerLinkActiveOptions]="{exact: true}"
-                                    class="profile_stats_item_link"
-                                >
-                                    <span>Currently Watching</span>
-                                    <span>{{ currently_watching }}</span>
-                                </a>
-                            </li>
-                            <li class="profile_stats_item">
-                                <a
-                                    routerLink="/profile/must-watch"
-                                    routerLinkActive="active"
-                                    [routerLinkActiveOptions]="{exact: true}"
-                                    class="profile_stats_item_link"
-                                >
-                                    <span>Must Watch</span>
-                                    <span>{{ must_watch }}</span>
-                                </a>
-                            </li>
-                            <li class="profile_stats_item">
-                                <a
-                                    routerLink="/profile/favorite-characters"
-                                    routerLinkActive="active"
-                                    [routerLinkActiveOptions]="{exact: true}"
-                                    class="profile_stats_item_link"
-                                >
-                                    <span>Favorite Characters</span>
-                                    <span>{{ favorite_characters }}</span>
-                                </a>
-                            </li>
-                            <li class="profile_stats_item">
-                                <a
-                                    routerLink="/profile/friend-list"
-                                    routerLinkActive="active"
-                                    [routerLinkActiveOptions]="{exact: true}"
-                                    class="profile_stats_item_link"
-                                >
-                                    <span>Friend List</span>
-                                    <span>{{ friend_list }}</span>
-                                </a>
-                            </li>
-                        </ul>
+                        <ng-container *ngIf="viewing_profile; else edit_profile">
+                            <button
+                                type="button"
+                                class="btn btn-primary btn-sm text-white rounded-pill"
+                            >
+                                Add Friend
+                                <i class="fa-solid fa-user-plus ms-2"></i>
+                            </button>
+                        </ng-container>
+                        <ng-template #edit_profile>
+                            <a
+                                routerLink="/profile/edit"
+                                class="btn btn-primary btn-sm text-white rounded-pill"
+                            >
+                                Edit Profile
+                                <i class="fa-solid fa-pencil ms-2"></i>
+                            </a>
+                        </ng-template>
+                        <ng-container *ngIf="viewing_profile; else profile_menu">
+                            <ul class="profile_stats mt-3">
+                                <li class="profile_stats_item">
+                                    <a
+                                        [routerLink]="['/profile/view', username, 'completed']"
+                                        routerLinkActive="active"
+                                        [routerLinkActiveOptions]="{exact: true}"
+                                        class="profile_stats_item_link"
+                                    >
+                                        <span>Completed</span>
+                                        <span>{{ completed }}</span>
+                                    </a>
+                                </li>
+                                <li class="profile_stats_item">
+                                    <a
+                                        [routerLink]="['/profile/view', username, 'on-hold']"
+                                        routerLinkActive="active"
+                                        [routerLinkActiveOptions]="{exact: true}"
+                                        class="profile_stats_item_link"
+                                    >
+                                        <span>On Hold</span>
+                                        <span>{{ on_hold }}</span>
+                                    </a>
+                                </li>
+                                <li class="profile_stats_item">
+                                    <a
+                                        [routerLink]="['/profile/view', username, 'want-to-watch']"
+                                        routerLinkActive="active"
+                                        [routerLinkActiveOptions]="{exact: true}"
+                                        class="profile_stats_item_link"
+                                    >
+                                        <span>Want to watch</span>
+                                        <span>{{ want_to_watch }}</span>
+                                    </a>
+                                </li>
+                                <li class="profile_stats_item">
+                                    <a
+                                        [routerLink]="['/profile/view', username, 'currently-watching']"
+                                        routerLinkActive="active"
+                                        [routerLinkActiveOptions]="{exact: true}"
+                                        class="profile_stats_item_link"
+                                    >
+                                        <span>Currently Watching</span>
+                                        <span>{{ currently_watching }}</span>
+                                    </a>
+                                </li>
+                                <li class="profile_stats_item">
+                                    <a
+                                        [routerLink]="['/profile/view', username, 'must-watch']"
+                                        routerLinkActive="active"
+                                        [routerLinkActiveOptions]="{exact: true}"
+                                        class="profile_stats_item_link"
+                                    >
+                                        <span>Must Watch</span>
+                                        <span>{{ must_watch }}</span>
+                                    </a>
+                                </li>
+                                <li class="profile_stats_item">
+                                    <a
+                                        [routerLink]="['/profile/view', username, 'favorite-characters']"
+                                        routerLinkActive="active"
+                                        [routerLinkActiveOptions]="{exact: true}"
+                                        class="profile_stats_item_link"
+                                    >
+                                        <span>Favorite Characters</span>
+                                        <span>{{ favorite_characters }}</span>
+                                    </a>
+                                </li>
+                                <li class="profile_stats_item">
+                                    <a
+                                        [routerLink]="['/profile/view', username, 'friend-list']"
+                                        routerLinkActive="active"
+                                        [routerLinkActiveOptions]="{exact: true}"
+                                        class="profile_stats_item_link"
+                                    >
+                                        <span>Friend List</span>
+                                        <span>{{ friend_list }}</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </ng-container>
+
+                        <ng-template #profile_menu>
+                            <ul class="profile_stats mt-3">
+                                <li class="profile_stats_item">
+                                    <a
+                                        routerLink="/profile/completed"
+                                        routerLinkActive="active"
+                                        [routerLinkActiveOptions]="{exact: true}"
+                                        class="profile_stats_item_link"
+                                    >
+                                        <span>Completed</span>
+                                        <span>{{ completed }}</span>
+                                    </a>
+                                </li>
+                                <li class="profile_stats_item">
+                                    <a
+                                        routerLink="/profile/on-hold"
+                                        routerLinkActive="active"
+                                        [routerLinkActiveOptions]="{exact: true}"
+                                        class="profile_stats_item_link"
+                                    >
+                                        <span>On Hold</span>
+                                        <span>{{ on_hold }}</span>
+                                    </a>
+                                </li>
+                                <li class="profile_stats_item">
+                                    <a
+                                        routerLink="/profile/want-to-watch"
+                                        routerLinkActive="active"
+                                        [routerLinkActiveOptions]="{exact: true}"
+                                        class="profile_stats_item_link"
+                                    >
+                                        <span>Want to watch</span>
+                                        <span>{{ want_to_watch }}</span>
+                                    </a>
+                                </li>
+                                <li class="profile_stats_item">
+                                    <a
+                                        routerLink="/profile/currently-watching"
+                                        routerLinkActive="active"
+                                        [routerLinkActiveOptions]="{exact: true}"
+                                        class="profile_stats_item_link"
+                                    >
+                                        <span>Currently Watching</span>
+                                        <span>{{ currently_watching }}</span>
+                                    </a>
+                                </li>
+                                <li class="profile_stats_item">
+                                    <a
+                                        routerLink="/profile/must-watch"
+                                        routerLinkActive="active"
+                                        [routerLinkActiveOptions]="{exact: true}"
+                                        class="profile_stats_item_link"
+                                    >
+                                        <span>Must Watch</span>
+                                        <span>{{ must_watch }}</span>
+                                    </a>
+                                </li>
+                                <li class="profile_stats_item">
+                                    <a
+                                        routerLink="/profile/favorite-characters"
+                                        routerLinkActive="active"
+                                        [routerLinkActiveOptions]="{exact: true}"
+                                        class="profile_stats_item_link"
+                                    >
+                                        <span>Favorite Characters</span>
+                                        <span>{{ favorite_characters }}</span>
+                                    </a>
+                                </li>
+                                <li class="profile_stats_item">
+                                    <a
+                                        routerLink="/profile/friend-list"
+                                        routerLinkActive="active"
+                                        [routerLinkActiveOptions]="{exact: true}"
+                                        class="profile_stats_item_link"
+                                    >
+                                        <span>Friend List</span>
+                                        <span>{{ friend_list }}</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </ng-template>
                     </div>
                 </app-card>
             </div>

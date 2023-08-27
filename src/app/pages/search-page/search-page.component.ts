@@ -17,6 +17,7 @@ import { User } from '@shared/models/user.interface';
 import { AnimeService } from '@shared/services/anime.service';
 import { AnimeSortType } from '@shared/models/anime-sort-type.interface';
 import { UserService } from '@shared/services/user.service';
+import { AuthService } from '@shared/services/auth.service';
 
 @Component({
     selector: 'app-search-page',
@@ -29,6 +30,7 @@ export class SearchPageComponent implements OnInit, OnDestroy {
     public placeholders: any[] = new Array(20);
     public search_phrase?: string;
     public is_loading: boolean = true;
+    public is_authenticated: boolean = false;
     public loading_more: boolean = false;
     public lookup_type: string = 'anime';
     public current_search_type?: string;
@@ -40,17 +42,38 @@ export class SearchPageComponent implements OnInit, OnDestroy {
     private user_search_subscription?: Subscription;
     private route_subscription?: Subscription;
     private more_results_subscription?: Subscription;
+    private auth_subscription?: Subscription;
 
     constructor(
         private router: Router,
         private activatedRoute: ActivatedRoute,
         private animeService: AnimeService,
         private titleService: Title,
-        private userService: UserService
+        private userService: UserService,
+        private authService: AuthService
     ) { }
 
     public ngOnInit(): void {
         this.lookup_type = sessionStorage.getItem('lookup_type') ?? 'anime';
+
+        this.auth_subscription = this.authService.getAuthStream()
+            .pipe(
+                map(isLoggedIn => isLoggedIn)
+            )
+            .subscribe({
+                next: (isLoggedIn) => {
+                    this.is_authenticated = isLoggedIn
+                    const lookup_type = sessionStorage.getItem('lookup_type');
+
+                    if (!this.is_authenticated && lookup_type === 'user') {
+                        // Remove the ability to search users if the current user logs out
+                        this.lookup_type = 'anime';
+                        this.users = [];
+                        sessionStorage.setItem('lookup_type', 'anime');
+                    }
+                },
+                error: (err) => console.error('Error in auth stream', err)
+            })
 
         /**
          * First listen to search stream then fire off call in subscription below.
@@ -82,7 +105,6 @@ export class SearchPageComponent implements OnInit, OnDestroy {
         this.user_search_subscription = this.userService.getUserSearchStream()
             .pipe(
                 tap(() => {
-                    this.users = [];
                     this.animes = [];
                     this.more_results_url = undefined;
                 }),
@@ -198,6 +220,7 @@ export class SearchPageComponent implements OnInit, OnDestroy {
         this.route_subscription?.unsubscribe();
         this.search_input_subscription?.unsubscribe();
         this.more_results_subscription?.unsubscribe();
+        this.auth_subscription?.unsubscribe();
     }
 
     public onUpdateSearchType(type: string): void {
