@@ -1,10 +1,11 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
-import { Subscription, switchMap } from 'rxjs';
+import { Subscription, firstValueFrom, switchMap } from 'rxjs';
 
 import { Friend } from '@shared/models/friend.interface';
 import { UserService } from '@shared/services/user.service';
+import { User } from '@shared/models/user.model';
 
 @Component({
     selector: 'app-friend-list',
@@ -15,6 +16,7 @@ export class FriendListComponent implements OnInit, OnDestroy {
     public friends: Friend[] = [];
     public is_loading: boolean = true;
     public is_viewing: boolean = false;
+    public current_user: User | undefined;
 
     private route_subscription?: Subscription;
 
@@ -26,6 +28,7 @@ export class FriendListComponent implements OnInit, OnDestroy {
     public ngOnInit(): void {
         this.route_subscription = this.activatedRoute.paramMap.pipe(
             switchMap(async (params) => {
+                this.current_user = undefined;
                 const username = params.get('username');
 
                 if (username) {
@@ -41,8 +44,12 @@ export class FriendListComponent implements OnInit, OnDestroy {
             switchMap(user => user),
         )
         .subscribe({
-            next: (user_info) => {
+            next: async (user_info) => {
                 if (user_info) {
+                    if (this.is_viewing) {
+                        this.current_user = await firstValueFrom(this.userService.getUserStream());
+                    }
+
                     this.friends = user_info.friend_list;
                     this.is_loading = false;
                 }

@@ -8,16 +8,30 @@
 <ng-container *ngIf="!is_loading && friends.length > 0">
     <div class="row">
         <div *ngFor="let friend of friends" class="col-6 col-md-4 col-lg-3 mb-3 position-relative">
-            <a [routerLink]="['/profile', 'view', friend.username, 'completed']" class="user_card">
-                <img
-                    [src]="'/assets/images/profile/' + friend.profile_picture"
-                    [alt]="friend.username + ' profile picture'"
-                    class="user_card_pic"
-                />
-                <div class="user_card_username">
-                    {{ friend.username }}
-                </div>
-            </a>
+            <ng-container *ngIf="current_user?.username !== friend.username; else own_profile">
+                <a [routerLink]="['/profile', 'view', friend.username, 'completed']" class="user_card">
+                    <img
+                        [src]="'/assets/images/profile/' + friend.profile_picture"
+                        [alt]="friend.username + ' profile picture'"
+                        class="user_card_pic"
+                    />
+                    <div class="user_card_username">
+                        {{ friend.username }}
+                    </div>
+                </a>
+            </ng-container>
+            <ng-template #own_profile>
+                <a routerLink="/profile/completed" class="user_card">
+                    <img
+                        [src]="'/assets/images/profile/' + friend.profile_picture"
+                        [alt]="friend.username + ' profile picture'"
+                        class="user_card_pic"
+                    />
+                    <div class="user_card_username">
+                        {{ friend.username }}
+                    </div>
+                </a>
+            </ng-template>
             <button *ngIf="!is_viewing" type="button" (click)="onRemoveFriend(friend.username)" class="btn btn-danger btn-sm delete_btn">
                 <i class="fa-solid fa-trash-can me-1"></i>
                 Remove From List
