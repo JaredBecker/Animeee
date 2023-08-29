@@ -1,3 +1,5 @@
+import { Friend } from "./friend.interface";
+
 export class User {
     /*
         WATCH TYPES
@@ -14,7 +16,7 @@ export class User {
     public email_verified: boolean = false;
     public anime_list: any[] = [];
     public favorite_characters: any[] = [];
-    public friend_list: string[] = [];
+    public friend_list: Friend[] = [];
 
     constructor(
         uid: string,
@@ -24,7 +26,7 @@ export class User {
         email_verified: boolean,
         anime_list: any[],
         favorite_characters: any[],
-        friend_list: string[],
+        friend_list: Friend[],
     ) {
         this.uid = uid;
         this.email = email;

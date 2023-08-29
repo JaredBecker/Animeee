@@ -1,5 +1,5 @@
 <h1 class="oswald text_gradient mt-3 mt-lg-0">On Hold</h1>
-<p class="monty">Below you can find a list of all animes you have on hold</p>
+<p class="monty" *ngIf="!is_viewing">Below you can find a list of all animes you have on hold</p>
 
 <ng-container *ngIf="is_loading">
     <app-loader></app-loader>

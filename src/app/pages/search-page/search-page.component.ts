@@ -13,7 +13,7 @@ import {
     tap,
 } from 'rxjs';
 
-import { User } from '@shared/models/user.interface';
+import { User } from '@shared/models/user.model';
 import { AnimeService } from '@shared/services/anime.service';
 import { AnimeSortType } from '@shared/models/anime-sort-type.interface';
 import { UserService } from '@shared/services/user.service';

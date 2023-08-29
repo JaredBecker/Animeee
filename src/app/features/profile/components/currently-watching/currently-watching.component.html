@@ -1,5 +1,5 @@
 <h1 class="oswald text_gradient mt-3 mt-lg-0">Currently Watching</h1>
-<p class="monty">Below you can find a list of all animes you are currently watching</p>
+<p class="monty" *ngIf="!is_viewing">Below you can find a list of all animes you are currently watching</p>
 
 <ng-container *ngIf="is_loading">
     <app-loader></app-loader>
