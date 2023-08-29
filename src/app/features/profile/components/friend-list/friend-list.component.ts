@@ -54,4 +54,8 @@ export class FriendListComponent implements OnInit, OnDestroy {
     public ngOnDestroy(): void {
         this.route_subscription?.unsubscribe();
     }
+
+    public onRemoveFriend(username: string) {
+        this.userService.removeFriend(username);
+    }
 }

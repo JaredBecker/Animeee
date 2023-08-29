@@ -18,7 +18,7 @@
                     {{ friend.username }}
                 </div>
             </a>
-            <button *ngIf="!is_viewing" type="button"  class="btn btn-danger btn-sm delete_btn">
+            <button *ngIf="!is_viewing" type="button" (click)="onRemoveFriend(friend.username)" class="btn btn-danger btn-sm delete_btn">
                 <i class="fa-solid fa-trash-can me-1"></i>
                 Remove From List
             </button>

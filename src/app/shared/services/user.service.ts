@@ -368,6 +368,34 @@ export class UserService {
     }
 
     /**
+     * Removes a friend from the users friend list
+     *
+     * @param username The username of the friend to remove
+     *
+     * @returns void
+     */
+    public async removeFriend(username: string): Promise<void> {
+        const user = await this.getUserInfo();
+
+        if (user?.uid) {
+            const record: User | undefined = await firstValueFrom(
+                this.angularFirestore.collection('users').doc<User>(user.uid).valueChanges()
+            );
+
+            if (record) {
+                record.friend_list = record.friend_list.filter(el => el.username !== username);
+                this.$user_stream.next(record);
+                this.angularFirestore.collection('users').doc(user.uid).set(record);
+                this.toastr.success(`${username} has been removed from your friend list`, 'Friend Removed');
+            }
+
+            return;
+        }
+
+        this.toastr.error('This action could not be completed because no account could be found.', 'No Account found');
+    }
+
+    /**
      * Update user info
      *
      * @param user Updated user info to save to firebase
