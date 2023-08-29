@@ -189,9 +189,12 @@ export class AuthService {
         return this.angularFireAuth
             .signInWithPopup(provider)
             .then((result: any) => this.userService.checkIfUserExists(result.user))
-            .then((res) => {
+            .then(async (res) => {
                 if (!res.user_exists) {
                     this.userService.createNewUserRecord(res.user);
+                } else {
+                    const user = await this.userService.getUserProfileInfo();
+                    this.userService.updateUserStream(user);
                 }
             })
             .then(() => {
