@@ -215,19 +215,11 @@ export class AuthService {
     public signOut(): void {
         this.pageLoaderService.setLoadingState({ state: true, title: 'Logging Out' });
         this.angularFireAuth.signOut();
+
+        const url = window.location.toString();
+        url.includes('profile') ? this.router.navigateByUrl('/') : this.pageLoaderService.setLoadingState(false);
+
         this.userService.updateUserStream(undefined);
-
         this.toastr.success('Goodbye for now!', 'Logged Out!');
-
-        // Sign out is so dam fast and I want to show my loader I worked hard on🤣
-        setTimeout(() => {
-            const url = window.location.toString();
-
-            if (url.includes('profile')) {
-                this.router.navigateByUrl('/');
-            } else {
-                this.pageLoaderService.setLoadingState(false);
-            }
-        }, 500);
     }
 }
