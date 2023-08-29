@@ -189,9 +189,12 @@ export class AuthService {
         return this.angularFireAuth
             .signInWithPopup(provider)
             .then((result: any) => this.userService.checkIfUserExists(result.user))
-            .then((res) => {
+            .then(async (res) => {
                 if (!res.user_exists) {
                     this.userService.createNewUserRecord(res.user);
+                } else {
+                    const user = await this.userService.getUserProfileInfo();
+                    this.userService.updateUserStream(user);
                 }
             })
             .then(() => {
@@ -212,19 +215,11 @@ export class AuthService {
     public signOut(): void {
         this.pageLoaderService.setLoadingState({ state: true, title: 'Logging Out' });
         this.angularFireAuth.signOut();
+
+        const url = window.location.toString();
+        url.includes('profile') ? this.router.navigateByUrl('/') : this.pageLoaderService.setLoadingState(false);
+
         this.userService.updateUserStream(undefined);
-
         this.toastr.success('Goodbye for now!', 'Logged Out!');
-
-        // Sign out is so dam fast and I want to show my loader I worked hard on🤣
-        setTimeout(() => {
-            const url = window.location.toString();
-
-            if (url.includes('profile')) {
-                this.router.navigateByUrl('/');
-            } else {
-                this.pageLoaderService.setLoadingState(false);
-            }
-        }, 500);
     }
 }
