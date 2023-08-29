@@ -513,7 +513,10 @@ export class UserService {
         return false;
     }
 
-    public async addFriend(): Promise<boolean> {
+    /**
+     * Adds currently viewed profile to friend list
+     */
+    public async addFriend(): Promise<void> {
         const user = await this.getUserInfo();
 
         if (user?.uid) {
@@ -537,21 +540,22 @@ export class UserService {
                     }
 
                     this.$user_stream.next(record);
-                    this.angularFirestore.collection('users').doc(user.uid).set(record);
-
-                    return found;
+                    await this.angularFirestore.collection('users').doc(user.uid).set(record)
+                        .then(() => {
+                            if (found) {
+                                this.toastr.error(`It seems you are already friends with ${profile_being_viewed.username}.`, 'Already friends');
+                            } else {
+                                this.toastr.success(`Added ${profile_being_viewed.username} as friend.`, 'Friend Added');
+                            }
+                        });
                 } else {
                     this.toastr.error('The username of the user you are trying to add does not exist.', 'No User Found');
                 }
             } else {
                 this.toastr.error('This action could not be completed because no user details could be found in the database.', 'No User Found');
             }
-
-            return false;
+        } else {
+            this.toastr.error('This action could not be completed because no account could be found.', 'No Account found');
         }
-
-        this.toastr.error('This action could not be completed because no account could be found.', 'No Account found');
-
-        return false;
     }
 }

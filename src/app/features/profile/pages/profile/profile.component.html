@@ -13,10 +13,19 @@
                         <ng-container *ngIf="viewing_profile; else edit_profile">
                             <button
                                 type="button"
+                                (click)="addFriend()"
                                 class="btn btn-primary btn-sm text-white rounded-pill"
+                                [disabled]="adding_friend"
                             >
-                                Add Friend
-                                <i class="fa-solid fa-user-plus ms-2"></i>
+                                <ng-container *ngIf="!adding_friend; else loader">
+                                    Add Friend
+                                    <i class="fa-solid fa-user-plus ms-2"></i>
+                                </ng-container>
+                                <ng-template #loader>
+                                    <div class="spinner-border text-white btn-loader" role="status">
+                                        <span class="visually-hidden">Loading...</span>
+                                    </div>
+                                </ng-template>
                             </button>
                         </ng-container>
                         <ng-template #edit_profile>

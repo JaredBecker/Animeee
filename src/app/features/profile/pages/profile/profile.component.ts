@@ -18,6 +18,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
     public user: User | undefined;
     public username: string | undefined;
     public viewing_profile: boolean = false;
+    public adding_friend: boolean = false;
 
     public completed: number = 0;
     public on_hold: number = 0;
@@ -99,6 +100,11 @@ export class ProfileComponent implements OnInit, OnDestroy {
 
     public ngOnDestroy(): void {
         this.route_subscription?.unsubscribe();
+    }
+
+    public addFriend(): void {
+        this.adding_friend = true;
+        this.userService.addFriend().finally(() => this.adding_friend = false);
     }
 
     private resetAnimeCounts() {
