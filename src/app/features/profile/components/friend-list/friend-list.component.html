@@ -1,0 +1,39 @@
+<h1 class="oswald text_gradient mt-3 mt-lg-0">Friends</h1>
+<p class="monty">Below you can find a list of all your friends</p>
+
+<ng-container *ngIf="is_loading">
+    <app-loader></app-loader>
+</ng-container>
+
+<ng-container *ngIf="!is_loading && friends.length > 0">
+    <div class="row">
+        <div *ngFor="let friend of friends" class="col-6 col-md-4 col-lg-3 mb-3 position-relative">
+            <a [routerLink]="['/profile', 'view', friend.username, 'completed']" class="user_card">
+                <img
+                    [src]="'/assets/images/profile/' + friend.profile_picture"
+                    [alt]="friend.username + ' profile picture'"
+                    class="user_card_pic"
+                />
+                <div class="user_card_username">
+                    {{ friend.username }}
+                </div>
+            </a>
+            <button *ngIf="!is_viewing" type="button"  class="btn btn-danger btn-sm delete_btn">
+                <i class="fa-solid fa-trash-can me-1"></i>
+                Remove From List
+            </button>
+        </div>
+    </div>
+</ng-container>
+
+<ng-container *ngIf="!is_loading && friends.length === 0">
+    <div class="d-flex flex-column align-items-center justify-content-center">
+        <img src="/assets/images/no-results.png" style="max-width: 250px; border-radius: 50%;" alt="No results">
+        <div class="text-center">
+            <h3 class="fw-bold oswald text-primary">No Friends yet...</h3>
+            <h5 class="fw-bold monty">
+                Try adding some!
+            </h5>
+        </div>
+    </div>
+</ng-container>

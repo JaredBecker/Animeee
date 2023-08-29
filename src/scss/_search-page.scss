@@ -11,27 +11,3 @@
         border-radius: 0 2.5rem 2.5rem 0;
     }
 }
-
-.user_card {
-    display: block;
-    border: 1px solid #dee2e6;
-    border-radius: 0.5rem;
-    text-align: center;
-    text-decoration: none;
-    transition: all 0.2s ease-in-out;
-    overflow: hidden;
-
-    &:hover {
-        background-color: $primary;
-        color: #fff;
-    }
-
-    &_pic {
-        max-width: 100%;
-    }
-
-    &_username {
-        padding: 0.75rem 0.25rem;
-        font-weight: bold;
-    }
-}
