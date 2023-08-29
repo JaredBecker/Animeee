@@ -7,7 +7,7 @@ import { Subscription, switchMap } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
 
 import { UserService } from '@shared/services/user.service';
-import { User } from '@shared/models/user.interface';
+import { User } from '@shared/models/user.model';
 
 @Component({
     selector: 'app-profile',

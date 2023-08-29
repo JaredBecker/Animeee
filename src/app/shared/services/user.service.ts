@@ -5,8 +5,9 @@ import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { BehaviorSubject, Observable, firstValueFrom, map } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
 
-import { User } from '@shared/models/user.interface';
+import { User } from '@shared/models/user.model';
 import { Router } from '@angular/router';
+import { Friend } from '@shared/models/friend.interface';
 
 @Injectable({
     providedIn: 'root'
@@ -409,7 +410,7 @@ export class UserService {
      *
      * @return Boolean indicating if the anime was found and updated
      */
-    public async updateWatchState(anime: any, watch_state: string, must_watch: boolean = false) {
+    public async updateWatchState(anime: any, watch_state: string, must_watch: boolean = false): Promise<boolean> {
         const user = await this.getUserInfo();
 
         // Get rid of properties not needed
@@ -463,7 +464,14 @@ export class UserService {
         return false;
     }
 
-    public async updateCharacterList(character: any) {
+    /**
+     * Add the selected to character to users fav characters list
+     *
+     * @param character The character to add to the list
+     *
+     * @returns Boolean indicating if the friend was found and updated
+     */
+    public async updateCharacterList(character: any): Promise<boolean> {
         const user = await this.getUserInfo();
 
         delete character.links;
@@ -498,6 +506,48 @@ export class UserService {
 
                 return false;
             }
+        }
+
+        this.toastr.error('This action could not be completed because no account could be found.', 'No Account found');
+
+        return false;
+    }
+
+    public async addFriend(): Promise<boolean> {
+        const user = await this.getUserInfo();
+
+        if (user?.uid) {
+            const record: User | undefined = await firstValueFrom(
+                this.angularFirestore.collection('users').doc<User>(user.uid).valueChanges()
+            );
+            const profile_being_viewed = await firstValueFrom(this.getViewUserStream());
+
+
+            if (record) {
+                if (profile_being_viewed) {
+                    let found = record.friend_list.some(el => el.username === profile_being_viewed.username);
+
+                    if (!found) {
+                        const friend: Friend = {
+                            username: profile_being_viewed.username,
+                            profile_picture: profile_being_viewed.profile_picture
+                        }
+
+                        record.friend_list.push(friend);
+                    }
+
+                    this.$user_stream.next(record);
+                    this.angularFirestore.collection('users').doc(user.uid).set(record);
+
+                    return found;
+                } else {
+                    this.toastr.error('The username of the user you are trying to add does not exist.', 'No User Found');
+                }
+            } else {
+                this.toastr.error('This action could not be completed because no user details could be found in the database.', 'No User Found');
+            }
+
+            return false;
         }
 
         this.toastr.error('This action could not be completed because no account could be found.', 'No Account found');
