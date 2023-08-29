@@ -3,7 +3,7 @@ import { FormControl, Validators } from '@angular/forms';
 
 import { Subscription } from 'rxjs';
 
-import { User } from '@shared/models/user.interface';
+import { User } from '@shared/models/user.model';
 import { UserService } from '@shared/services/user.service';
 
 @Component({

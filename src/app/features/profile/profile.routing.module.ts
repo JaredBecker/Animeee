@@ -9,6 +9,7 @@ import { CurrentlyWatchingComponent } from './components/currently-watching/curr
 import { MustWatchComponent } from './components/must-watch/must-watch.component';
 import { FavoriteCharactersComponent } from './components/favorite-characters/favorite-characters.component';
 import { EditProfileComponent } from './edit-profile/edit-profile.component';
+import { FriendListComponent } from './components/friend-list/friend-list.component';
 
 const routes: Routes = [
     {
@@ -43,6 +44,10 @@ const routes: Routes = [
                 path: 'edit',
                 component: EditProfileComponent,
             },
+            {
+                path: 'friend-list',
+                component: FriendListComponent,
+            },
         ]
     },
     {
@@ -72,6 +77,10 @@ const routes: Routes = [
             {
                 path: 'favorite-characters',
                 component: FavoriteCharactersComponent
+            },
+            {
+                path: 'friend-list',
+                component: FriendListComponent
             },
         ]
     }
