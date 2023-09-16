@@ -190,7 +190,7 @@ export class AnimeService {
      * @returns Franchise stream
      */
     public getFranchise(id: number, type: 'Anime' | 'Manga'): Observable<Response> {
-        return this.http.get<Response>(`${this.api}/media-relationships?filter[source_id]=${id}&filter[source_type]=${type}&include=destination&page[limit]=20&sort=role`)
+        return this.http.get<Response>(`${this.api}/media-relationships?filter[source_id]=${id}&filter[source_type]=${type}&include=destination&page[limit]=20&sort=role`);
     }
 
     /**
@@ -223,9 +223,8 @@ export class AnimeService {
      * @param category category name to search for
      */
     public setCategorySearch(category: string, type: 'anime' | 'manga' = 'anime'): void {
-        // TODO: Make category sort type dynamic
         this.$search_stream.next(
-            this.http.get<Response>(`${this.api}/${type}?filter[categories]=${category}&page[limit]=20&sort=popularityRank`)
+            this.http.get<Response>(`${this.api}/${type}?filter[categories]=${category}&page[limit]=20&sort=-user_count`)
         );
     }
 
@@ -257,7 +256,7 @@ export class AnimeService {
         // TODO: Make this dynamic so anything with a next link can load more results
         this.$more_results_stream.next(
             this.http.get<Response>(next_link)
-        )
+        );
     }
 
     /**
