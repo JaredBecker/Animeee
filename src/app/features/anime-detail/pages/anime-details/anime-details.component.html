@@ -23,7 +23,7 @@
                             <img class="img-fluid" [src]="anime.attributes.posterImage.large" [alt]="anime.attributes.titles.en_jp">
                         </div>
                         <!-- Controls -->
-                        <div class="d-flex flex-column gap-2" *ngIf="is_logged_in && type === 'anime'">
+                        <div class="d-flex flex-column gap-2">
                             <a
                                 *ngIf="type === 'anime'"
                                 [href]="'https://aniwatch.to/search?keyword=' + anime.attributes.slug"
@@ -32,76 +32,78 @@
                             >
                                 Find on<img src="/assets/images/aniwatch.png" class="ms-2" style="max-width: 60px;" alt="AniWatch logo" />
                             </a>
-                            <button
-                                type="button"
-                                (click)="onAddToComplete()"
-                                [disabled]="completed_loading"
-                                class="btn btn-outline-primary btn-sm rounded-pill text-center"
-                            >
-                                <span *ngIf="!completed_loading" class="fw-bold d-flex justify-content-between align-items-center">
-                                    Completed
-                                    <i class="fa-regular fa-square-check"></i>
-                                </span>
-                                <div *ngIf="completed_loading" class="spinner-border text-info btn-loader" role="status">
-                                    <span class="visually-hidden">Loading...</span>
-                                </div>
-                            </button>
-                            <button
-                                type="button"
-                                (click)="onAddToWantToWatch()"
-                                [disabled]="want_to_watch_loading"
-                                class="btn btn-outline-primary btn-sm rounded-pill text-center"
-                            >
-                                <span *ngIf="!want_to_watch_loading" class="fw-bold d-flex justify-content-between align-items-center">
-                                    Want to watch
-                                    <i class="fa-regular fa-clipboard"></i>
-                                </span>
-                                <div *ngIf="want_to_watch_loading" class="spinner-border text-info btn-loader" role="status">
-                                    <span class="visually-hidden">Loading...</span>
-                                </div>
-                            </button>
-                            <button
-                                type="button"
-                                (click)="onStartedWatching()"
-                                [disabled]="started_watching_loading"
-                                class="btn btn-outline-primary btn-sm rounded-pill text-center"
-                            >
-                                <span *ngIf="!started_watching_loading" class="fw-bold d-flex justify-content-between align-items-center">
-                                    Started watching
-                                    <i class="fa-regular fa-eye"></i>
-                                </span>
-                                <div *ngIf="started_watching_loading" class="spinner-border text-info btn-loader" role="status">
-                                    <span class="visually-hidden">Loading...</span>
-                                </div>
-                            </button>
-                            <button
-                                type="button"
-                                (click)="onHold()"
-                                [disabled]="on_hold_loading"
-                                class="btn btn-outline-primary btn-sm rounded-pill text-center"
-                            >
-                                <span *ngIf="!on_hold_loading" class="fw-bold d-flex justify-content-between align-items-center">
-                                    On Hold
-                                    <i class="fa-regular fa-circle-pause"></i>
-                                </span>
-                                <div *ngIf="on_hold_loading" class="spinner-border text-info btn-loader" role="status">
-                                    <span class="visually-hidden">Loading...</span>
-                                </div>
-                            </button>
-                            <button
-                                type="button"
-                                (click)="onMustWatch()"
-                                [disabled]="must_watch_loading"
-                                class="btn btn-outline-primary btn-sm rounded-pill text-center"
-                            >
-                                <span *ngIf="!must_watch_loading" class="fw-bold d-flex justify-content-between align-items-center">
-                                    Must Watch
-                                    <i class="fa-solid fa-fire"></i>
-                                </span>
-                                <div *ngIf="must_watch_loading" class="spinner-border text-info btn-loader" role="status">
-                                    <span class="visually-hidden">Loading...</span>
-                                </div>
-                            </button>
+                            <ng-container *ngIf="is_logged_in && type === 'anime'">
+                                <button
+                                    type="button"
+                                    (click)="onAddToComplete()"
+                                    [disabled]="completed_loading"
+                                    class="btn btn-outline-primary btn-sm rounded-pill text-center"
+                                >
+                                    <span *ngIf="!completed_loading" class="fw-bold d-flex justify-content-between align-items-center">
+                                        Completed
+                                        <i class="fa-regular fa-square-check"></i>
+                                    </span>
+                                    <div *ngIf="completed_loading" class="spinner-border text-info btn-loader" role="status">
+                                        <span class="visually-hidden">Loading...</span>
+                                    </div>
+                                </button>
+                                <button
+                                    type="button"
+                                    (click)="onAddToWantToWatch()"
+                                    [disabled]="want_to_watch_loading"
+                                    class="btn btn-outline-primary btn-sm rounded-pill text-center"
+                                >
+                                    <span *ngIf="!want_to_watch_loading" class="fw-bold d-flex justify-content-between align-items-center">
+                                        Want to watch
+                                        <i class="fa-regular fa-clipboard"></i>
+                                    </span>
+                                    <div *ngIf="want_to_watch_loading" class="spinner-border text-info btn-loader" role="status">
+                                        <span class="visually-hidden">Loading...</span>
+                                    </div>
+                                </button>
+                                <button
+                                    type="button"
+                                    (click)="onStartedWatching()"
+                                    [disabled]="started_watching_loading"
+                                    class="btn btn-outline-primary btn-sm rounded-pill text-center"
+                                >
+                                    <span *ngIf="!started_watching_loading" class="fw-bold d-flex justify-content-between align-items-center">
+                                        Started watching
+                                        <i class="fa-regular fa-eye"></i>
+                                    </span>
+                                    <div *ngIf="started_watching_loading" class="spinner-border text-info btn-loader" role="status">
+                                        <span class="visually-hidden">Loading...</span>
+                                    </div>
+                                </button>
+                                <button
+                                    type="button"
+                                    (click)="onHold()"
+                                    [disabled]="on_hold_loading"
+                                    class="btn btn-outline-primary btn-sm rounded-pill text-center"
+                                >
+                                    <span *ngIf="!on_hold_loading" class="fw-bold d-flex justify-content-between align-items-center">
+                                        On Hold
+                                        <i class="fa-regular fa-circle-pause"></i>
+                                    </span>
+                                    <div *ngIf="on_hold_loading" class="spinner-border text-info btn-loader" role="status">
+                                        <span class="visually-hidden">Loading...</span>
+                                    </div>
+                                </button>
+                                <button
+                                    type="button"
+                                    (click)="onMustWatch()"
+                                    [disabled]="must_watch_loading"
+                                    class="btn btn-outline-primary btn-sm rounded-pill text-center"
+                                >
+                                    <span *ngIf="!must_watch_loading" class="fw-bold d-flex justify-content-between align-items-center">
+                                        Must Watch
+                                        <i class="fa-solid fa-fire"></i>
+                                    </span>
+                                    <div *ngIf="must_watch_loading" class="spinner-border text-info btn-loader" role="status">
+                                        <span class="visually-hidden">Loading...</span>
+                                    </div>
+                                </button>
+                            </ng-container>
                         </div>
                     </div>
                 </div>
